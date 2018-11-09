@@ -1,0 +1,7 @@
+# Ignore everything except Python scripts, markdown files, fasta files, text files
+*
+!*/
+!*.py
+!*.fasta
+!*.md
+!*.txt
