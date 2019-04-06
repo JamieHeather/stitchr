@@ -27,9 +27,9 @@ stiTChR uses relative paths. Please ensure you are in the Scripts directory to r
 ```bash
 python stitchr.py -v [IMGT V gene] -j [IMGT J gene] -cdr3 [CDR3aa]
 
-python stitchr.py -v TRBV7-3*01 -j TRBJ1-3*01 -cdr3 CASSPGRGTTNEKLFF
+python stitchr.py -v TRBV7-3*01 -j TRBJ1-1*01 -cdr3 CASSYLQAQYTEAFF
 
-python stitchr.py -v TRAV1-2 -j TRAJ33 -cdr3 CAVERGEGF
+python stitchr.py -v TRAV1-2 -j TRAJ33 -cdr3 CAVLDSNYQLIW
 ```
 
 ### Usage notes
@@ -38,13 +38,17 @@ python stitchr.py -v TRAV1-2 -j TRAJ33 -cdr3 CAVERGEGF
 
 This script currently only works on human alpha/beta TCR chains, but should be readily adapted to any other species/locus.
 
+Care must be taken to ensure that the correct TCR informaton is input, e.g. ensure you're using proper IMGT gene nomenclature (older deprecated gene names will not work), and have the correct and full CDR3 sequence from the conserved cysteine to the conserved phenylalanine (or rarely, tryptophan) residue. The script produces a TCR from the information given, trying to provide warnings or errors if it detects an improbable or implausible combination, yet it's possible that the script might produce outut that *looks* OK yet which does not reproduce a coding sequence for the intended TCR. 
+
 If you request an allele for which there isn't complete sequence data, the script will attempt to default to the prototypical allele (*01) of that gene. If it cannot find sequence for that then it will throw an error. Similarly it will attempt to use the correct leader seqeunces (L-PART1+L-PART2) for the specified allele, but if it can't find one it'll default back to the prototype's. Note that IMGT-provided gene sequences which are 'partial' at either end of their sequence are discounted entirely, as full length sequences are needed.
 
 By default the script will use the TRBC gene located in the same cluster as the J gene (i.e. TRBJ1-1 through TRBJ1-6 will get TRBC1, while TRBJ2-1 through TRBJ2-7 will get TRBC2). This can be overriden (see optional arguments).
 
+All required files are included in the repo. If you want to change or update the IMGT data files, you'll need to re-run `split-imgt-data.py`.
+
 ### Optional arguments
 
-* `-h` - see a help menu, containing 
+* `-h` - see a help menu, containing all the command line options
 * `-c` - specify a particular constant region gene (in the case of TRBC) or allele
 * `-aa` - provide an incomplete amino acid sequence (spanning at least the CDR3, with some padding on either side), to assess the accuracy of the stitched TCR sequence. Must be a single string, unbroken by spaces or linebreaks
 * `-cu` - use an alternative codon usage file, from which to generate the sequences for the non-templated residues (see below)

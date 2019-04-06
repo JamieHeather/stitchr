@@ -7,10 +7,6 @@ functions.py
 Functions for stiTChR and its related scripts
 """
 
-__version__ = '0.1.0'
-__author__ = 'Jamie Heather'
-__email__ = 'jheather@mgh.harvard.edu'
-
 import collections as coll
 import os
 import re
@@ -20,6 +16,10 @@ import warnings
 from Bio import BiopythonWarning
 warnings.simplefilter('ignore', BiopythonWarning)
 
+__version__ = '0.1.1'
+__author__ = 'Jamie Heather'
+__email__ = 'jheather@mgh.harvard.edu'
+
 data_dir = '../Data/'
 
 
@@ -27,6 +27,7 @@ def check_scripts_dir():
     """
     Check we're in the right directory (Scripts)
     """
+
     if not os.getcwd().endswith('/Scripts'):
         if 'Scripts' in os.listdir(os.getcwd()):
             os.chdir('Scripts')
@@ -115,12 +116,18 @@ def sort_input(cmd_line_args):
 
     # Check the CDR3
     if len(tidied_args['cdr3']) < 8 or tidied_args['cdr3'][0] != 'C' or tidied_args['cdr3'][-1] not in ['F', 'W']:
-        print "Error, CDR3 does not fit expected parameters. Please ensure it includes the C/F residues."
+        print "Error, CDR3 does not fit expected parameters. Please ensure it includes the conserved C/F residues."
+        sys.exit()
+
+    # Get codon data, and use to check that there's no unexpected characters in the CDR3
+    codons = get_optimal_codons(tidied_args['codon_usage'])
+    if len([x for x in list(set([x for x in tidied_args['cdr3']])) if x not in codons.keys()]) > 0:
+        print "Unexpected character in CDR3 string. Please use only one-letter standard amino acid designations."
         sys.exit()
 
     chain = get_chain(tidied_args['v'], tidied_args['j'])
     finished_args = autofill_input(tidied_args, chain)
-    return finished_args, chain
+    return finished_args, chain, codons
 
 
 def tidy_input(cmd_line_args):
@@ -282,6 +289,10 @@ def determine_v_interface(cdr3aa, n_term_nuc, n_term_amino):
                 cdr3_n_offset = c
                 return n_term_nt_trimmed, cdr3_n_offset
 
+    # Shouldn't be able to throw an error, as the presence of an N terminal cysteine should be established, but in case
+    print "Unable to locate N terminus of CDR3 in V gene correctly. Please ensure sequence plausibility."
+    sys.exit()
+
 
 def determine_j_interface(cdr3aa, c_term_nuc, c_term_amino):
     """
@@ -290,16 +301,34 @@ def determine_j_interface(cdr3aa, c_term_nuc, c_term_amino):
     regions in the germline J-REGION.
     :param cdr3aa: CDR3 region (protein sequence as provided)
     :param c_term_nuc: DNA encoding the germline C terminal portion (i.e. J + C genes), with no untranslated bp
-    :param c_term_amino: translation of c_term_nuc
-    :return:
+    :param c_term_amino: translation of c_term_nuc (everything downstream of recognisable end of the V)
+    :return: the nt seq of the C-terminal section of the TCR and number of bases into CDR3 that are non-templated
     """
+
     # Determine germline J contribution - going for longest possible, starting with whole CDR3
-    for c in reversed(range(3, len(cdr3aa))):
-            c_term_cdr3_chunk = cdr3aa[-c:]
-            if c_term_cdr3_chunk in c_term_amino:
-                cdr3_c_end = cdr3aa.index(c_term_cdr3_chunk)
-                c_term_nt_trimmed = c_term_nuc[c_term_amino.index(c_term_cdr3_chunk) * 3:]
-                return c_term_nt_trimmed, cdr3_c_end
+    for c in reversed(range(1, len(cdr3aa))):
+        c_term_cdr3_chunk = cdr3aa[-c:]
+        if c_term_cdr3_chunk in c_term_amino:
+
+            # Check the putative found remnant of the J gene actually falls within the sequence contributed by the J
+            # TODO NB other species/loci may have J genes longer than 22, so this value may require changing
+            if c_term_amino.index(c_term_cdr3_chunk) > 22:
+                print "Error: no match for the C-terminal portion of the CDR3 within the provided J gene."
+                print "\tPlease double check CDR3 sequence and J gene name are correct before retrying."
+                sys.exit()
+
+            # Otherwise carry on - warning the user if the match is short (which it likely shouldn't be for J genes)
+            cdr3_c_end = cdr3aa.index(c_term_cdr3_chunk)
+            c_term_nt_trimmed = c_term_nuc[c_term_amino.index(c_term_cdr3_chunk) * 3:]
+            if c < 5:
+                print "Warning: while a J match has been found, it was only the string \"" + c_term_cdr3_chunk + "\""
+                print "\tWhile this could be correct, most CDR3s retain longer J gene segments than this."
+                print "\tYou may wish to manually verify that the correct C-terminal CDR3 terminus has been found."
+            return c_term_nt_trimmed, cdr3_c_end
+
+    # Also shouldn't be able to throw an error, but just in case
+    print "Unable to locate C terminus of CDR3 in J gene correctly. Please ensure sequence plausibility."
+    sys.exit()
 
 
 def get_optimal_codons(path_to_cu_file):

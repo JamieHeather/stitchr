@@ -15,7 +15,7 @@ import argparse
 import sys
 
 
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -27,9 +27,9 @@ def args():
 
     # Help flag
     parser = argparse.ArgumentParser(
-        description="stiTChR v" + str(__version__) + '\n' + \
-                    ": Stitch together a coding TCR nucleotide sequence from V, J, and CDR3 info.\n" + \
-                    "Use IMGT gene names, and include terminal CDR3 residues (C/F).\n\n" + \
+        description="stiTChR v" + str(__version__) + '\n' +
+                    ": Stitch together a coding TCR nucleotide sequence from V, J, and CDR3 info.\n" +
+                    "Use IMGT gene names, and include terminal CDR3 residues (C/F).\n\n" +
                     "E.g. \'python stitchr.py -v TRBV20-1 -j TRVJ1-2 -cdr3 CASWHATEVERF\'")
 
     # Input and output options
@@ -63,9 +63,9 @@ def args():
 if __name__ == '__main__':
 
     # TODO move all this to one large bracketing function?
-    # Get input arguments, determine the TCR chain in use, then load the IMGT data in
+    # Get input arguments, determine the TCR chain in use, get codon table, then load the IMGT data in
     fxn.check_scripts_dir()
-    input_args, chain = fxn.sort_input(vars(args()))
+    input_args, chain, codons = fxn.sort_input(vars(args()))
 
     regions = {'v': 'V-REGION', 'j': 'J-REGION', 'c': 'EX1+EX2+EX3+EX4', 'l': 'L-PART1+L-PART2'}
     gene_types = regions.values()
@@ -97,6 +97,17 @@ if __name__ == '__main__':
             print "Cannot find TCR sequence data for", r, "gene:", gene + '*' + allele + ". Aborting run"
             sys.exit()
 
+    # Quick sanity check for tryptophan-ending CDR3s only using the correct J genes
+    # TODO NB this would require correction or deletion for other species/loci
+    if input_args['cdr3'][-1] == 'W' and j_used not in ['TRAJ33*01', 'TRAJ38*01', 'TRAJ55*01']:
+        print "Error: CDR3 provided ends with tryptophan but J gene selected uses the standard phenylalanine"
+        print "\tDeletion up to conserved F/W is not plausible in human TCRs, thus this combination is flawed"
+        sys.exit()
+    elif input_args['cdr3'][-1] == 'F' and j_used in ['TRAJ33*01', 'TRAJ38*01', 'TRAJ55*01']:
+        print "Error: CDR3 provided ends with the standard phenylalanine but J gene selected uses the rare tryptophan"
+        print "\tDeletion up to conserved F/W is not plausible in human TCRs, thus this combination is flawed"
+        sys.exit()
+
     # Get the germline encoded bits
     n_term_nt, n_term_aa = fxn.tidy_n_term(done['l'] + done['v'])
     c_term_nt, c_term_aa = fxn.tidy_c_term(done['j'] + done['c'], chain)
@@ -106,8 +117,7 @@ if __name__ == '__main__':
     n_term_nt_trimmed, cdr3_n_offset = fxn.determine_v_interface(input_args['cdr3'], n_term_nt, n_term_aa)
     c_term_nt_trimmed, cdr3_c_end = fxn.determine_j_interface(input_args['cdr3'], c_term_nt, c_term_aa)
 
-    # Get the most frequent codons for each residue and generate the non-templated sequence
-    codons = fxn.get_optimal_codons(input_args['codon_usage'])
+    # Generate the non-templated sequences using common codons established earlier
     non_templated_aa = input_args['cdr3'][cdr3_n_offset:cdr3_c_end]
     non_templated_nt = ''.join([codons[x] for x in non_templated_aa])
 
@@ -121,7 +131,7 @@ if __name__ == '__main__':
     print fxn.fastafy('aa-' + out_str, fxn.translate_nt(stitched))
 
     # If a known/partial amino acid sequence provided, ensure they match up with a quick printed alignment
-    if input_args['aa']:
+    if 'aa' in input_args:
         from Bio import pairwise2
         from Bio.pairwise2 import format_alignment
         alignments = pairwise2.align.globalxx(input_args['aa'], fxn.translate_nt(stitched))
