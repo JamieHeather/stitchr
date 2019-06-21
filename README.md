@@ -22,6 +22,8 @@ pip install biopython
 
 ## Usage 
 
+stiTChR is designed to be run on Python 2.7, and has primarily been tested on Python 2.7.15. 
+
 stiTChR uses relative paths. Please ensure you are in the Scripts directory to run the script. 
 
 ```bash
