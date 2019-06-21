@@ -12,6 +12,8 @@ The script takes the known V/J/CDR3 information, and uses that to pull out the r
 
 ### Installation and dependencies
 
+stiTChR is designed to be run on Python 2.7, and has primarily been tested on Python 2.7.15. 
+
 Simply clone the repo to a desired location, navigate to the Scripts directory, then you can run the script via the command line as detailed below.
 
 The only non-default package used is Biopython, easily installed via `pip`:
@@ -21,8 +23,6 @@ pip install biopython
 ```
 
 ## Usage 
-
-stiTChR is designed to be run on Python 2.7, and has primarily been tested on Python 2.7.15. 
 
 stiTChR uses relative paths. Please ensure you are in the Scripts directory to run the script. 
 
