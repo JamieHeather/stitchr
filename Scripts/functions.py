@@ -16,7 +16,7 @@ import warnings
 from Bio import BiopythonWarning
 warnings.simplefilter('ignore', BiopythonWarning)
 
-__version__ = '0.1.1'
+__version__ = '0.2.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -119,8 +119,14 @@ def sort_input(cmd_line_args):
         print "Error, CDR3 does not fit expected parameters. Please ensure it includes the conserved C/F residues."
         sys.exit()
 
+    # Check the species is an appropriate one
+    if tidied_args['species'] not in ['HUMAN', 'MOUSE']:
+        print "Invalid species option given. Only acceptable defaults are \'human\' or \'mouse\'."
+        sys.exit()
+
     # Get codon data, and use to check that there's no unexpected characters in the CDR3
-    codons = get_optimal_codons(tidied_args['codon_usage'])
+    # TODO fix
+    codons = get_optimal_codons(tidied_args['codon_usage'], tidied_args['species'])
     if len([x for x in list(set([x for x in tidied_args['cdr3']])) if x not in codons.keys()]) > 0:
         print "Unexpected character in CDR3 string. Please use only one-letter standard amino acid designations."
         sys.exit()
@@ -172,10 +178,11 @@ def autofill_input(cmd_line_args, chain):
     return cmd_line_args
 
 
-def get_imgt_data(tcr_chain, gene_types):
+def get_imgt_data(tcr_chain, gene_types, species):
     """
     :param tcr_chain: TRA or TRB
     :param gene_types: list of TYPES of genes to be expected in a final TCR mRNA, in their IMGT nomenclature
+    :param species: human or mouse, for use if a specific absolute path not specified
     :return: triply nested dict: { region { gene { allele { seq } } } - plus doubly nested dict with V/J functionalities
     """
 
@@ -184,7 +191,7 @@ def get_imgt_data(tcr_chain, gene_types):
         print "Error: incorrect chain detected, cannot get IMGT data"
         sys.exit()
 
-    in_file_path = data_dir + tcr_chain + '.fasta'
+    in_file_path = data_dir + species + '/' + tcr_chain + '.fasta'
     if not os.path.isfile(in_file_path):
         print "Error:", tcr_chain + '.fasta not detected in the Data directory. Please run split-imgt-data.py first.'
         sys.exit()
@@ -235,18 +242,17 @@ def tidy_n_term(n_term_nt):
     return trimmed, translate_nt(trimmed)
 
 
-def tidy_c_term(c_term_nt, chain):
+def tidy_c_term(c_term_nt, chain, species):
     """
     Tidy up the germline C-terminal half (i.e. post-CDR3, J+C) of the nt seq so that it's the right frame/trimmed
     :param c_term_nt: done['j'] + done['c']
     :param chain: TCR chain (TRA/TRB)
+    :param species: human or mouse
     :return: c_term_nt trimmed/in right frame
     """
 
-    # TODO NB this function would require manual modification moving to other species/loci
-    trac = "IQNPDPA"
-    trbc1 = "DLKNVF"
-    trbc2 = "DLNKVF"
+    c_aa = {'HUMAN': {'trac': "IQNPDPA", 'trbc1': "DLKNVF", 'trbc2': "DLNKVF", 'trac-stop': '*DLQDCK'},
+            'MOUSE': {'trac': "IQNPEPA", 'trbc1': "DLRNVT", 'trbc2': "DLRNVT", 'trac-stop': '*GLQD'}}
 
     # Try every frame, look for the frame that contains the appropriate sequence
     for f in range(4):
@@ -257,14 +263,14 @@ def tidy_c_term(c_term_nt, chain):
 
         translated = translate_nt(c_term_nt[f:])
         if chain == 'TRA':
-            if trac in translated:
-                stop_index_aa = translated.index('*DLQDCK')  # Account for late exon stop codons in TRAC1
+            if c_aa[species]['trac'] in translated:
+                stop_index_aa = translated.index(c_aa[species]['trac-stop'])  # Account for late exon TRAC stop codons
                 c_term_nt = c_term_nt[:stop_index_aa * 3]
                 translated = translate_nt(c_term_nt[f:])
                 break
 
         elif chain == 'TRB':
-            if trbc1 in translated or trbc2 in translated:
+            if c_aa[species]['trbc1'] in translated or c_aa[species]['trbc2'] in translated:
                 break
 
     return c_term_nt[f:], translated
@@ -309,6 +315,7 @@ def determine_j_interface(cdr3aa, c_term_nuc, c_term_amino):
     for c in reversed(range(1, len(cdr3aa))):
         c_term_cdr3_chunk = cdr3aa[-c:]
         if c_term_cdr3_chunk in c_term_amino:
+            # TODO do we need a findall situation here? I think we do
 
             # Check the putative found remnant of the J gene actually falls within the sequence contributed by the J
             # TODO NB other species/loci may have J genes longer than 22, so this value may require changing
@@ -326,16 +333,24 @@ def determine_j_interface(cdr3aa, c_term_nuc, c_term_amino):
                 print "\tYou may wish to manually verify that the correct C-terminal CDR3 terminus has been found."
             return c_term_nt_trimmed, cdr3_c_end
 
+            # TODO can also make this look for [FW]G.G, an extra layer to be sure we've got the right match
+
     # Also shouldn't be able to throw an error, but just in case
     print "Unable to locate C terminus of CDR3 in J gene correctly. Please ensure sequence plausibility."
     sys.exit()
 
 
-def get_optimal_codons(path_to_cu_file):
+def get_optimal_codons(specified_cu_file, species):
     """
-    :param path_to_cu_file: Path to file containing Kusuzu-formatted codon usage
+    :param specified_cu_file: Path to file containing Kazusa-formatted codon usage (if specified)
+    :param species: human or mouse, for use if a specific absolute path not specified
     :return: dict containing 'best' (most frequent) codon to use per residue
     """
+
+    if specified_cu_file:
+        path_to_cu_file = specified_cu_file
+    else:
+        path_to_cu_file = data_dir + species + '/kazusa.txt'
 
     codon_usage = coll.defaultdict(nest_counter)
     with open(path_to_cu_file) as in_file:

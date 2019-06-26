@@ -52,6 +52,7 @@ All required files are included in the repo. If you want to change or update the
 
 * `-h` - see a help menu, containing all the command line options
 * `-c` - specify a particular constant region gene (in the case of TRBC) or allele
+* `-s` - specify a species: 'human' or 'mouse' are the only valid options currently, with human as default 
 * `-aa` - provide an incomplete amino acid sequence (spanning at least the CDR3, with some padding on either side), to assess the accuracy of the stitched TCR sequence. Must be a single string, unbroken by spaces or linebreaks
 * `-cu` - use an alternative codon usage file, from which to generate the sequences for the non-templated residues (see below)
 * `-l` - use a different leader region to that present with the given V  
@@ -61,7 +62,7 @@ All required files are included in the repo. If you want to change or update the
 
 Non-templated based are assigned by taking the most common nucleotide triplot for a given amino acid, in a provided codon usage file.
 
-The default codon usage file (Data/kuzusa-human.txt) is taken straight from the default [Kuzusa human entry](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9606) (Homo sapiens [gbpri]: 93487). Alternative files can be provided, but must be in the same format (e.g. those provided by [HIVE](https://hive.biochemistry.gwu.edu/dna.cgi?cmd=refseq_processor&id=569942)). U/T can be used interchangeably, as all U will be replaced with T anyway.
+The default codon usage files are taken straight from the default Kazusa [human](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9606) (Homo sapiens [gbpri]: 93487) and [mouse](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=10090) (Mus musculus [gbrod]: 53036) entries. Alternative files can be provided, but must be in the same format (e.g. those provided by [HIVE](https://hive.biochemistry.gwu.edu/dna.cgi?cmd=refseq_processor&id=569942)). U/T can be used interchangeably, as all U will be replaced with T anyway.
 
 #### Providing a partial amino acid sequence
 
@@ -159,4 +160,55 @@ LSENDEWTQDRAKPVTQIVSAEAWGRADCGFTSESYQQGVLSATILYEILLGKATLYAVL
 VSALVLMAMVKRKDSRG
 ```
 
-This produces even more mismatches - so the constant region used in the crystal has presumably been altered for expression/crystallization purposes (or derived from a donor with TRBC SNPs). 
+This produces even more mismatches - so the constant region used in the crystal has presumably been altered for expression/crystallization purposes (or derived from a donor with TRBC SNPs).
+
+
+
+# Mouse examples - IN PROGRESS
+
+8f10 http://jem.rupress.org/content/210/11/2403 http://www.rcsb.org/structure/6DFV
+
+alpha
+>6DFV:A|PDBID|CHAIN|SEQUENCE
+MEQVEQLPSILRVQEGSSASINCSYEDSASNYFPWYKQEPGENPKLIIDIRSNMERKQTQGLIVLLDKKAKRFSLHITDT
+QPGDSAMYFCAASRRGSGGSNYKLTFGKGTLLTVTPNIQNPDPAVYQLRDSKSSDKSVCLFTDFDSQTNVSQSKDSDVYI
+TDKCVLDMRSMDFKSNSAVAWSNKSDFACANAFNNSIIPEDTFFPSPESS
+python -i stitchr.py -s mouse -v TRAV5D-4 -j TRAJ53 -cdr3 CAASRRGSGGSNYKLTF   
+
+beta
+>6DFV:B|PDBID|CHAIN|SEQUENCE
+MAVTQSPRNKVAVTGGKVTLSCDQTNNHNNMYWYRQDTGHGLRLIHYSYGAGSTEKGDIPDGYKASRPSQKEFSLILELA
+TPSQTSVYFCASGGLGGDEQYFGPGTRLTVLEDLKNVFPPEVAVFEPSEAEISHTQKATLVCLATGFYPDHVELSWWVNG
+KEVHSGVCTDPQPLKEQPALNDSRYALSSRLRVSATFWQNPRNHFRCQVQFYGLSENDEWTQDRAKPVTQIVSAEAWGRA
+D
+python -i stitchr.py -v TRBV13-2 -j TRBJ2-7 -s mouse -cdr3 CASGGLGGDEQYF   
+
+
+
+3arf http://www.rcsb.org/structure/3ARF https://www.cell.com/immunity/fulltext/S1074-7613(09)00274-X
+
+alpha
+>3ARF:C|PDBID|CHAIN|SEQUENCE
+TQVEQSPQSLVVRQGENSVLQCNYSVTPDNHLRWFKQDTGKGLVSLTVLVDQKDKTSNGRYSATLDKDAKHSTLHITATL
+LDDTATYICVVGDRGSALGRLHFGAGTQLIVIPDIQNPDPAVYQLRDSKSSDKSVCLFTDFDSQTNVSQSKDSDVYITDK
+CVLDMRSMDFKSNSAVAWSNKSDFACANAFNNSIIPEDTFFPSPESS
+
+python stitchr.py -s mouse -v TRAV11 -j TRAJ18 -cdr3 CVVGDRGSALGRLHF   
+
+
+
+OT-I https://www.addgene.org/52111/ (T2A sep)
+
+
+>OT-I|TRAV14-1|TRAJ33
+MDKILTASFLLLGLHLAGVNGQQQEKRDQQQVRQSPQSLTVWEGETAILNCSYEDSTFNYFPWYQQFPGEGPALLISIRSVSDKKEDGRFTIFFNKREKKLSLHITDSQPGDSATYFCAASDNYQLIWGSGTKLIIKPDIQNPEPAVYQLKDPRSQDSTLCLFTDFDSQINVPKTMESGTFITDKTVLDMKAMDSKSNGAIAWSNQTSFTCQDIFKETNATYPSSDVPCDATLTEKSFETDMNLNFQNLSVMGLRILLLKVAGFNLLMTLRLWSSG
+
+python stitchr.py -s mouse -v TRAV14-1 -j TRAJ33 -cdr3 CAASDNYQLIW   
+
+
+>OT-I|TRBV12-1|TRBJ2-7
+MSNTVLADSAWGITLLSWVTVFLLGTSSADSGVVQSPRHIIKEKGGRSVLTCIPISGHSNVVWYQQTLGKELKFLIQHYEKVERDKGFLPSRFSVQQFDDYHSEMNMSALELEDSAMYFCASSRANYEQYFGPGTRLTVLEDLRNVTPPKVSLFEPSKAEIANKQKATLVCLARGFFPDHVELSWWVNGKEVHSGVSTDPQAYKESNYSYCLSSRLRVSATFWHNPRNHFRCQVQFHGLSEEDKWPEGSPKPVTQNISAEAWGRADCGITSASYHQGVLSATILYEILLGKATLYAVLVSGLVLMAMVKKKNS
+
+python stitchr.py -s mouse -v TRBV12-1 -j TRBJ2-7 -cdr3 CASSRANYEQYF
+
+

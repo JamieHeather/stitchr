@@ -15,7 +15,7 @@ import argparse
 import sys
 
 
-__version__ = '0.1.1'
+__version__ = '0.2.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -42,14 +42,17 @@ def args():
     parser.add_argument('-cdr3', '--cdr3', required=True, type=str,
                 help='CDR3 amino acid sequence. Required. Must include terminal residues (C/F)')
 
+    parser.add_argument('-s', '--species', required=False, type=str, default='human',
+                help='Species. Optional. Only available default options are \'human\' or \'mouse\'. Default = human')
+
     parser.add_argument('-c', '--c', required=False, type=str,
                 help='Constant gene. Optional. Specific allele not required, will default to prototypical (\*01)/TRBC1')
 
     parser.add_argument('-l', '--l', required=False, type=str,
                 help='Leader region. Optional. Will default to the appropriate V gene.')
 
-    parser.add_argument('-cu', '--codon_usage', required=False, type=str, default='../Data/kuzusa-human.txt',
-                help='Path to a file of Kuzusa-formatted codon usage frequencies. Optional.')
+    parser.add_argument('-cu', '--codon_usage', required=False, type=str,
+                help='Path to a file of Kazusa-formatted codon usage frequencies. Optional.')
 
     parser.add_argument('-aa', '--aa', required=False, type=str,
                 help='Partial amino acid sequence, if known. Optional. Can be used to check stitching success')
@@ -69,7 +72,7 @@ if __name__ == '__main__':
 
     regions = {'v': 'V-REGION', 'j': 'J-REGION', 'c': 'EX1+EX2+EX3+EX4', 'l': 'L-PART1+L-PART2'}
     gene_types = regions.values()
-    imgt_dat, functionality = fxn.get_imgt_data(chain, gene_types)
+    imgt_dat, functionality = fxn.get_imgt_data(chain, gene_types, input_args['species'])
 
     # Then find each of the appropriate sequences
     done = {}
@@ -77,14 +80,23 @@ if __name__ == '__main__':
 
         if '*' in input_args[r]:
             gene, allele = input_args[r].split('*')
-            if allele not in imgt_dat[regions[r]][gene]:
-                print "\tCannot find", r.upper(), "gene", input_args[r] + \
-                                                          ": attempting prototypical allele (" + gene + "*01)"
-                allele = '01'
+
         else:
             gene = input_args[r]
             allele = '01'
 
+        # Check this gene exists
+        if gene not in imgt_dat[regions[r]]:
+            print gene, "is not found in the IMGT data for this species. Please check your gene name."
+            sys.exit()
+
+        # And if it does, check whether or not the listed allele has a present value
+        if allele not in imgt_dat[regions[r]][gene]:
+            print "\tCannot find", r.upper(), "gene", input_args[r] + \
+                                                      ": attempting prototypical allele (" + gene + "*01)"
+            allele = '01'
+
+        # Check functionality
         if functionality[gene][allele] != 'F':
             print "Warning: gene", gene + '*' + allele, "has a IMGT-assigned functionality of \'" + \
                 functionality[gene][allele] + "\', and thus may not express or function correctly."
@@ -110,7 +122,7 @@ if __name__ == '__main__':
 
     # Get the germline encoded bits
     n_term_nt, n_term_aa = fxn.tidy_n_term(done['l'] + done['v'])
-    c_term_nt, c_term_aa = fxn.tidy_c_term(done['j'] + done['c'], chain)
+    c_term_nt, c_term_aa = fxn.tidy_c_term(done['j'] + done['c'], chain, input_args['species'])
 
     # Then figure out where the CDR3 will slot in - look at the CDR3 edges to see how much overlap needs to be removed
     # Start with 4 residues chunks, move from end of V gene up to 10 residues in (very generous deletion allowance)
