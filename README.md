@@ -1,4 +1,4 @@
-#stiTChR 0.2.0
+#stiTChR 0.2.1
 
 ### Stitch together TCR coding nucleotide sequences from V/J/CDR3 information
 
@@ -162,53 +162,17 @@ VSALVLMAMVKRKDSRG
 
 This produces even more mismatches - so the constant region used in the crystal has presumably been altered for expression/crystallization purposes (or derived from a donor with TRBC SNPs).
 
+#### A mouse example
 
+StiTChR also now supports murine TCRs, however it should be noted that due to poorer quality annotations in IMGT the sequences produced should be treated with even more caution than used for human data.
 
-# Mouse examples - IN PROGRESS
+Here's an example of how to run stiTChR on everyone's favourite mouse TCR, OT-I (with the actual sequence inferred from [this plasmid on AddGene](https://www.addgene.org/52111/):
 
-8f10 http://jem.rupress.org/content/210/11/2403 http://www.rcsb.org/structure/6DFV
-
-alpha
->6DFV:A|PDBID|CHAIN|SEQUENCE
-MEQVEQLPSILRVQEGSSASINCSYEDSASNYFPWYKQEPGENPKLIIDIRSNMERKQTQGLIVLLDKKAKRFSLHITDT
-QPGDSAMYFCAASRRGSGGSNYKLTFGKGTLLTVTPNIQNPDPAVYQLRDSKSSDKSVCLFTDFDSQTNVSQSKDSDVYI
-TDKCVLDMRSMDFKSNSAVAWSNKSDFACANAFNNSIIPEDTFFPSPESS
-python -i stitchr.py -s mouse -v TRAV5D-4 -j TRAJ53 -cdr3 CAASRRGSGGSNYKLTF   
-
-beta
->6DFV:B|PDBID|CHAIN|SEQUENCE
-MAVTQSPRNKVAVTGGKVTLSCDQTNNHNNMYWYRQDTGHGLRLIHYSYGAGSTEKGDIPDGYKASRPSQKEFSLILELA
-TPSQTSVYFCASGGLGGDEQYFGPGTRLTVLEDLKNVFPPEVAVFEPSEAEISHTQKATLVCLATGFYPDHVELSWWVNG
-KEVHSGVCTDPQPLKEQPALNDSRYALSSRLRVSATFWQNPRNHFRCQVQFYGLSENDEWTQDRAKPVTQIVSAEAWGRA
-D
-python -i stitchr.py -v TRBV13-2 -j TRBJ2-7 -s mouse -cdr3 CASGGLGGDEQYF   
-
-
-
-3arf http://www.rcsb.org/structure/3ARF https://www.cell.com/immunity/fulltext/S1074-7613(09)00274-X
-
-alpha
->3ARF:C|PDBID|CHAIN|SEQUENCE
-TQVEQSPQSLVVRQGENSVLQCNYSVTPDNHLRWFKQDTGKGLVSLTVLVDQKDKTSNGRYSATLDKDAKHSTLHITATL
-LDDTATYICVVGDRGSALGRLHFGAGTQLIVIPDIQNPDPAVYQLRDSKSSDKSVCLFTDFDSQTNVSQSKDSDVYITDK
-CVLDMRSMDFKSNSAVAWSNKSDFACANAFNNSIIPEDTFFPSPESS
-
-python stitchr.py -s mouse -v TRAV11 -j TRAJ18 -cdr3 CVVGDRGSALGRLHF   
-
-
-
-OT-I https://www.addgene.org/52111/ (T2A sep)
-
-
->OT-I|TRAV14-1|TRAJ33
-MDKILTASFLLLGLHLAGVNGQQQEKRDQQQVRQSPQSLTVWEGETAILNCSYEDSTFNYFPWYQQFPGEGPALLISIRSVSDKKEDGRFTIFFNKREKKLSLHITDSQPGDSATYFCAASDNYQLIWGSGTKLIIKPDIQNPEPAVYQLKDPRSQDSTLCLFTDFDSQINVPKTMESGTFITDKTVLDMKAMDSKSNGAIAWSNQTSFTCQDIFKETNATYPSSDVPCDATLTEKSFETDMNLNFQNLSVMGLRILLLKVAGFNLLMTLRLWSSG
-
-python stitchr.py -s mouse -v TRAV14-1 -j TRAJ33 -cdr3 CAASDNYQLIW   
-
-
->OT-I|TRBV12-1|TRBJ2-7
-MSNTVLADSAWGITLLSWVTVFLLGTSSADSGVVQSPRHIIKEKGGRSVLTCIPISGHSNVVWYQQTLGKELKFLIQHYEKVERDKGFLPSRFSVQQFDDYHSEMNMSALELEDSAMYFCASSRANYEQYFGPGTRLTVLEDLRNVTPPKVSLFEPSKAEIANKQKATLVCLARGFFPDHVELSWWVNGKEVHSGVSTDPQAYKESNYSYCLSSRLRVSATFWHNPRNHFRCQVQFHGLSEEDKWPEGSPKPVTQNISAEAWGRADCGITSASYHQGVLSATILYEILLGKATLYAVLVSGLVLMAMVKKKNS
-
+```bash
 python stitchr.py -s mouse -v TRBV12-1 -j TRBJ2-7 -cdr3 CASSRANYEQYF
+python stitchr.py -s mouse -v TRAV14-1 -j TRAJ33 -cdr3 CAASDNYQLIW 
+```
 
+#### A note on CDR3 C-terminal residues
 
+StiTChR assumes that the J gene will not undergo deletion past the C-terminal residue of the CDR3 (which occurs approximately in the middle of the J). Thus the code looks for the appropriate residue at the end of the CDR3, which in the majority of cases will be a phenylalanine (F). However in some cases it might be something else, like a W (not uncommon in human TRAJ/mice genes) or even something more exotic like a C, L or J (which occur in certain mouse J genes). Note that most of these non-F/W residues are found in J genes with a predicted ['ORF' IMGT status](http://www.imgt.org/IMGTScientificChart/SequenceDescription/IMGTfunctionality.html), and thus might not contribute to functioning TCRs, but stiTChR will still let you generate a plausible sequence using them.
