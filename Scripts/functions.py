@@ -16,7 +16,7 @@ import warnings
 from Bio import BiopythonWarning
 warnings.simplefilter('ignore', BiopythonWarning)
 
-__version__ = '0.2.0'
+__version__ = '0.2.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -115,20 +115,19 @@ def sort_input(cmd_line_args):
     tidied_args = tidy_input(cmd_line_args)
 
     # Check the CDR3
-    if len(tidied_args['cdr3']) < 8 or tidied_args['cdr3'][0] != 'C' or tidied_args['cdr3'][-1] not in ['F', 'W']:
-        print "Error, CDR3 does not fit expected parameters. Please ensure it includes the conserved C/F residues."
+    if len(tidied_args['cdr3']) < 8:
+        print "Error: CDR3 is too short (< 8 amino acids)"
         sys.exit()
 
     # Check the species is an appropriate one
     if tidied_args['species'] not in ['HUMAN', 'MOUSE']:
-        print "Invalid species option given. Only acceptable defaults are \'human\' or \'mouse\'."
+        print "Error: Invalid species option given. Only acceptable defaults are \'human\' or \'mouse\'."
         sys.exit()
 
     # Get codon data, and use to check that there's no unexpected characters in the CDR3
-    # TODO fix
     codons = get_optimal_codons(tidied_args['codon_usage'], tidied_args['species'])
     if len([x for x in list(set([x for x in tidied_args['cdr3']])) if x not in codons.keys()]) > 0:
-        print "Unexpected character in CDR3 string. Please use only one-letter standard amino acid designations."
+        print "Error: Unexpected character in CDR3 string. Please use only one-letter standard amino acid designations."
         sys.exit()
 
     chain = get_chain(tidied_args['v'], tidied_args['j'])
@@ -333,9 +332,7 @@ def determine_j_interface(cdr3aa, c_term_nuc, c_term_amino):
                 print "\tYou may wish to manually verify that the correct C-terminal CDR3 terminus has been found."
             return c_term_nt_trimmed, cdr3_c_end
 
-            # TODO can also make this look for [FW]G.G, an extra layer to be sure we've got the right match
-
-    # Also shouldn't be able to throw an error, but just in case
+    # Shouldn't be able to get here to throw an error, but just in case
     print "Unable to locate C terminus of CDR3 in J gene correctly. Please ensure sequence plausibility."
     sys.exit()
 
@@ -382,3 +379,32 @@ def translate_nt(nt_seq):
     :return: amino acid sequence, translated using biopython
     """
     return translate(nt_seq)
+
+
+def get_j_exception_residues(species):
+    """
+    :param species: HUMAN or MOUSE
+    :return: dict of J genes which have a non-canonical (non-phenylalanine) CDR3 terminal residue, and a list of
+             J genes whose terminal residue is low confidence (i.e. unable to find a clear FGXG-like motif at all)
+
+    NB: Expects a file in the Data/[HUMAN/MOUSE]/ directory called 'J-residue-exceptions.csv'
+    That file should contain a header 'J gene,Residue,Low confidence?' followed by the relevant data in order, all caps
+    """
+
+    j_file = data_dir + species + '/J-residue-exceptions.csv'
+
+    residues = coll.defaultdict()
+    low_confidence = []
+
+    with open(j_file, 'rU') as in_file:
+
+        line_count = 0
+        for line in in_file:
+            bits = line.rstrip().split(',')
+            if line_count != 0:
+                residues[bits[0]] = bits[1]
+                if bits[2] == 'Y':
+                    low_confidence.append(bits[0])
+            line_count += 1
+
+    return residues, low_confidence

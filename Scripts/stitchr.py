@@ -15,7 +15,7 @@ import argparse
 import sys
 
 
-__version__ = '0.2.0'
+__version__ = '0.2.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -109,15 +109,21 @@ if __name__ == '__main__':
             print "Cannot find TCR sequence data for", r, "gene:", gene + '*' + allele + ". Aborting run"
             sys.exit()
 
-    # Quick sanity check for tryptophan-ending CDR3s only using the correct J genes
-    # TODO NB this would require correction or deletion for other species/loci
-    if input_args['cdr3'][-1] == 'W' and j_used not in ['TRAJ33*01', 'TRAJ38*01', 'TRAJ55*01']:
-        print "Error: CDR3 provided ends with tryptophan but J gene selected uses the standard phenylalanine"
-        print "\tDeletion up to conserved F/W is not plausible in human TCRs, thus this combination is flawed"
-        sys.exit()
-    elif input_args['cdr3'][-1] == 'F' and j_used in ['TRAJ33*01', 'TRAJ38*01', 'TRAJ55*01']:
-        print "Error: CDR3 provided ends with the standard phenylalanine but J gene selected uses the rare tryptophan"
-        print "\tDeletion up to conserved F/W is not plausible in human TCRs, thus this combination is flawed"
+    # Get information about the C-terminal residue of the CDR3 *should* be, given that J gene
+    j_residue_exceptions, low_confidence_js = fxn.get_j_exception_residues(input_args['species'])
+
+    # Throw a warning if the J gene is one in which the C-terminal residue cannot be confidently identified
+    if j_used in low_confidence_js:
+        print "Warning:", j_used, "has a \'low confidence\' CDR3-ending motif"
+
+    # TODO allow users to force ignore the J CDR3 terminal residue check?
+    # Then check the C-terminus of the CDR3 has an appropriate residue (putting the default F in the dict if not there)
+    if j_used not in j_residue_exceptions:
+        j_residue_exceptions[j_used] = 'F'
+
+    if input_args['cdr3'][-1] != j_residue_exceptions[j_used]:
+        print "Error: CDR3 provided does not end with the expected residue for this J gene (" + \
+              j_residue_exceptions[j_used] + ")\nDeletion this far in to the J is extremely unlikely. Aborting."
         sys.exit()
 
     # Get the germline encoded bits
