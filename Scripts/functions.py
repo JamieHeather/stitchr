@@ -16,11 +16,11 @@ import warnings
 from Bio import BiopythonWarning
 warnings.simplefilter('ignore', BiopythonWarning)
 
-__version__ = '0.2.1'
+__version__ = '0.2.2'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
-data_dir = '../Data/'
+data_dir = os.path.normpath('../Data/')
 
 
 def check_scripts_dir():
@@ -28,7 +28,7 @@ def check_scripts_dir():
     Check we're in the right directory (Scripts)
     """
 
-    if not os.getcwd().endswith('/Scripts'):
+    if not os.getcwd().endswith('Scripts'):
         if 'Scripts' in os.listdir(os.getcwd()):
             os.chdir('Scripts')
         else:
@@ -190,7 +190,7 @@ def get_imgt_data(tcr_chain, gene_types, species):
         print "Error: incorrect chain detected, cannot get IMGT data"
         sys.exit()
 
-    in_file_path = data_dir + species + '/' + tcr_chain + '.fasta'
+    in_file_path = os.path.join(data_dir,  species, tcr_chain + '.fasta')
     if not os.path.isfile(in_file_path):
         print "Error:", tcr_chain + '.fasta not detected in the Data directory. Please run split-imgt-data.py first.'
         sys.exit()
@@ -314,7 +314,7 @@ def determine_j_interface(cdr3aa, c_term_nuc, c_term_amino):
     for c in reversed(range(1, len(cdr3aa))):
         c_term_cdr3_chunk = cdr3aa[-c:]
         if c_term_cdr3_chunk in c_term_amino:
-            # TODO do we need a findall situation here? I think we do
+            # TODO might benefit from a findall here
 
             # Check the putative found remnant of the J gene actually falls within the sequence contributed by the J
             # TODO NB other species/loci may have J genes longer than 22, so this value may require changing
@@ -347,7 +347,7 @@ def get_optimal_codons(specified_cu_file, species):
     if specified_cu_file:
         path_to_cu_file = specified_cu_file
     else:
-        path_to_cu_file = data_dir + species + '/kazusa.txt'
+        path_to_cu_file = os.path.join(data_dir, species, 'kazusa.txt')
 
     codon_usage = coll.defaultdict(nest_counter)
     with open(path_to_cu_file) as in_file:
@@ -391,7 +391,7 @@ def get_j_exception_residues(species):
     That file should contain a header 'J gene,Residue,Low confidence?' followed by the relevant data in order, all caps
     """
 
-    j_file = data_dir + species + '/J-residue-exceptions.csv'
+    j_file = os.path.join(data_dir, species, 'J-residue-exceptions.csv')
 
     residues = coll.defaultdict()
     low_confidence = []
