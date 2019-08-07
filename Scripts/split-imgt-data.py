@@ -15,28 +15,34 @@ Data acquired by:
     * J-REGION
     * EX1+EX2+EX3+EX4
 
+Note that EX1+EX2+EX3+EX4 annotations may not exist for all constant regions in all species.
+Instead an entry can be manually produced by combining the individual entries (EX1, EX2, EX3, and EX4).
+This is what was done for the Mus musculus TRBC genes.
 """
 
 import functions as fxn
 import os
 import sys
 
-__version__ = '0.1.0'
+__version__ = '0.2.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
+for species in ['HUMAN', 'MOUSE']:
 
-all_files = os.listdir(fxn.imgt_data_dir)
-if 'imgt-data.fasta' not in all_files:
-    print "Error: imgt-data.fasta file not detected. Please generate and place in the Data directory."
-    sys.exit()
+    species_dir = fxn.data_dir + species + '/'
+    all_files = os.listdir(species_dir)
+    if 'imgt-data.fasta' not in all_files:
+        print "Error: imgt-data.fasta file not detected for\'", species + \
+                "'. Please generate and place it in the appropriate Data subdirectory."
+        sys.exit()
 
-with open(fxn.imgt_data_dir + 'imgt-data.fasta', 'rU') as in_file, \
-        open(fxn.imgt_data_dir + 'TRA.fasta', 'w') as TRA, \
-        open(fxn.imgt_data_dir + 'TRB.fasta', 'w') as TRB:
-    for fasta_id, seq, blank in fxn.read_fa(in_file):
-        bits = fasta_id.split('|')
-        if 'TRA' in bits[1]:
-            TRA.write(fxn.fastafy(fasta_id, seq))
-        elif 'TRB' in bits[1]:
-            TRB.write(fxn.fastafy(fasta_id, seq))
+    with open(species_dir + 'imgt-data.fasta', 'rU') as in_file, \
+            open(species_dir + 'TRA.fasta', 'w') as TRA, \
+            open(species_dir + 'TRB.fasta', 'w') as TRB:
+        for fasta_id, seq, blank in fxn.read_fa(in_file):
+            bits = fasta_id.split('|')
+            if 'TRA' in bits[1]:
+                TRA.write(fxn.fastafy(fasta_id, seq))
+            elif 'TRB' in bits[1]:
+                TRB.write(fxn.fastafy(fasta_id, seq))

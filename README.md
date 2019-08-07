@@ -1,4 +1,4 @@
-#stiTChR 0.2.0
+#stiTChR 0.2.2
 
 ### Stitch together TCR coding nucleotide sequences from V/J/CDR3 information
 
@@ -52,6 +52,7 @@ All required files are included in the repo. If you want to change or update the
 
 * `-h` - see a help menu, containing all the command line options
 * `-c` - specify a particular constant region gene (in the case of TRBC) or allele
+* `-s` - specify a species: 'human' or 'mouse' are the only valid options currently, with human as default 
 * `-aa` - provide an incomplete amino acid sequence (spanning at least the CDR3, with some padding on either side), to assess the accuracy of the stitched TCR sequence. Must be a single string, unbroken by spaces or linebreaks
 * `-cu` - use an alternative codon usage file, from which to generate the sequences for the non-templated residues (see below)
 * `-l` - use a different leader region to that present with the given V  
@@ -61,7 +62,7 @@ All required files are included in the repo. If you want to change or update the
 
 Non-templated based are assigned by taking the most common nucleotide triplot for a given amino acid, in a provided codon usage file.
 
-The default codon usage file (Data/kuzusa-human.txt) is taken straight from the default [Kuzusa human entry](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9606) (Homo sapiens [gbpri]: 93487). Alternative files can be provided, but must be in the same format (e.g. those provided by [HIVE](https://hive.biochemistry.gwu.edu/dna.cgi?cmd=refseq_processor&id=569942)). U/T can be used interchangeably, as all U will be replaced with T anyway.
+The default codon usage files are taken straight from the default Kazusa [human](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9606) (Homo sapiens [gbpri]: 93487) and [mouse](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=10090) (Mus musculus [gbrod]: 53036) entries. Alternative files can be provided, but must be in the same format (e.g. those provided by [HIVE](https://hive.biochemistry.gwu.edu/dna.cgi?cmd=refseq_processor&id=569942)). U/T can be used interchangeably, as all U will be replaced with T anyway.
 
 #### Providing a partial amino acid sequence
 
@@ -159,4 +160,19 @@ LSENDEWTQDRAKPVTQIVSAEAWGRADCGFTSESYQQGVLSATILYEILLGKATLYAVL
 VSALVLMAMVKRKDSRG
 ```
 
-This produces even more mismatches - so the constant region used in the crystal has presumably been altered for expression/crystallization purposes (or derived from a donor with TRBC SNPs). 
+This produces even more mismatches - so the constant region used in the crystal has presumably been altered for expression/crystallization purposes.
+
+#### A mouse example
+
+StiTChR also now supports murine TCRs, however it should be noted that due to poorer quality annotations in IMGT the sequences produced should be treated with even more caution than used for human data.
+
+Here's an example of how to run stiTChR on everyone's favourite mouse TCR, OT-I (with the actual sequence inferred from [this plasmid on AddGene](https://www.addgene.org/52111/):
+
+```bash
+python stitchr.py -s mouse -v TRBV12-1 -j TRBJ2-7 -cdr3 CASSRANYEQYF
+python stitchr.py -s mouse -v TRAV14-1 -j TRAJ33 -cdr3 CAASDNYQLIW 
+```
+
+#### A note on CDR3 C-terminal residues
+
+StiTChR assumes that the J gene will not undergo deletion past the C-terminal residue of the CDR3 (which occurs approximately in the middle of the J). Thus the code looks for the appropriate residue at the end of the CDR3, which in the majority of cases will be a phenylalanine (F). However in some cases it might be something else, like a W (not uncommon in human TRAJ/mice genes) or even something more exotic like a C, L or J (which occur in certain mouse J genes). Note that most of these non-F/W residues are found in J genes with a predicted ['ORF' IMGT status](http://www.imgt.org/IMGTScientificChart/SequenceDescription/IMGTfunctionality.html), and thus might not contribute to functioning TCRs, but stiTChR will still let you generate a plausible sequence using them.
