@@ -15,9 +15,11 @@ import argparse
 import sys
 
 
-__version__ = '0.2.1'
+__version__ = '0.2.2'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
+
+sys.tracebacklimit = 0
 
 
 def args():
@@ -87,8 +89,7 @@ if __name__ == '__main__':
 
         # Check this gene exists
         if gene not in imgt_dat[regions[r]]:
-            print gene, "is not found in the IMGT data for this species. Please check your gene name."
-            sys.exit()
+            raise ValueError(gene + " is not found in the IMGT data for this species. Please check your gene name.")
 
         # And if it does, check whether or not the listed allele has a present value
         if allele not in imgt_dat[regions[r]][gene]:
@@ -106,8 +107,8 @@ if __name__ == '__main__':
             vars()[r + '_used'] = gene + '*' + allele
 
         else:
-            print "Cannot find TCR sequence data for", r, "gene:", gene + '*' + allele + ". Aborting run"
-            sys.exit()
+            raise ValueError("Cannot find TCR sequence data for " + r + " gene: " + gene + '*' + allele +
+                             ". Aborting run")
 
     # Get information about the C-terminal residue of the CDR3 *should* be, given that J gene
     j_residue_exceptions, low_confidence_js = fxn.get_j_exception_residues(input_args['species'])
@@ -122,9 +123,8 @@ if __name__ == '__main__':
         j_residue_exceptions[j_used] = 'F'
 
     if input_args['cdr3'][-1] != j_residue_exceptions[j_used]:
-        print "Error: CDR3 provided does not end with the expected residue for this J gene (" + \
-              j_residue_exceptions[j_used] + ")\nDeletion this far in to the J is extremely unlikely. Aborting."
-        sys.exit()
+        raise ValueError("CDR3 provided does not end with the expected residue for this J gene (" +
+        j_residue_exceptions[j_used] + ")\nDeletion this far in to the J is extremely unlikely. Aborting.")
 
     # Get the germline encoded bits
     n_term_nt, n_term_aa = fxn.tidy_n_term(done['l'] + done['v'])
@@ -159,3 +159,7 @@ if __name__ == '__main__':
                 break
             for y in [x[i:i+60] for x in format_alignment(*alignments[0]).split('\n')[:3]]:
                 print y
+
+    # TODO incorporate table input/output? With options for 2A/stop/kozak
+    # TODO add 'strain' option for mice? Could allow automatic allele selection
+    # TODO incorporate a DCR like amino acid check? Could input partial protein sequence, infer genes/CDR3, then get nt

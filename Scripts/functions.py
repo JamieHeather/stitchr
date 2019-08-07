@@ -20,6 +20,7 @@ __version__ = '0.2.2'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
+sys.tracebacklimit = 0
 data_dir = os.path.normpath('../Data/')
 
 
@@ -32,8 +33,7 @@ def check_scripts_dir():
         if 'Scripts' in os.listdir(os.getcwd()):
             os.chdir('Scripts')
         else:
-            print "Check your current working directory - this is designed to be run from root or Scripts folders"
-            sys.exit()
+            raise Exception("Check your current working directory: this is designed to be run from /Scripts")
 
 
 def read_fa(ff):
@@ -63,8 +63,7 @@ def read_fa(ff):
             if not last:
                 break
         else:
-            print "Input file does not appear to be a FASTA file - please check and try again"
-            sys.exit()
+            raise IOError("Input file does not appear to be a FASTA file - please check and try again")
 
 
 def fastafy(gene, seq_line):
@@ -102,9 +101,8 @@ def get_chain(v, j):
     elif v.startswith('TRA') and j.startswith('TRA'):
         return 'TRA'
     else:
-        print "Error: please ensure you're providing full IMGT gene names (allele number optional),", \
-            "both from the same chain (alpha or beta). Should start \'TRA\' or \'TRB\'."
-        sys.exit()
+        raise ValueError("Please ensure you're providing full IMGT gene names (allele number optional), " +
+                         "both from the same chain (alpha or beta). Should start \'TRA\' or \'TRB\'.")
 
 
 def sort_input(cmd_line_args):
@@ -116,19 +114,17 @@ def sort_input(cmd_line_args):
 
     # Check the CDR3
     if len(tidied_args['cdr3']) < 8:
-        print "Error: CDR3 is too short (< 8 amino acids)"
-        sys.exit()
+        raise ValueError("CDR3 is too short (< 8 amino acids)")
 
     # Check the species is an appropriate one
     if tidied_args['species'] not in ['HUMAN', 'MOUSE']:
-        print "Error: Invalid species option given. Only acceptable defaults are \'human\' or \'mouse\'."
-        sys.exit()
+        raise ValueError("Invalid species option given. Only acceptable defaults are \'human\' or \'mouse\'.")
 
     # Get codon data, and use to check that there's no unexpected characters in the CDR3
     codons = get_optimal_codons(tidied_args['codon_usage'], tidied_args['species'])
     if len([x for x in list(set([x for x in tidied_args['cdr3']])) if x not in codons.keys()]) > 0:
-        print "Error: Unexpected character in CDR3 string. Please use only one-letter standard amino acid designations."
-        sys.exit()
+        raise ValueError("Unexpected character in CDR3 string. "
+                         "Please use only one-letter standard amino acid designations.")
 
     chain = get_chain(tidied_args['v'], tidied_args['j'])
     finished_args = autofill_input(tidied_args, chain)
@@ -187,13 +183,11 @@ def get_imgt_data(tcr_chain, gene_types, species):
 
     # Run some basic sanity/input file checks
     if tcr_chain not in ['TRA', 'TRB']:
-        print "Error: incorrect chain detected, cannot get IMGT data"
-        sys.exit()
+        raise ValueError("Incorrect chain detected, cannot get IMGT data")
 
     in_file_path = os.path.join(data_dir,  species, tcr_chain + '.fasta')
     if not os.path.isfile(in_file_path):
-        print "Error:", tcr_chain + '.fasta not detected in the Data directory. Please run split-imgt-data.py first.'
-        sys.exit()
+        raise IOError(tcr_chain + '.fasta not detected in the Data directory. Please run split-imgt-data.py first.')
 
     # Read in the data to a nested dict
     tcr_data = {}
@@ -217,10 +211,8 @@ def get_imgt_data(tcr_chain, gene_types, species):
 
     for gene_type in gene_types:
         if len(tcr_data[gene_type]) == 0:
-            print "Error reading in IMGT data: no entries for", gene_type
-            print "Please ensure all appropriate data is in the Data/imgt-data.fasta file," \
-                  + " and re-run split-imgt-data.py"
-            sys.exit()
+            raise Exception("No entries for " + gene_type + " in IMGT data.\n" 
+                "Please ensure all appropriate data is in the Data/imgt-data.fasta file, and re-run split-imgt-data.py")
 
     return tcr_data, functionality
 
@@ -257,8 +249,7 @@ def tidy_c_term(c_term_nt, chain, species):
     for f in range(4):
 
         if f == 3:
-            print "Error: could not find an in-frame constant region!"
-            sys.exit()
+            raise Exception("Error: could not find an in-frame constant region.")
 
         translated = translate_nt(c_term_nt[f:])
         if chain == 'TRA':
@@ -295,8 +286,7 @@ def determine_v_interface(cdr3aa, n_term_nuc, n_term_amino):
                 return n_term_nt_trimmed, cdr3_n_offset
 
     # Shouldn't be able to throw an error, as the presence of an N terminal cysteine should be established, but in case
-    print "Unable to locate N terminus of CDR3 in V gene correctly. Please ensure sequence plausibility."
-    sys.exit()
+    raise Exception("Unable to locate N terminus of CDR3 in V gene correctly. Please ensure sequence plausibility.")
 
 
 def determine_j_interface(cdr3aa, c_term_nuc, c_term_amino):
@@ -312,19 +302,18 @@ def determine_j_interface(cdr3aa, c_term_nuc, c_term_amino):
 
     # Determine germline J contribution - going for longest possible, starting with whole CDR3
     for c in reversed(range(1, len(cdr3aa))):
-        c_term_cdr3_chunk = cdr3aa[-c:]
-        if c_term_cdr3_chunk in c_term_amino:
-            # TODO might benefit from a findall here
 
+        c_term_cdr3_chunk = cdr3aa[-c:]
+
+        if c_term_cdr3_chunk in c_term_amino:
             # Check the putative found remnant of the J gene actually falls within the sequence contributed by the J
             # TODO NB other species/loci may have J genes longer than 22, so this value may require changing
             if c_term_amino.index(c_term_cdr3_chunk) > 22:
-                print "Error: no match for the C-terminal portion of the CDR3 within the provided J gene."
-                print "\tPlease double check CDR3 sequence and J gene name are correct before retrying."
-                sys.exit()
+                raise Exception("No match for the C-terminal portion of the CDR3 within the provided J gene.\n"
+                                "\tPlease double check CDR3 sequence and J gene name are correct before retrying.")
 
             # Otherwise carry on - warning the user if the match is short (which it likely shouldn't be for J genes)
-            cdr3_c_end = cdr3aa.index(c_term_cdr3_chunk)
+            cdr3_c_end = cdr3aa.rfind(c_term_cdr3_chunk)
             c_term_nt_trimmed = c_term_nuc[c_term_amino.index(c_term_cdr3_chunk) * 3:]
             if c < 5:
                 print "Warning: while a J match has been found, it was only the string \"" + c_term_cdr3_chunk + "\""
@@ -333,8 +322,7 @@ def determine_j_interface(cdr3aa, c_term_nuc, c_term_amino):
             return c_term_nt_trimmed, cdr3_c_end
 
     # Shouldn't be able to get here to throw an error, but just in case
-    print "Unable to locate C terminus of CDR3 in J gene correctly. Please ensure sequence plausibility."
-    sys.exit()
+    raise ValueError("Unable to locate C terminus of CDR3 in J gene correctly. Please ensure sequence plausibility.")
 
 
 def get_optimal_codons(specified_cu_file, species):
@@ -354,8 +342,7 @@ def get_optimal_codons(specified_cu_file, species):
         for line in in_file:
             cleaned = [x for x in re.sub(r'\(.+?\)', '', line.rstrip()).upper().replace('U', 'T').split(' ') if x]
             if len(cleaned) % 2 != 0:
-                print "Error in codon usage file - unexpected format."
-                sys.exit()
+                raise ValueError("Error in codon usage file - unexpected format.")
             if len(cleaned) == 0:
                 continue
             for pair in [x for x in range(len(cleaned)) if x % 2 == 0]:

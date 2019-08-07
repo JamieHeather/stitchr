@@ -1,4 +1,4 @@
-#stiTChR 0.2.1
+#stiTChR 0.2.2
 
 ### Stitch together TCR coding nucleotide sequences from V/J/CDR3 information
 
@@ -160,7 +160,7 @@ LSENDEWTQDRAKPVTQIVSAEAWGRADCGFTSESYQQGVLSATILYEILLGKATLYAVL
 VSALVLMAMVKRKDSRG
 ```
 
-This produces even more mismatches - so the constant region used in the crystal has presumably been altered for expression/crystallization purposes (or derived from a donor with TRBC SNPs).
+This produces even more mismatches - so the constant region used in the crystal has presumably been altered for expression/crystallization purposes.
 
 #### A mouse example
 
