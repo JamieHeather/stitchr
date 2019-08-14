@@ -1,4 +1,4 @@
-#stiTChR 0.2.2
+#stiTChR 0.3.0
 
 ### Stitch together TCR coding nucleotide sequences from V/J/CDR3 information
 
@@ -8,11 +8,11 @@
 
 Sometimes you need a TCR nucleotide sequence, but all you have is limited information. This script aims to generate *a*\* coding nucleotide sequence for a given rearrangement (e.g. for use when generating TCR expression vectors) in those situations.
 
-The script takes the known V/J/CDR3 information, and uses that to pull out the relevant germline TCR nucleotide sequences and stictch them together, using common human codons to fill in the non-templated regions.
+The script takes the known V/J/CDR3 information, and uses that to pull out the relevant germline TCR nucleotide sequences and stitch them together, using common human codons to fill in the non-templated regions.
 
 ### Installation and dependencies
 
-stiTChR is designed to be run on Python 2.7, and has primarily been tested on Python 2.7.15. 
+```stiTChR``` is designed to be run on Python 2.7, and has primarily been tested on Python 2.7.15. 
 
 Simply clone the repo to a desired location, navigate to the Scripts directory, then you can run the script via the command line as detailed below.
 
@@ -24,7 +24,7 @@ pip install biopython
 
 ## Usage 
 
-stiTChR uses relative paths. Please ensure you are in the Scripts directory to run the script. 
+```stiTChR``` uses relative paths. Please ensure you are in the Scripts directory to run the script. 
 
 ```bash
 python stitchr.py -v [IMGT V gene] -j [IMGT J gene] -cdr3 [CDR3aa]
@@ -48,6 +48,9 @@ By default the script will use the TRBC gene located in the same cluster as the 
 
 All required files are included in the repo. If you want to change or update the IMGT data files, you'll need to re-run `split-imgt-data.py`.
 
+```StiTChR``` can be run in a higher-throughput mode, using a tab-separated input file - see the instructions for [**```thimble```**](#Thimble) below.
+
+
 ### Optional arguments
 
 * `-h` - see a help menu, containing all the command line options
@@ -60,13 +63,13 @@ All required files are included in the repo. If you want to change or update the
 
 #### Codon usage files
 
-Non-templated based are assigned by taking the most common nucleotide triplot for a given amino acid, in a provided codon usage file.
+Non-templated based are assigned by taking the most common nucleotide triplet for a given amino acid, in a provided codon usage file.
 
 The default codon usage files are taken straight from the default Kazusa [human](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9606) (Homo sapiens [gbpri]: 93487) and [mouse](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=10090) (Mus musculus [gbrod]: 53036) entries. Alternative files can be provided, but must be in the same format (e.g. those provided by [HIVE](https://hive.biochemistry.gwu.edu/dna.cgi?cmd=refseq_processor&id=569942)). U/T can be used interchangeably, as all U will be replaced with T anyway.
 
 #### Providing a partial amino acid sequence
 
-If you provide a partial amino acid sequence stiTChR will perform a rudimentary pairwise alignment, just to give a quick visual assessment of the quality of the sequence generation.
+If you provide a partial amino acid sequence ```stiTChR``` will perform a rudimentary pairwise alignment, just to give a quick visual assessment of the quality of the sequence generation.
 
 #### A fancier example
 
@@ -164,9 +167,9 @@ This produces even more mismatches - so the constant region used in the crystal 
 
 #### A mouse example
 
-StiTChR also now supports murine TCRs, however it should be noted that due to poorer quality annotations in IMGT the sequences produced should be treated with even more caution than used for human data.
+```StiTChR``` also now supports murine TCRs, however it should be noted that due to poorer quality annotations in IMGT the sequences produced should be treated with even more caution than used for human data.
 
-Here's an example of how to run stiTChR on everyone's favourite mouse TCR, OT-I (with the actual sequence inferred from [this plasmid on AddGene](https://www.addgene.org/52111/):
+Here's an example of how to run ```stiTChR``` on everyone's favourite mouse TCR, OT-I (with the actual sequence inferred from [this plasmid on AddGene](https://www.addgene.org/52111/):
 
 ```bash
 python stitchr.py -s mouse -v TRBV12-1 -j TRBJ2-7 -cdr3 CASSRANYEQYF
@@ -175,4 +178,31 @@ python stitchr.py -s mouse -v TRAV14-1 -j TRAJ33 -cdr3 CAASDNYQLIW
 
 #### A note on CDR3 C-terminal residues
 
-StiTChR assumes that the J gene will not undergo deletion past the C-terminal residue of the CDR3 (which occurs approximately in the middle of the J). Thus the code looks for the appropriate residue at the end of the CDR3, which in the majority of cases will be a phenylalanine (F). However in some cases it might be something else, like a W (not uncommon in human TRAJ/mice genes) or even something more exotic like a C, L or J (which occur in certain mouse J genes). Note that most of these non-F/W residues are found in J genes with a predicted ['ORF' IMGT status](http://www.imgt.org/IMGTScientificChart/SequenceDescription/IMGTfunctionality.html), and thus might not contribute to functioning TCRs, but stiTChR will still let you generate a plausible sequence using them.
+```StiTChR``` assumes that the J gene will not undergo deletion past the C-terminal residue of the CDR3 (which occurs approximately in the middle of the J). Thus the code looks for the appropriate residue at the end of the CDR3, which in the majority of cases will be a phenylalanine (F). However in some cases it might be something else, like a W (not uncommon in human TRAJ/mice genes) or even something more exotic like a C, L or J (which occur in certain mouse J genes). Note that most of these non-F/W residues are found in J genes with a predicted ['ORF' IMGT status](http://www.imgt.org/IMGTScientificChart/SequenceDescription/IMGTfunctionality.html), and thus might not contribute to functioning TCRs, but stiTChR will still let you generate a plausible sequence using them.
+
+# Thimble  0.1.0
+
+### Run stiTChR high-throughput on multiple and paired TCRs
+
+Instead of running ```stiTChR``` on rearrangements one by one, you can fill out the necessary details into a tab separated file (.tsv) and submit it to ```thimble```.
+
+The format of the input data is specified in the file 'bulk_input_template.tsv', located in the root directory, with some examples shown in 'bulk_input_example.tsv'. All of the recombination-specific fields that can ordinarily be specified at the command line in ```stiTChR``` can be applied per row using ```thimble```, with the exception of species which must be kept the same for all TCRs in a given run.
+
+Note that the input to ```thimble``` can also be used to generate rearrangements for both the alpha and beta chain of a given clonotype on one row, with additional options to link those sequences together. A number of x2A potential linkers are provided (in the Data/linkers.tsv file). If custom linkers are desired, you can either edit that linkers file or just enter the nucleotide sequence of the desired linker into the Linker column of the input tsv.
+
+Any warnings and errors generated on a per-TCR basis are recorded in the final output file; it is recommended that users check this information, to ensure they understand the limitations of a specific sequence.  
+
+## Usage 
+
+```bash
+python thimble.py -in [input tsv] -o [output tsv] 
+
+python thimble.py -in ../bulk_input_example.tsv -o testing 
+```
+
+### Optional arguments
+
+* `-h` - see a help menu, containing all the command line options
+* `-s` - specify a species: 'human' or 'mouse' are the only valid options currently, with human as default 
+* `-cu` - use an alternative codon usage file, from which to generate the sequences for the non-templated residues (see below)
+

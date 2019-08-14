@@ -1,4 +1,4 @@
-# Ignore everything except Python scripts, markdown files, fasta files, text files
+# Ignore everything except Python scripts, markdown files, fasta files, text files, specific example files
 *
 !*/
 !*.py
@@ -6,3 +6,6 @@
 !*.md
 !*.txt
 !*.csv
+!bulk_input_example.tsv
+!bulk_input_template.tsv
+!Data/linkers.tsv
