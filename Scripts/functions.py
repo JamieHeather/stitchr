@@ -12,11 +12,11 @@ import os
 import re
 import sys
 from Bio.Seq import translate
-import warnings
 from Bio import BiopythonWarning
+import warnings
 warnings.simplefilter('ignore', BiopythonWarning)
 
-__version__ = '0.2.2'
+__version__ = '0.3.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -286,7 +286,7 @@ def determine_v_interface(cdr3aa, n_term_nuc, n_term_amino):
                 return n_term_nt_trimmed, cdr3_n_offset
 
     # Shouldn't be able to throw an error, as the presence of an N terminal cysteine should be established, but in case
-    raise Exception("Unable to locate N terminus of CDR3 in V gene correctly. Please ensure sequence plausibility.")
+    raise Exception("Unable to locate N terminus of CDR3 in V gene correctly. Please ensure sequence plausibility. ")
 
 
 def determine_j_interface(cdr3aa, c_term_nuc, c_term_amino):
@@ -309,20 +309,23 @@ def determine_j_interface(cdr3aa, c_term_nuc, c_term_amino):
             # Check the putative found remnant of the J gene actually falls within the sequence contributed by the J
             # TODO NB other species/loci may have J genes longer than 22, so this value may require changing
             if c_term_amino.index(c_term_cdr3_chunk) > 22:
-                raise Exception("No match for the C-terminal portion of the CDR3 within the provided J gene.\n"
-                                "\tPlease double check CDR3 sequence and J gene name are correct before retrying.")
+                raise Exception("No match for the C-terminal portion of the CDR3 within the provided J gene. "
+                                "Please double check CDR3 sequence and J gene name are correct before retrying. ")
 
             # Otherwise carry on - warning the user if the match is short (which it likely shouldn't be for J genes)
             cdr3_c_end = cdr3aa.rfind(c_term_cdr3_chunk)
             c_term_nt_trimmed = c_term_nuc[c_term_amino.index(c_term_cdr3_chunk) * 3:]
             if c < 5:
-                print "Warning: while a J match has been found, it was only the string \"" + c_term_cdr3_chunk + "\""
-                print "\tWhile this could be correct, most CDR3s retain longer J gene segments than this."
-                print "\tYou may wish to manually verify that the correct C-terminal CDR3 terminus has been found."
+                warnings.warn("Warning:  while a J match has been found, it was only the string \"" +
+                              c_term_cdr3_chunk + "\". Most CDR3s retain longer J regions than this. ")
+                # TODO rm
+                # print "Warning: while a J match has been found, it was only the string \"" + c_term_cdr3_chunk + "\""
+                # print "\tWhile this could be correct, most CDR3s retain longer J gene segments than this."
+                # print "\tYou may wish to manually verify that the correct C-terminal CDR3 terminus has been found."
             return c_term_nt_trimmed, cdr3_c_end
 
     # Shouldn't be able to get here to throw an error, but just in case
-    raise ValueError("Unable to locate C terminus of CDR3 in J gene correctly. Please ensure sequence plausibility.")
+    raise ValueError("Unable to locate C terminus of CDR3 in J gene correctly. Please ensure sequence plausibility. ")
 
 
 def get_optimal_codons(specified_cu_file, species):
@@ -351,7 +354,7 @@ def get_optimal_codons(specified_cu_file, species):
                 codon_usage[translate_nt(codon)][codon] = float(val)
 
     if len(codon_usage) < 20:
-        print "Warning: incomplete codon usage file input - back translation may fail!"
+        warnings.warn("Warning: incomplete codon usage file input - back translation may fail! ")
 
     out_dict = coll.defaultdict()
     for residue in codon_usage:
@@ -365,6 +368,7 @@ def translate_nt(nt_seq):
     :param nt_seq: DNA sequence to translate
     :return: amino acid sequence, translated using biopython
     """
+
     return translate(nt_seq)
 
 
@@ -395,3 +399,71 @@ def get_j_exception_residues(species):
             line_count += 1
 
     return residues, low_confidence
+
+
+def rev_translate(amino_acid_seq, codon_usage_dict):
+    """
+    :param amino_acid_seq: An amino acid to convert into nucleotide sequence, using the most common codon
+    :param codon_usage_dict: Dict of which codons to use for which amino acids (see get_optimal_codons)
+    :return: Corresponding nucleotide sequence
+    """
+
+    return ''.join([codon_usage_dict[x] for x in amino_acid_seq])
+
+
+def get_linker_dict():
+    """
+    :return: Dictionary of linkers contained in the Data/linkers.tsv file
+    """
+
+    linker_file_path = '../Data/linkers.tsv'
+    if not os.path.isfile(linker_file_path):
+        raise IOError(linker_file_path + " not detected - please check linker file is present and run again. ")
+
+    else:
+        linkers = coll.defaultdict()
+        with open(linker_file_path, 'rU') as in_file:
+            for line in in_file:
+                bits = line.rstrip().split('\t')
+                linkers[bits[0]] = bits[1]
+
+        return linkers
+
+
+def get_linker_seq(linker_text, linker_dict):
+    """
+    :param linker_text: The text from the Linker field of the input tsv file for bulk stitching (name or custom)
+    :param linker_dict: Dict of the known provided linker sequences (from Data/linkers.tsv)
+    :return: the corresponding linker sequence, or throw a warning if appropriate
+    """
+
+    if linker_text in linker_dict:
+        return linker_dict[linker_text]
+
+    # Allows users to input their own custom DNA sequences
+    elif dna_check(linker_text):
+        if len(linker_text) % 3 != 0:
+            warnings.warn("Warning: length of linker sequence \'" + linker_text + "\' is not divisible by 3; "
+                  "if this was supposed to be a skip sequence the downstream gene will not be in frame. ")
+
+        return linker_text
+
+    else:
+        raise ValueError("Error: " + linker_text +
+                         " is not a recognised pre-coded linker sequence and does not seem to be DNA. ")
+
+
+def dna_check(possible_dna):
+    """
+    :param possible_dna: A sequence that may or may not be a plausible DNA (translatable!) sequence
+    :return: True/False
+    """
+
+    return set(possible_dna.upper()).issubset({'A', 'C', 'G', 'T', 'N'})
+
+
+def tweak_thimble_input(stitch_dict, cmd_args):
+    # TODO details
+    stitch_dict['species'] = cmd_args['species'].upper()
+    stitch_dict['name'] = ''
+    return stitch_dict
