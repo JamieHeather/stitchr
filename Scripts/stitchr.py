@@ -15,7 +15,7 @@ import argparse
 import warnings
 import sys
 
-__version__ = '0.4.0'
+__version__ = '0.4.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -164,11 +164,11 @@ if __name__ == '__main__':
     imgt_dat, tcr_functionality = fxn.get_imgt_data(chain, gene_types, input_args['species'])
 
     out_list, stitched = stitch(input_args, chain, imgt_dat, tcr_functionality, codons)
-    out_str = '-'.join(out_list)
+    out_str = '|'.join(out_list) + '(L)'
 
     print('----------------------------------------------------------------------------------------------')
-    print(fxn.fastafy('nt-' + out_str, stitched))
-    print(fxn.fastafy('aa-' + out_str, fxn.translate_nt(stitched)))
+    print(fxn.fastafy('nt' + out_str, stitched))
+    print(fxn.fastafy('aa' + out_str, fxn.translate_nt(stitched)))
 
     # If a known/partial amino acid sequence provided, ensure they match up with a quick printed alignment
     if 'aa' in input_args:
