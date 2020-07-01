@@ -12,7 +12,7 @@ The script takes the known V/J/CDR3 information, and uses that to pull out the r
 
 ### Installation and dependencies
 
-As of version 0.4 ```stiTChR``` is designed to be run on Python 3.8, and has primarily been tested on Python 3.8.3. 
+As of version 0.4 ```stiTChR``` is designed to be run on Python 3.8, and has primarily been tested on Python 3.7.7 and 3.8.3. 
 
 Simply clone the repo to a desired location, navigate to the Scripts directory, then you can run the script via the command line as detailed below.
 

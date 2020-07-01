@@ -167,8 +167,8 @@ if __name__ == '__main__':
     out_str = '|'.join(out_list) + '(L)'
 
     print('----------------------------------------------------------------------------------------------')
-    print(fxn.fastafy('nt' + out_str, stitched))
-    print(fxn.fastafy('aa' + out_str, fxn.translate_nt(stitched)))
+    print(fxn.fastafy('nt|' + out_str, stitched))
+    print(fxn.fastafy('aa|' + out_str, fxn.translate_nt(stitched)))
 
     # If a known/partial amino acid sequence provided, ensure they match up with a quick printed alignment
     if 'aa' in input_args:
