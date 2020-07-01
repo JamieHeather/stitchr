@@ -258,6 +258,7 @@ def tidy_c_term(c_term_nt, chain, species):
                 c_term_nt = c_term_nt[:stop_index_aa * 3]
                 translated = translate_nt(c_term_nt[f:])
                 break
+            # TODO fix! This is chopping off the terminal 2 nt, meaning the last 'S' is lost (but oddly not in the AA seq?!)
 
         elif chain == 'TRB':
             if c_aa[species]['trbc1'] in translated or c_aa[species]['trbc2'] in translated:

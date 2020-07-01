@@ -119,7 +119,7 @@ def stitch(specific_args, locus, tcr_info, functionality, codon_dict):
 
     # Throw a warning if the J gene is one in which the C-terminal residue cannot be confidently identified
     if used_alleles['j'] in low_confidence_js:
-        warnings.warn("Warning: " + j_used + " has a \'low confidence\' CDR3-ending motif. ")
+        warnings.warn("Warning: " + used_alleles['j'] + " has a \'low confidence\' CDR3-ending motif. ")
 
     # TODO allow users to force ignore the J CDR3 terminal residue check?
     # Then check the C-terminus of the CDR3 has an appropriate residue (putting the default F in the dict if not there)

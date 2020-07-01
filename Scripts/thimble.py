@@ -92,7 +92,7 @@ if __name__ == '__main__':
 
         for line in in_file:
 
-            bits = line.replace('\n', '').split('\t')
+            bits = line.replace('\n', '').replace('\"', '').split('\t')
 
             # Check there's the right number of columns (with the right headers)
             if line_count == 0:
