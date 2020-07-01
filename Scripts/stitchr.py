@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 """
@@ -15,7 +15,7 @@ import argparse
 import warnings
 import sys
 
-__version__ = '0.3.0'
+__version__ = '0.4.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -152,7 +152,7 @@ def stitch(specific_args, locus, tcr_info, functionality, codon_dict):
 
 
 regions = {'v': 'V-REGION', 'j': 'J-REGION', 'c': 'EX1+EX2+EX3+EX4', 'l': 'L-PART1+L-PART2'}
-gene_types = regions.values()
+gene_types = list(regions.values())
 
 
 if __name__ == '__main__':
@@ -166,9 +166,9 @@ if __name__ == '__main__':
     out_list, stitched = stitch(input_args, chain, imgt_dat, tcr_functionality, codons)
     out_str = '-'.join(out_list)
 
-    print '----------------------------------------------------------------------------------------------'
-    print fxn.fastafy('nt-' + out_str, stitched)
-    print fxn.fastafy('aa-' + out_str, fxn.translate_nt(stitched))
+    print('----------------------------------------------------------------------------------------------')
+    print(fxn.fastafy('nt-' + out_str, stitched))
+    print(fxn.fastafy('aa-' + out_str, fxn.translate_nt(stitched)))
 
     # If a known/partial amino acid sequence provided, ensure they match up with a quick printed alignment
     if 'aa' in input_args:
@@ -176,11 +176,11 @@ if __name__ == '__main__':
         from Bio.pairwise2 import format_alignment
         alignments = pairwise2.align.globalxx(input_args['aa'], fxn.translate_nt(stitched))
         for i in range(0, 600, 60):
-            print '\n'
+            print('\n')
             if i > len(alignments[0][0]):
                 break
             for y in [x[i:i+60] for x in format_alignment(*alignments[0]).split('\n')[:3]]:
-                print y
+                print(y)
 
     # TODO add 'strain' option for mice? Could allow automatic allele selection
     # TODO incorporate a DCR like amino acid check? Could input partial protein sequence, infer genes/CDR3, then get nt

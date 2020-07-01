@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 """
@@ -16,7 +16,7 @@ from Bio import BiopythonWarning
 import warnings
 warnings.simplefilter('ignore', BiopythonWarning)
 
-__version__ = '0.3.0'
+__version__ = '0.4.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -122,7 +122,7 @@ def sort_input(cmd_line_args):
 
     # Get codon data, and use to check that there's no unexpected characters in the CDR3
     codons = get_optimal_codons(tidied_args['codon_usage'], tidied_args['species'])
-    if len([x for x in list(set([x for x in tidied_args['cdr3']])) if x not in codons.keys()]) > 0:
+    if len([x for x in list(set([x for x in tidied_args['cdr3']])) if x not in list(codons.keys())]) > 0:
         raise ValueError("Unexpected character in CDR3 string. "
                          "Please use only one-letter standard amino acid designations.")
 
@@ -276,7 +276,7 @@ def determine_v_interface(cdr3aa, n_term_nuc, n_term_amino):
     :return: appropriately trimmed n_term_nuc, plus the number of residues the CDR3's N term can be trimmed by
     """
 
-    for c in reversed(range(1, 5)):
+    for c in reversed(list(range(1, 5))):
         n_term_cdr3_chunk = cdr3aa[:c]
         for v in range(10):
             aa_l = len(n_term_amino)
@@ -302,7 +302,7 @@ def determine_j_interface(cdr3aa, c_term_nuc, c_term_amino):
     """
 
     # Determine germline J contribution - going for longest possible, starting with whole CDR3
-    for c in reversed(range(1, len(cdr3aa))):
+    for c in reversed(list(range(1, len(cdr3aa)))):
 
         c_term_cdr3_chunk = cdr3aa[-c:]
 

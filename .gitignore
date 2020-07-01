@@ -10,3 +10,5 @@
 !bulk_input_template.tsv
 !Data/linkers.tsv
 TODO.md
+venv
+venv*

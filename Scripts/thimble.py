@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 """
@@ -18,7 +18,7 @@ import argparse
 import sys
 import os
 
-__version__ = '0.1.0'
+__version__ = '0.2.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -136,7 +136,7 @@ if __name__ == '__main__':
                                                                    tcr_functionality[c], codons)
                                     sorted_row_bits[c + '_nt'] = stitched
                                     sorted_row_bits[c + '_aa'] = fxn.translate_nt(stitched)
-                                    sorted_row_bits.update(dict(zip([c + x for x in stitch_list_fields], out_list)))
+                                    sorted_row_bits.update(dict(list(zip([c + x for x in stitch_list_fields], out_list))))
 
                                 except Exception as message:
                                     sorted_row_bits['Warnings/Errors'] += '(' + c + ') ' + str(message)
