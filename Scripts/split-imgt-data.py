@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 """
@@ -24,7 +24,7 @@ import functions as fxn
 import os
 import sys
 
-__version__ = '0.2.0'
+__version__ = '0.3.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -33,8 +33,8 @@ for species in ['HUMAN', 'MOUSE']:
     species_dir = fxn.data_dir + species + '/'
     all_files = os.listdir(species_dir)
     if 'imgt-data.fasta' not in all_files:
-        print "Error: imgt-data.fasta file not detected for\'", species + \
-                "'. Please generate and place it in the appropriate Data subdirectory."
+        print("Error: imgt-data.fasta file not detected for\'", species + \
+                "'. Please generate and place it in the appropriate Data subdirectory.")
         sys.exit()
 
     with open(species_dir + 'imgt-data.fasta', 'rU') as in_file, \

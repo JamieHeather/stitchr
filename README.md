@@ -1,4 +1,4 @@
-#stiTChR 0.3.0
+#stiTChR 0.4.1
 
 ### Stitch together TCR coding nucleotide sequences from V/J/CDR3 information
 
@@ -12,26 +12,26 @@ The script takes the known V/J/CDR3 information, and uses that to pull out the r
 
 ### Installation and dependencies
 
-```stiTChR``` is designed to be run on Python 2.7, and has primarily been tested on Python 2.7.15. 
+As of version 0.4 ```stiTChR``` is designed to be run on Python 3.8, and has primarily been tested on Python 3.7.7 and 3.8.3. 
 
 Simply clone the repo to a desired location, navigate to the Scripts directory, then you can run the script via the command line as detailed below.
 
-The only non-default package used is Biopython, easily installed via `pip`:
+The only non-default package used is Biopython, which can be easily installed via `pip`:
 
 ```bash
-pip install biopython
+pip3 install biopython
 ```
 
-## Usage 
+## Example usage 
 
 ```stiTChR``` uses relative paths. Please ensure you are in the Scripts directory to run the script. 
 
 ```bash
-python stitchr.py -v [IMGT V gene] -j [IMGT J gene] -cdr3 [CDR3aa]
+python3 stitchr.py -v [IMGT V gene] -j [IMGT J gene] -cdr3 [CDR3aa]
 
-python stitchr.py -v TRBV7-3*01 -j TRBJ1-1*01 -cdr3 CASSYLQAQYTEAFF
+python3 stitchr.py -v TRBV7-3*01 -j TRBJ1-1*01 -cdr3 CASSYLQAQYTEAFF
 
-python stitchr.py -v TRAV1-2 -j TRAJ33 -cdr3 CAVLDSNYQLIW
+python3 stitchr.py -v TRAV1-2 -j TRAJ33 -cdr3 CAVLDSNYQLIW
 ```
 
 ### Usage notes
@@ -90,7 +90,7 @@ TRBV7-6 / TRBJ1-4 / CASSLAPGTTNEKLFF
 Then we can run the code like this:
 
 ```bash
-python stitchr.py -v TRBV7-6 -j TRBJ1-4 -cdr3 CASSLAPGTTNEKLFF -n C25 -aa MGAGVSQSPRYKVTKRGQDVALRCDPISGHVSLYWYRQALGQGPEFLTYFNYEAQQDKSGLPNDRFSAERPEGSISTLTIQRTEQRDSAMYRCASSLAPGTTNEKLFFGSGTQLSVLEDLNKVFPPEVAVFEPSEAEISHTQKATLVCLATGFYPDHVELSWWVNGKEVHSGVCTDPQPLKEQPALNDSRYALSSRLRVSATFWQNPRNHFRCQVQFYGLSENDEWTQDRAKPVTQIVSAEAWGRAD
+python3 stitchr.py -v TRBV7-6 -j TRBJ1-4 -cdr3 CASSLAPGTTNEKLFF -n C25 -aa MGAGVSQSPRYKVTKRGQDVALRCDPISGHVSLYWYRQALGQGPEFLTYFNYEAQQDKSGLPNDRFSAERPEGSISTLTIQRTEQRDSAMYRCASSLAPGTTNEKLFFGSGTQLSVLEDLNKVFPPEVAVFEPSEAEISHTQKATLVCLATGFYPDHVELSWWVNGKEVHSGVCTDPQPLKEQPALNDSRYALSSRLRVSATFWQNPRNHFRCQVQFYGLSENDEWTQDRAKPVTQIVSAEAWGRAD
 
 # Produces the following output
 
@@ -128,7 +128,7 @@ VSALVLMAMVKRKDF
 We can see that there's a few mismatches in the latter half of the stitched sequence, so perhaps this crystal actually used the other TRBC gene. We can swap that in:
 
 ```bash
-python stitchr.py -v TRBV7-6 -j TRBJ1-4 -cdr3 CASSLAPGTTNEKLFF -n C25 -c TRBC2 -aa MGAGVSQSPRYKVTKRGQDVALRCDPISGHVSLYWYRQALGQGPEFLTYFNYEAQQDKSGLPNDRFSAERPEGSISTLTIQRTEQRDSAMYRCASSLAPGTTNEKLFFGSGTQLSVLEDLNKVFPPEVAVFEPSEAEISHTQKATLVCLATGFYPDHVELSWWVNGKEVHSGVCTDPQPLKEQPALNDSRYALSSRLRVSATFWQNPRNHFRCQVQFYGLSENDEWTQDRAKPVTQIVSAEAWGRAD
+python3 stitchr.py -v TRBV7-6 -j TRBJ1-4 -cdr3 CASSLAPGTTNEKLFF -n C25 -c TRBC2 -aa MGAGVSQSPRYKVTKRGQDVALRCDPISGHVSLYWYRQALGQGPEFLTYFNYEAQQDKSGLPNDRFSAERPEGSISTLTIQRTEQRDSAMYRCASSLAPGTTNEKLFFGSGTQLSVLEDLNKVFPPEVAVFEPSEAEISHTQKATLVCLATGFYPDHVELSWWVNGKEVHSGVCTDPQPLKEQPALNDSRYALSSRLRVSATFWQNPRNHFRCQVQFYGLSENDEWTQDRAKPVTQIVSAEAWGRAD
 
 # Produces:
 
@@ -172,8 +172,8 @@ This produces even more mismatches - so the constant region used in the crystal 
 Here's an example of how to run ```stiTChR``` on everyone's favourite mouse TCR, OT-I (with the actual sequence inferred from [this plasmid on AddGene](https://www.addgene.org/52111/):
 
 ```bash
-python stitchr.py -s mouse -v TRBV12-1 -j TRBJ2-7 -cdr3 CASSRANYEQYF
-python stitchr.py -s mouse -v TRAV14-1 -j TRAJ33 -cdr3 CAASDNYQLIW 
+python3 stitchr.py -s mouse -v TRBV12-1 -j TRBJ2-7 -cdr3 CASSRANYEQYF
+python3 stitchr.py -s mouse -v TRAV14-1 -j TRAJ33 -cdr3 CAASDNYQLIW 
 ```
 
 #### A note on CDR3 C-terminal residues
@@ -192,12 +192,12 @@ Note that the input to ```thimble``` can also be used to generate rearrangements
 
 Any warnings and errors generated on a per-TCR basis are recorded in the final output file; it is recommended that users check this information, to ensure they understand the limitations of a specific sequence.  
 
-## Usage 
+## Example usage 
 
 ```bash
-python thimble.py -in [input tsv] -o [output tsv] 
+python3 thimble.py -in [input tsv] -o [output tsv] 
 
-python thimble.py -in ../bulk_input_example.tsv -o testing 
+python3 thimble.py -in ../bulk_input_example.tsv -o testing 
 ```
 
 ### Optional arguments
