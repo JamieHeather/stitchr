@@ -2,13 +2,13 @@
 
 ### Stitch together TCR coding nucleotide sequences from V/J/CDR3 information
 
-##### Jamie Heather | Cobbold lab @ MGH | 2018
+##### Jamie Heather | CCR @ MGH | 2020
 
 ### Summary
 
-Sometimes you need a TCR nucleotide sequence, but all you have is limited information. This script aims to generate *a*\* coding nucleotide sequence for a given rearrangement (e.g. for use when generating TCR expression vectors) in those situations.
+Sometimes you need a complete TCR nucleotide or amino acid sequence, but all you have is limited information. This script aims to generate *a*\* coding nucleotide sequence for a given rearrangement (e.g. for use when generating TCR expression vectors) in those situations.
 
-The script takes the known V/J/CDR3 information, and uses that to pull out the relevant germline TCR nucleotide sequences and stitch them together, using common human codons to fill in the non-templated regions.
+The script takes the known V/J/CDR3 information, and uses that to pull out the relevant germline TCR nucleotide sequences and stitch them together, using common codons to fill in the non-templated regions.
 
 ### Installation and dependencies
 
@@ -16,7 +16,7 @@ As of version 0.4 ```stiTChR``` is designed to be run on Python 3.8, and has pri
 
 Simply clone the repo to a desired location, navigate to the Scripts directory, then you can run the script via the command line as detailed below.
 
-The only non-default package used is Biopython, which can be easily installed via `pip`:
+The only non-default package used is Biopython, which can be installed via `pip`:
 
 ```bash
 pip3 install biopython
@@ -38,11 +38,19 @@ python3 stitchr.py -v TRAV1-2 -j TRAJ33 -cdr3 CAVLDSNYQLIW
 
 *This script will almost certainly not produce the original recombined sequences that encoded the original TCRs; it merely recreates an equivalent full length sequence that will encode the same amino acid sequences. It aims to produce a sequence as close to germline as possible - so all CDR3 residues that *can* be germline encoded are such, in this ouput. Non-templated residues in the CDR3 (or those templated by the D gene, which is treated as non-templated here) are chosen from known codon usage frequencies.
 
-This script currently only works on human alpha/beta TCR chains, but should be readily adapted to any other species/locus.
+This script currently only works on human and mouse alpha/beta TCR chains, but should be readily adapted to any other species/locus.
 
-Care must be taken to ensure that the correct TCR informaton is input, e.g. ensure you're using proper IMGT gene nomenclature (older deprecated gene names will not work), and have the correct and full CDR3 sequence from the conserved cysteine to the conserved phenylalanine (or rarely, tryptophan) residue. The script produces a TCR from the information given, trying to provide warnings or errors if it detects an improbable or implausible combination, yet it's possible that the script might produce output that *looks* OK yet which does not reproduce a coding sequence for the intended TCR. 
+Care must be taken to ensure that the correct TCR informaton is input. E.g. ensure that:
+* You're using proper IMGT gene nomenclature
+    * Older/deprecated gene names will not work)
+* You have the correct and full [CDR3 **junction** sequence](http://www.imgt.org/FAQ/#question39)
+    * I.e. running inclusively from the conserved cysteine to the conserved phenylalanine (or rarely, tryptophan) residues
+* You are using the right alleles for the TCR genes in question if known (i.e. the bit after the asterisk in the gene name)
+    * This is especially important when making mouse TCRs, as different strains have their own alleles for many genes
 
-If you request an allele for which there isn't complete sequence data, the script will attempt to default to the prototypical allele (*01) of that gene. If it cannot find sequence for that then it will throw an error. Similarly it will attempt to use the correct leader seqeunces (L-PART1+L-PART2) for the specified allele, but if it can't find one it'll default back to the prototype's. Note that IMGT-provided gene sequences which are 'partial' at either end of their sequence are discounted entirely, as full length sequences are needed.
+The script produces a TCR from the information given, trying to provide warnings or errors if it detects an improbable or implausible combination, yet it's possible that the script might produce output that *looks* OK yet which does not reproduce a coding sequence for the intended TCR. 
+
+If you request an allele for which there isn't complete sequence data, the script will attempt to default to the prototypical allele (*01) of that gene. If it cannot find sequence for that then it will throw an error. Similarly it will attempt to use the correct leader seqeunces (L-PART1+L-PART2) for the specified allele, but if it can't find one it'll default back to the prototype's. Note that IMGT-provided gene sequences which are 'partial' at either end of their sequence are discounted entirely, as full length sequences are needed. If the script is needed to stitch TCRs that make use of genes that are partial at their recombination-distal ends then you can modify the FASTA header for these entries in the Data directory. 
 
 By default the script will use the TRBC gene located in the same cluster as the J gene (i.e. TRBJ1-1 through TRBJ1-6 will get TRBC1, while TRBJ2-1 through TRBJ2-7 will get TRBC2). This can be overriden (see optional arguments).
 
@@ -178,7 +186,32 @@ python3 stitchr.py -s mouse -v TRAV14-1 -j TRAJ33 -cdr3 CAASDNYQLIW
 
 #### A note on CDR3 C-terminal residues
 
-```StiTChR``` assumes that the J gene will not undergo deletion past the C-terminal residue of the CDR3 (which occurs approximately in the middle of the J). Thus the code looks for the appropriate residue at the end of the CDR3, which in the majority of cases will be a phenylalanine (F). However in some cases it might be something else, like a W (not uncommon in human TRAJ/mice genes) or even something more exotic like a C, L or J (which occur in certain mouse J genes). Note that most of these non-F/W residues are found in J genes with a predicted ['ORF' IMGT status](http://www.imgt.org/IMGTScientificChart/SequenceDescription/IMGTfunctionality.html), and thus might not contribute to functioning TCRs, but stiTChR will still let you generate a plausible sequence using them.
+```StiTChR``` assumes that the J gene will not undergo deletion past the C-terminal residue of the CDR3 junction (which occurs approximately in the middle of the J). Thus the code looks for the appropriate residue at the end of the CDR3, which in the majority of cases will be a phenylalanine (F). However in some cases it might be something else, like a W (not uncommon in human TRAJ/mice genes) or even something more exotic like a C, L or J (which occur in certain mouse J genes). Note that most of these non-F/W residues are found in J genes with a predicted ['ORF' IMGT status](http://www.imgt.org/IMGTScientificChart/SequenceDescription/IMGTfunctionality.html), and thus might not contribute to functioning TCRs, but stiTChR will still let you generate a plausible sequence using them.
+
+### Generating new IMGT input files
+
+IMGT does get updated on a schedule that doesn't necessarily link to this repo's update schedule, so you may wish to occasionally update the raw TCR gene data used by stiTChR.
+
+In order to update the input IMGT data for a given species, say humans, you can follow these steps:
+
+* Go to [IMGT/GENE-DB](http://www.imgt.org/genedb/)
+* Select 'Species' = (for example) 'Homo sapiens' and 'Molecular component' = 'TR'
+* On the next page, select all genes, and extract the nucleotide sequences for the following fields:
+    * L-PART1+L-PART2
+    * V-REGION
+    * J-REGION
+    * EX1+EX2+EX3+EX4
+* Save these FASTA sequences in a single file in the species directory in the Data folder (e.g. Data/HUMAN/)
+    * This file must be named ```imgt-data.fasta```
+* In the Scripts directory, run ```split-imgt-data.py```
+
+This script will go through the compendium fasta file and split out the separate alpha/beta chain sequences to separate files.
+
+Note that EX1+EX2+EX3+EX4 annotations may not exist for all constant regions in all species. Instead an entry can be manually produced by combining the individual entries (EX1, EX2, EX3, and EX4).
+This is what was done for the Mus musculus TRBC genes.
+
+Also note that if you are adapting stiTChR to additional loci/species, there is an additional file that must be produced to account for the fact that some J genes do not terminate their CDR3s with a canonical phenylalanine residue. The ```J-residue-exceptions.csv``` file in each species data directory allows users to provide these explicitly. Note that for some pseudogenes it may not be immediately apparent (or relevant) what the equivalent residue should be, so one column of that csv file allows users to denote 'low confidence' non-canonical residue calls, although this informtion is not used by stiTChR yet.
+
 
 # Thimble  0.1.0
 

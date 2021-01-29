@@ -101,6 +101,8 @@ def stitch(specific_args, locus, tcr_info, functionality, codon_dict):
                           ": attempting prototypical allele (" + gene + "*01). ")
             allele = '01'
 
+        # TODO add feature: if gene has >1 allele (especially if with coding diffs) add a warning to the output
+
         # Check functionality
         if functionality[gene][allele] != 'F':
             warnings.warn("Warning: gene " + gene + '*' + allele + " has a IMGT-assigned functionality of \'" +

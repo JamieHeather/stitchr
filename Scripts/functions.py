@@ -12,12 +12,13 @@ import os
 import re
 import sys
 import textwrap
+import datetime
 from Bio.Seq import translate
 from Bio import BiopythonWarning
 import warnings
 warnings.simplefilter('ignore', BiopythonWarning)
 
-__version__ = '0.4.1'
+__version__ = '0.4.2'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -74,6 +75,13 @@ def fastafy(gene, seq_line):
     :return: An output-compatible FASTA entry ready for writing to file
     """
     return ">" + gene + "\n" + textwrap.fill(seq_line, 60) + "\n"
+
+
+def today():
+    """
+    :return: Today's day, in ISO format
+    """
+    return datetime.datetime.today().date().isoformat()
 
 
 def nest():
@@ -209,6 +217,7 @@ def get_imgt_data(tcr_chain, gene_types, species):
 
             if 'partial' not in partial_flag:
                 tcr_data[seq_type][gene][allele] = seq.upper()
+                # TODO write out to separate list, to throw a warning for those TCRs where those alleles are asked for
 
     for gene_type in gene_types:
         if len(tcr_data[gene_type]) == 0:
