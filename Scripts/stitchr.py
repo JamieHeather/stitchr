@@ -15,7 +15,7 @@ import argparse
 import warnings
 import sys
 
-__version__ = '0.4.1'
+__version__ = '0.4.2'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -62,10 +62,14 @@ def args():
     parser.add_argument('-n', '--name', required=False, type=str,
                 help='Name for TCR sequence. Optional. Will be added to output FASTA header.')
 
+    parser.add_argument('-jt', '--j_warning_threshold', required=False, type=int, default=3,
+                help='J gene substring length warning threshold. Default = 3. '
+                     'Decrease to get fewer notes on short J matches.')
+
     return parser.parse_args()
 
 
-def stitch(specific_args, locus, tcr_info, functionality, codon_dict):
+def stitch(specific_args, locus, tcr_info, functionality, codon_dict, j_warning_threshold):
     """
     Core function, that performs the actual TCR stitching
     :param specific_args: basic input arguments of a given rearrangement (e.g. V/J/CDR3)
@@ -73,6 +77,7 @@ def stitch(specific_args, locus, tcr_info, functionality, codon_dict):
     :param tcr_info: sequence data for the alleles of a specific locus read in from IMGT data
     :param functionality: predicted functionality of different TCR genes, as according to IMGT
     :param codon_dict: dictionary of which codons to use for which amino acids
+    :param j_warning_threshold: int threshold value, if a J substring length match is shorter it will throw a warning
     :return: list of details of the TCR as constructed, plus the stitched together nucleotide sequence
     """
 
@@ -139,7 +144,8 @@ def stitch(specific_args, locus, tcr_info, functionality, codon_dict):
     # Then figure out where the CDR3 will slot in - look at the CDR3 edges to see how much overlap needs to be removed
     # Start with 4 residues chunks, move from end of V gene up to 10 residues in (very generous deletion allowance)
     n_term_nt_trimmed, cdr3_n_offset = fxn.determine_v_interface(specific_args['cdr3'], n_term_nt, n_term_aa)
-    c_term_nt_trimmed, cdr3_c_end = fxn.determine_j_interface(specific_args['cdr3'], c_term_nt, c_term_aa)
+    c_term_nt_trimmed, cdr3_c_end = fxn.determine_j_interface(specific_args['cdr3'], c_term_nt, c_term_aa,
+                                                              j_warning_threshold)
 
     # Generate the non-templated sequences using common codons established earlier
     non_templated_aa = specific_args['cdr3'][cdr3_n_offset:cdr3_c_end]
@@ -165,7 +171,8 @@ if __name__ == '__main__':
 
     imgt_dat, tcr_functionality = fxn.get_imgt_data(chain, gene_types, input_args['species'])
 
-    out_list, stitched = stitch(input_args, chain, imgt_dat, tcr_functionality, codons)
+    out_list, stitched = stitch(input_args, chain, imgt_dat, tcr_functionality, codons,
+                                input_args['j_warning_threshold'])
     out_str = '|'.join(out_list) + '(L)'
 
     print('----------------------------------------------------------------------------------------------')

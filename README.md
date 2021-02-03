@@ -1,4 +1,4 @@
-#stiTChR 0.4.1
+#stiTChR 0.4.2
 
 ### Stitch together TCR coding nucleotide sequences from V/J/CDR3 information
 

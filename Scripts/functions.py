@@ -18,7 +18,7 @@ from Bio import BiopythonWarning
 import warnings
 warnings.simplefilter('ignore', BiopythonWarning)
 
-__version__ = '0.4.2'
+__version__ = '0.4.3'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -45,23 +45,23 @@ def read_fa(ff):
     https://github.com/lh3/readfq/blob/master/readfq.py
     """
 
-    last = None  # this is a buffer keeping the last unprocessed line
-    while True:  # mimic closure; is it a bad idea?
-        if not last:  # the first record or a record following a fastq
-            for l in ff:  # search for the start of the next record
-                if l[0] in '>':  # fasta header line
-                    last = l[:-1]  # save this line
+    last = None                                 # this is a buffer keeping the last unprocessed line
+    while True:                                 # mimic closure
+        if not last:                            # the first record or a record following a fastq
+            for l in ff:                        # search for the start of the next record
+                if l[0] in '>':                 # fasta header line
+                    last = l[:-1]               # save this line
                     break
         if not last:
             break
         name, seqs, last = last[1:], [], None
-        for l in ff:  # read the sequence
+        for l in ff:                            # read the sequence
             if l[0] in '>':
                 last = l[:-1]
                 break
             seqs.append(l[:-1])
-        if not last or last[0] != '+':  # this is a fasta record
-            yield name, ''.join(seqs), None  # yield a fasta record
+        if not last or last[0] != '+':          # this is a fasta record
+            yield name, ''.join(seqs), None     # yield a fasta record
             if not last:
                 break
         else:
@@ -149,7 +149,10 @@ def tidy_input(cmd_line_args):
     out_args = {}
     for arg in cmd_line_args:
         if cmd_line_args[arg]:
-            out_args[arg] = cmd_line_args[arg].upper()
+            if isinstance(cmd_line_args[arg], str):
+                out_args[arg] = cmd_line_args[arg].upper()
+            else:
+                out_args[arg] = cmd_line_args[arg]
 
     out_args['codon_usage'] = cmd_line_args['codon_usage']
     if cmd_line_args['name']:
@@ -205,7 +208,7 @@ def get_imgt_data(tcr_chain, gene_types, species):
 
     functionality = coll.defaultdict(nest)
 
-    with open(in_file_path, 'rU') as in_file:
+    with open(in_file_path, 'r') as in_file:
         for fasta_id, seq, blank in read_fa(in_file):
             bits = fasta_id.split('|')
             gene, allele = bits[1].split('*')
@@ -299,7 +302,7 @@ def determine_v_interface(cdr3aa, n_term_nuc, n_term_amino):
     raise Exception("Unable to locate N terminus of CDR3 in V gene correctly. Please ensure sequence plausibility. ")
 
 
-def determine_j_interface(cdr3aa, c_term_nuc, c_term_amino):
+def determine_j_interface(cdr3aa, c_term_nuc, c_term_amino, j_warning_threshold):
     """
     Determine germline J contribution, and subtract from the the CDR3 (to leave just non-templated residues)
     Starts with the whole CDR3 (that isn't contributed by V) and looks for successively N-terminal truncated
@@ -307,6 +310,7 @@ def determine_j_interface(cdr3aa, c_term_nuc, c_term_amino):
     :param cdr3aa: CDR3 region (protein sequence as provided)
     :param c_term_nuc: DNA encoding the germline C terminal portion (i.e. J + C genes), with no untranslated bp
     :param c_term_amino: translation of c_term_nuc (everything downstream of recognisable end of the V)
+    :param j_warning_threshold: int threshold value, if a J substring length match is shorter it will throw a warning
     :return: the nt seq of the C-terminal section of the TCR and number of bases into CDR3 that are non-templated
     """
 
@@ -319,15 +323,15 @@ def determine_j_interface(cdr3aa, c_term_nuc, c_term_amino):
             # Check the putative found remnant of the J gene actually falls within the sequence contributed by the J
             # TODO NB other species/loci may have J genes longer than 22, so this value may require changing
             if c_term_amino.index(c_term_cdr3_chunk) > 22:
-                raise Exception("No match for the C-terminal portion of the CDR3 within the provided J gene. "
-                                "Please double check CDR3 sequence and J gene name are correct before retrying. ")
+                continue
 
             # Otherwise carry on - warning the user if the match is short (which it likely shouldn't be for J genes)
             cdr3_c_end = cdr3aa.rfind(c_term_cdr3_chunk)
             c_term_nt_trimmed = c_term_nuc[c_term_amino.index(c_term_cdr3_chunk) * 3:]
-            if c < 5:
-                warnings.warn("Warning:  while a J match has been found, it was only the string \"" +
-                              c_term_cdr3_chunk + "\". Most CDR3s retain longer J regions than this. ")
+
+            if c <= j_warning_threshold:
+                warnings.warn("Note: while a J match has been found, it was only the string \"" +
+                              c_term_cdr3_chunk + "\". ")
 
             return c_term_nt_trimmed, cdr3_c_end
 
@@ -394,7 +398,7 @@ def get_j_exception_residues(species):
     residues = coll.defaultdict()
     low_confidence = []
 
-    with open(j_file, 'rU') as in_file:
+    with open(j_file, 'r') as in_file:
 
         line_count = 0
         for line in in_file:
@@ -429,7 +433,7 @@ def get_linker_dict():
 
     else:
         linkers = coll.defaultdict()
-        with open(linker_file_path, 'rU') as in_file:
+        with open(linker_file_path, 'r') as in_file:
             for line in in_file:
                 bits = line.rstrip().split('\t')
                 linkers[bits[0]] = bits[1]
@@ -450,8 +454,9 @@ def get_linker_seq(linker_text, linker_dict):
     # Allows users to input their own custom DNA sequences
     elif dna_check(linker_text):
         if len(linker_text) % 3 != 0:
-            warnings.warn("Warning: length of linker sequence \'" + linker_text + "\' is not divisible by 3; "
-                  "if this was supposed to be a skip sequence the downstream gene will not be in frame. ")
+            warnings.warn("Warning: length of linker sequence \'"
+                          + linker_text + "\' is not divisible by 3; "
+                          "if this was supposed to be a skip sequence the downstream gene will not be in frame. ")
 
         return linker_text
 
@@ -479,3 +484,4 @@ def tweak_thimble_input(stitch_dict, cmd_args):
     stitch_dict['species'] = cmd_args['species'].upper()
     stitch_dict['name'] = ''
     return stitch_dict
+

@@ -18,7 +18,7 @@ import argparse
 import sys
 import os
 
-__version__ = '0.2.0'
+__version__ = '0.2.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -47,6 +47,9 @@ def args():
     parser.add_argument('-cu', '--codon_usage', required=False, type=str,
                 help='Path to a file of Kazusa-formatted codon usage frequencies. Optional.')
 
+    parser.add_argument('-jt', '--j_warning_threshold', required=False, type=int, default=3,
+                help='J gene substring length warning threshold. Default = 3. '
+                     'Decrease to get fewer notes on short J matches. Optional.')
     return parser.parse_args()
 
 
@@ -85,7 +88,7 @@ if __name__ == '__main__':
         raise IOError(input_args['in_file'] + " not detected - please check and specify in file again.")
 
     # TODO opener function for gzipped
-    with open(input_args['in_file'], 'rU') as in_file:
+    with open(input_args['in_file'], 'r') as in_file:
 
         line_count = 0
         out_data = ['\t'.join(out_headers)]
@@ -100,7 +103,6 @@ if __name__ == '__main__':
                     raise ValueError("Headers in input file don't match the expectations - please check template.")
 
             else:
-
                 # Generate a dict per line ...
                 sorted_row_bits = {x: '' for x in out_headers}
 
@@ -124,6 +126,7 @@ if __name__ == '__main__':
                                 tcr_bits[convert_fields[field]] = sorted_row_bits[field]
 
                         if tcr_bits:
+
                             if not all(section in tcr_bits for section in ['v', 'j', 'cdr3']):
                                 warnings.warn("Incomplete TCR information - need V/J/CDR3 as minimum.")
 
@@ -133,7 +136,8 @@ if __name__ == '__main__':
 
                                 try:
                                     out_list, stitched = st.stitch(tcr_bits, c, tcr_dat[c],
-                                                                   tcr_functionality[c], codons)
+                                                                   tcr_functionality[c], codons,
+                                                                   input_args['j_warning_threshold'])
                                     sorted_row_bits[c + '_nt'] = stitched
                                     sorted_row_bits[c + '_aa'] = fxn.translate_nt(stitched)
                                     sorted_row_bits.update(dict(list(zip([c + x for x in stitch_list_fields], out_list))))
@@ -142,17 +146,19 @@ if __name__ == '__main__':
                                     sorted_row_bits['Warnings/Errors'] += '(' + c + ') ' + str(message)
                                     sorted_row_bits['Warnings/Errors'] += 'Cannot stitch a sequence for ' + c + '. '
 
-                    # Store all warning messages too, in same field, ignoring Biopython  len%3 != 0 error
-                    sorted_row_bits['Warnings/Errors'] += ' '.join(['(' + c + ') ' + x.message.message for x in
-                                                                    all_warns if 'Biopython' not in str(x) and
-                                                                    'DeprecationWarning' not in str(x)])
+                    # Store all warning messages too, in same field, ignoring irrelevant errors
+                    # (including Biopython's len%3 != 0 error - not very helpful given
+                    sorted_row_bits['Warnings/Errors'] += ' '.join(
+                        ['(' + c + ') ' + str(all_warns[x].message) for x in range(len(all_warns))
+                         if 'Biopython' not in str(all_warns[x].category) and
+                         'DeprecationWarning' not in str(all_warns[x].category)])
 
                 # If sequences are to be linked, determine the appropriate linker sequence and join together
                 if sorted_row_bits['Linker']:
                     if sorted_row_bits['TRA_nt'] and sorted_row_bits['TRB_nt']:
                         try:
                             linker_seq = fxn.get_linker_seq(sorted_row_bits['Linker'], linker_dict)
-                            # TODO allow specification of order (a-b or b-a)?
+                            # TODO allow specification of order (a-b or b-a)?ubo
                             linked = sorted_row_bits['TRB_nt'] + linker_seq + sorted_row_bits['TRA_nt']
                             sorted_row_bits['Linked_nt'] = linked
                             sorted_row_bits['Linked_aa'] = fxn.translate_nt(linked)
