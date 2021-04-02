@@ -1,14 +1,14 @@
-#stiTChR 0.4.2
+#stiTChR 0.5.1
 
 ### Stitch together TCR coding nucleotide sequences from V/J/CDR3 information
 
-##### Jamie Heather | CCR @ MGH | 2020
+##### Jamie Heather | CCR @ MGH | 2021
 
 ### Summary
 
 Sometimes you need a complete TCR nucleotide or amino acid sequence, but all you have is limited information. This script aims to generate *a*\* coding nucleotide sequence for a given rearrangement (e.g. for use when generating TCR expression vectors) in those situations.
 
-The script takes the known V/J/CDR3 information, and uses that to pull out the relevant germline TCR nucleotide sequences and stitch them together, using common codons to fill in the non-templated regions.
+The script takes the known V/J/CDR3 information, and uses that to pull out the relevant germline TCR nucleotide sequences and stitch them together, using common codons to fill in the non-templated regions. Its modular approach can be used for the automated generation of TCR sequences for gene synthesis and functional testing.
 
 ### Installation and dependencies
 
@@ -38,11 +38,11 @@ python3 stitchr.py -v TRAV1-2 -j TRAJ33 -cdr3 CAVLDSNYQLIW
 
 *This script will almost certainly not produce the original recombined sequences that encoded the original TCRs; it merely recreates an equivalent full length sequence that will encode the same amino acid sequences. It aims to produce a sequence as close to germline as possible - so all CDR3 residues that *can* be germline encoded are such, in this ouput. Non-templated residues in the CDR3 (or those templated by the D gene, which is treated as non-templated here) are chosen from known codon usage frequencies.
 
-This script currently only works on human and mouse alpha/beta TCR chains, but should be readily adapted to any other species/locus.
+This script currently only works on human and mouse alpha/beta TCR chains, but should be readily adapted to any other species/locus providing you can get all the correct data in IMGT format.
 
 Care must be taken to ensure that the correct TCR informaton is input. E.g. ensure that:
 * You're using proper IMGT gene nomenclature
-    * Older/deprecated gene names will not work)
+    * Older/deprecated gene names will not work
 * You have the correct and full [CDR3 **junction** sequence](http://www.imgt.org/FAQ/#question39)
     * I.e. running inclusively from the conserved cysteine to the conserved phenylalanine (or rarely, tryptophan) residues
 * You are using the right alleles for the TCR genes in question if known (i.e. the bit after the asterisk in the gene name)
@@ -54,10 +54,11 @@ If you request an allele for which there isn't complete sequence data, the scrip
 
 By default the script will use the TRBC gene located in the same cluster as the J gene (i.e. TRBJ1-1 through TRBJ1-6 will get TRBC1, while TRBJ2-1 through TRBJ2-7 will get TRBC2). This can be overriden (see optional arguments).
 
-All required files are included in the repo. If you want to change or update the IMGT data files, you'll need to re-run `split-imgt-data.py`.
+By default stiTChR does not include stop codons at the end of the coding sequence; if desired, this must be specified using the 3' flag (`-3p`), i.e. `-3p TAA`, `-3p TAG`, or `-3p TGA`. Similarly, no sequence is included before that of the IMGT-recorded L1 leader sequence. If desired, this can be added using the 5' flag (`-5p`), e.g. to add the pre-start codon section of an optimal Kozak sequence: `-5p GCCGCCACC`. 
+
+All required files are included in the repo. If you want to change or update the IMGT data files, you'll need to re-run `split-imgt-data.py` - see below.
 
 ```StiTChR``` can be run in a higher-throughput mode, using a tab-separated input file - see the instructions for [**```thimble```**](#Thimble) below.
-
 
 ### Optional arguments
 
@@ -68,12 +69,14 @@ All required files are included in the repo. If you want to change or update the
 * `-cu` - use an alternative codon usage file, from which to generate the sequences for the non-templated residues (see below)
 * `-l` - use a different leader region to that present with the given V  
 * `-n` - provide a name for the TCR chain, which will be included in the FASTA file header
+* `-3p` - provide a sequence to come immediately after the end of the constant region (e.g. a stop codon)
+* `-5p` - provide a sequence to come immediately before the start of the L1 leader sequence (e.g. a Kozak sequence)
 
 #### Codon usage files
 
 Non-templated based are assigned by taking the most common nucleotide triplet for a given amino acid, in a provided codon usage file.
 
-The default codon usage files are taken straight from the default Kazusa [human](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9606) (Homo sapiens [gbpri]: 93487) and [mouse](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=10090) (Mus musculus [gbrod]: 53036) entries. Alternative files can be provided, but must be in the same format (e.g. those provided by [HIVE](https://hive.biochemistry.gwu.edu/dna.cgi?cmd=refseq_processor&id=569942)). U/T can be used interchangeably, as all U will be replaced with T anyway.
+The default codon usage files are taken straight from the default Kazusa [human](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9606) (Homo sapiens [gbpri]: 93487) and [mouse](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=10090) (Mus musculus [gbrod]: 53036) entries. Alternative files can be provided, but must be in the same format (e.g. those provided by [HIVE](https://hive.biochemistry.gwu.edu/dna.cgi?cmd=refseq_processor&id=569942)). U/T can be used interchangeably, as all U bases will be replaced with T anyway.
 
 #### Providing a partial amino acid sequence
 
@@ -171,7 +174,7 @@ LSENDEWTQDRAKPVTQIVSAEAWGRADCGFTSESYQQGVLSATILYEILLGKATLYAVL
 VSALVLMAMVKRKDSRG
 ```
 
-This produces even more mismatches - so the constant region used in the crystal has presumably been altered for expression/crystallization purposes.
+This produces even more mismatches! This is an instance where the constant region used in the crystal has been altered for expression/crystallization purposes.
 
 #### A mouse example
 
@@ -210,20 +213,23 @@ This script will go through the compendium fasta file and split out the separate
 Note that EX1+EX2+EX3+EX4 annotations may not exist for all constant regions in all species. Instead an entry can be manually produced by combining the individual entries (EX1, EX2, EX3, and EX4).
 This is what was done for the Mus musculus TRBC genes.
 
-Also note that if you are adapting stiTChR to additional loci/species, there is an additional file that must be produced to account for the fact that some J genes do not terminate their CDR3s with a canonical phenylalanine residue. The ```J-residue-exceptions.csv``` file in each species data directory allows users to provide these explicitly. Note that for some pseudogenes it may not be immediately apparent (or relevant) what the equivalent residue should be, so one column of that csv file allows users to denote 'low confidence' non-canonical residue calls, although this informtion is not used by stiTChR yet.
+Also note that if you are adapting stiTChR to additional loci/species, there is an additional file that must be produced to account for the fact that some J genes do not terminate their CDR3s with a canonical phenylalanine residue. The ```J-residue-exceptions.csv``` file in each species data directory allows users to provide these explicitly. Note that for some pseudogenes it may not be immediately apparent (or relevant) what the equivalent residue should be, so one column of that csv file allows users to denote 'low confidence' non-canonical residue calls (although this information is not used by stiTChR yet).
 
 
-# Thimble  0.1.0
+# Thimble  0.3.1
 
-### Run stiTChR high-throughput on multiple and paired TCRs
+### Run ```stiTChR``` high-throughput on multiple and paired TCRs
 
 Instead of running ```stiTChR``` on rearrangements one by one, you can fill out the necessary details into a tab separated file (.tsv) and submit it to ```thimble```.
 
 The format of the input data is specified in the file 'bulk_input_template.tsv', located in the root directory, with some examples shown in 'bulk_input_example.tsv'. All of the recombination-specific fields that can ordinarily be specified at the command line in ```stiTChR``` can be applied per row using ```thimble```, with the exception of species which must be kept the same for all TCRs in a given run.
 
-Note that the input to ```thimble``` can also be used to generate rearrangements for both the alpha and beta chain of a given clonotype on one row, with additional options to link those sequences together. A number of x2A potential linkers are provided (in the Data/linkers.tsv file). If custom linkers are desired, you can either edit that linkers file or just enter the nucleotide sequence of the desired linker into the Linker column of the input tsv.
+Note that the input to ```thimble``` can also be used to generate rearrangements for both the alpha and beta chain of a given clonotype on one row, with additional options to link those sequences together (e.g. for gene synthesis). A number of x2A potential linkers are provided in the Data/linkers.tsv file. If custom linkers are desired, you can either edit that linkers file or just enter the nucleotide sequence of the desired linker into the Linker column of the input tsv. ```thimble``` will allow linkers that disrupt the frame (i.e. have a length not divisible by 3) but will throw a warning, so use carefully. 5' and 3' sequences can be added to both ends of either chain in a heterodimer, again allowing but throwing a warning if a custom sequence could potentially disrupt the frame. 
 
-Any warnings and errors generated on a per-TCR basis are recorded in the final output file; it is recommended that users check this information, to ensure they understand the limitations of a specific sequence.  
+By default, ```thimble``` produces linked TCRs in the order 5' - beta chain - linker - alpha chain - 3', as [this has been shown to increase the surface presentation of ectopic TCRs](https://doi.org/10.1038/mtna.2012.52). However this can still be specified with the 'Link_order' column in the input template file, using 'AB' or 'BA' to refer to 'alpha-beta' or 'beta-alpha' orders respectively. Link order is ignored if no linker is provided.
+
+Any warnings and errors generated on a per-TCR basis are recorded in the final output file; it is recommended that users check this information, to ensure they understand the potential limitations of a specific sequence.  
+
 
 ## Example usage 
 
@@ -238,4 +244,4 @@ python3 thimble.py -in ../bulk_input_example.tsv -o testing
 * `-h` - see a help menu, containing all the command line options
 * `-s` - specify a species: 'human' or 'mouse' are the only valid options currently, with human as default 
 * `-cu` - use an alternative codon usage file, from which to generate the sequences for the non-templated residues (see below)
-
+* `-jt` - length of J gene substring that has to be matched to avoid throwing a warning (decrease to get fewer notices about short J matches), default = 3

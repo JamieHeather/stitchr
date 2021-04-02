@@ -8,7 +8,9 @@ Functions for stiTChR and its related scripts
 """
 
 import collections as coll
+import gzip
 import os
+import re
 import re
 import sys
 import textwrap
@@ -18,7 +20,7 @@ from Bio import BiopythonWarning
 import warnings
 warnings.simplefilter('ignore', BiopythonWarning)
 
-__version__ = '0.4.3'
+__version__ = '0.5.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -135,6 +137,16 @@ def sort_input(cmd_line_args):
         raise ValueError("Unexpected character in CDR3 string. "
                          "Please use only one-letter standard amino acid designations.")
 
+    # If additional optional 5'/3' sequences are provided, check they are valid DNA sequences
+    for end in ['5', '3']:
+        if cmd_line_args[end + '_prime_seq']:
+            if not dna_check(cmd_line_args[end + '_prime_seq']):
+                raise IOError("Provided " + end + "\' sequence contains non-DNA characters.")
+
+            if len(end + '_prime_seq') % 3 != 0:
+                warnings.warn("Warning: length of " + end + "\' sequence provided is not divisible by 3."
+                                                      " Ensure sequence is padded properly if needed to be in frame.")
+
     chain = get_chain(tidied_args['v'], tidied_args['j'])
     finished_args = autofill_input(tidied_args, chain)
     return finished_args, chain, codons
@@ -170,6 +182,7 @@ def autofill_input(cmd_line_args, chain):
     :return: Autofilled input arguments (i.e. filling out the leader and constant region genes)
     """
 
+    # Constant region (assuming the TRBC from same J cluster is used)
     if 'c' not in cmd_line_args:
         if chain == 'TRA':
             cmd_line_args['c'] = 'TRAC*01'
@@ -179,6 +192,7 @@ def autofill_input(cmd_line_args, chain):
             elif 'TRBJ2' in cmd_line_args['j']:
                 cmd_line_args['c'] = 'TRBC2*01'
 
+    # Leader region (assuming the proximal L for that V is used)
     if 'l' not in cmd_line_args:
         cmd_line_args['l'] = cmd_line_args['v']
 
@@ -211,6 +225,9 @@ def get_imgt_data(tcr_chain, gene_types, species):
     with open(in_file_path, 'r') as in_file:
         for fasta_id, seq, blank in read_fa(in_file):
             bits = fasta_id.split('|')
+            if len(bits) < 13:
+                raise IOError("Input TCR FASTA file does not fit the IMGT header format.")
+
             gene, allele = bits[1].split('*')
             functionality_call = bits[3].replace('(', '').replace(')', '').replace('[', '').replace(']', '')
             seq_type = bits[4]
@@ -255,6 +272,7 @@ def tidy_c_term(c_term_nt, chain, species):
     :return: c_term_nt trimmed/in right frame
     """
 
+    # TODO allow command line option to disregard C region checks (necessary for custom C genes)
     c_aa = {'HUMAN': {'trac': "IQNPDPA", 'trbc1': "DLKNVF", 'trbc2': "DLNKVF", 'trac-stop': '*DLQDCK'},
             'MOUSE': {'trac': "IQNPEPA", 'trbc1': "DLRNVT", 'trbc2': "DLRNVT", 'trac-stop': '*GLQD'}}
 
@@ -485,3 +503,12 @@ def tweak_thimble_input(stitch_dict, cmd_args):
     stitch_dict['name'] = ''
     return stitch_dict
 
+
+def opener(in_file):
+    """
+    Choose the appropriate file opening command
+    """
+    if in_file.endswith('.gz'):
+        return gzip.open(in_file, 'rt')
+    else:
+        return open(in_file, 'r')

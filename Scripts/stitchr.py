@@ -15,7 +15,7 @@ import argparse
 import warnings
 import sys
 
-__version__ = '0.4.2'
+__version__ = '0.5.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -66,6 +66,12 @@ def args():
                 help='J gene substring length warning threshold. Default = 3. '
                      'Decrease to get fewer notes on short J matches.')
 
+    parser.add_argument('-5p', '--5_prime_seq', required=False, type=str, default='',
+                help='Optional sequence to add to the 5\' of the output sequence (e.g. a Kozak sequence).')
+
+    parser.add_argument('-3p', '--3_prime_seq', required=False, type=str, default='',
+                help='Optional sequence to add to the 3\' out the output sequence (e.g. a stop codon).')
+
     return parser.parse_args()
 
 
@@ -97,8 +103,23 @@ def stitch(specific_args, locus, tcr_info, functionality, codon_dict, j_warning_
 
         # Check this gene exists
         if gene not in tcr_info[regions[r]]:
+
+            # If it's a leader sequence, it might be a user-defined DNA sequence
+            if r == 'l' and fxn.dna_check(specific_args['l']):
+                # If it is, add that info in...
+                used_alleles[r] = 'UserSpecifiedLeader*' + specific_args['l']
+                done[r] = specific_args['l']
+
+                # Check it's likely to translate in frame
+                if len(specific_args['l']) % 3 != 0:
+                    warnings.warn("User specified leader sequence is not evenly divisible by 3. "
+                                  "Stitched TCR frame will likely be wrong.")
+
+                # ...and jump ahead to the stitching (skipping irrelevant TCR gene checks)
+                continue
+
             raise ValueError("Error: " + gene +
-                             " is not found in the IMGT data for this species. Please check your gene name.")
+                             " is not found in the IMGT data for this chain/species. Please check your gene name.")
 
         # And if it does, check whether or not the listed allele has a present value
         if allele not in tcr_info[regions[r]][gene]:
@@ -151,12 +172,24 @@ def stitch(specific_args, locus, tcr_info, functionality, codon_dict, j_warning_
     non_templated_aa = specific_args['cdr3'][cdr3_n_offset:cdr3_c_end]
     non_templated_nt = fxn.rev_translate(non_templated_aa, codon_dict)
 
-    # Then finally stitch all that info together and output!
-    stitched = n_term_nt_trimmed + non_templated_nt + c_term_nt_trimmed
-    out_bits = [specific_args['name'], used_alleles['v'], used_alleles['j'],
-                used_alleles['c'], specific_args['cdr3'], used_alleles['l']]
+    # If optional 5'/3' sequences are specified, add them to the relevant place
+    if '5_prime_seq' in specific_args:
+        n_term_nt_trimmed = specific_args['5_prime_seq'] + n_term_nt_trimmed
+        # Translation offset allows simple translation of output NT without having to figure out the frame
+        transl_offset = 3 - (len(specific_args['5_prime_seq']) % 3)
+    else:
+        transl_offset = 0
 
-    return out_bits, stitched
+    if '3_prime_seq' in specific_args:
+        c_term_nt_trimmed += specific_args['3_prime_seq']
+
+    # Then finally stitch all that info together and output!
+    stitched_nt = n_term_nt_trimmed + non_templated_nt + c_term_nt_trimmed
+    out_bits = [specific_args['name'], used_alleles['v'], used_alleles['j'],
+                used_alleles['c'], specific_args['cdr3'], used_alleles['l'] + '(L)']
+
+    # TODO add information to output header if additional 5'/3' sequences specified?
+    return out_bits, stitched_nt, transl_offset
 
 
 regions = {'v': 'V-REGION', 'j': 'J-REGION', 'c': 'EX1+EX2+EX3+EX4', 'l': 'L-PART1+L-PART2'}
@@ -171,19 +204,20 @@ if __name__ == '__main__':
 
     imgt_dat, tcr_functionality = fxn.get_imgt_data(chain, gene_types, input_args['species'])
 
-    out_list, stitched = stitch(input_args, chain, imgt_dat, tcr_functionality, codons,
+    out_list, stitched, offset = stitch(input_args, chain, imgt_dat, tcr_functionality, codons,
                                 input_args['j_warning_threshold'])
-    out_str = '|'.join(out_list) + '(L)'
+    out_str = '|'.join(out_list)
 
     print('----------------------------------------------------------------------------------------------')
     print(fxn.fastafy('nt|' + out_str, stitched))
-    print(fxn.fastafy('aa|' + out_str, fxn.translate_nt(stitched)))
+    # Use the offset to 5' pad the stitched sequence with 'N's to make up for non-codon length 5' added sequences
+    print(fxn.fastafy('aa|' + out_str, fxn.translate_nt('N' * offset + stitched)))
 
     # If a known/partial amino acid sequence provided, ensure they match up with a quick printed alignment
     if 'aa' in input_args:
         from Bio import pairwise2
         from Bio.pairwise2 import format_alignment
-        alignments = pairwise2.align.globalxx(input_args['aa'], fxn.translate_nt(stitched))
+        alignments = pairwise2.align.globalxx(input_args['aa'], fxn.translate_nt('N' * offset + stitched))
         for i in range(0, 600, 60):
             print('\n')
             if i > len(alignments[0][0]):

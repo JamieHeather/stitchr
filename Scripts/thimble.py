@@ -18,11 +18,11 @@ import argparse
 import sys
 import os
 
-__version__ = '0.2.1'
+__version__ = '0.3.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
-sys.tracebacklimit = 0
+#sys.tracebacklimit = 0
 
 
 def args():
@@ -50,20 +50,26 @@ def args():
     parser.add_argument('-jt', '--j_warning_threshold', required=False, type=int, default=3,
                 help='J gene substring length warning threshold. Default = 3. '
                      'Decrease to get fewer notes on short J matches. Optional.')
+
     return parser.parse_args()
 
 
 in_headers = ['TCR_name', 'TRAV', 'TRAJ', 'TRA_CDR3', 'TRBV', 'TRBJ', 'TRB_CDR3',
-               'TRAC', 'TRBC', 'TRA_leader', 'TRB_leader', 'Linker']
+               'TRAC', 'TRBC', 'TRA_leader', 'TRB_leader', 'Linker', 'Link_order',
+              'TRA_5_prime_seq', 'TRA_3_prime_seq', 'TRB_5_prime_seq', 'TRB_3_prime_seq']
 
 convert_fields = {'TRAV': 'v', 'TRAJ': 'j', 'TRA_CDR3': 'cdr3', 'TRBV': 'v', 'TRBJ': 'j', 'TRB_CDR3': 'cdr3',
-                  'TRAC': 'c', 'TRBC': 'c', 'TRA_leader': 'l', 'TRB_leader': 'l', 'TCR_name': 'name'}
+                  'TRAC': 'c', 'TRBC': 'c', 'TRA_leader': 'l', 'TRB_leader': 'l', 'TCR_name': 'name',
+                  'TRA_5_prime_seq': '5_prime_seq', 'TRA_3_prime_seq': '3_prime_seq',
+                 'TRB_5_prime_seq': '5_prime_seq', 'TRB_3_prime_seq': '3_prime_seq'}
 
-stitch_list_fields = ['_name', 'V', 'J', 'C', '_CDR3', '_leader']
+stitch_list_fields = ['_name', 'V', 'J', 'C', '_CDR3', '_leader', '_5_prime_seq', '_3_prime_seq']
 
 out_headers = ['TCR_name', 'TRA_nt', 'TRB_nt', 'TRA_aa', 'TRB_aa',
                'TRAV', 'TRAJ', 'TRA_CDR3', 'TRBV', 'TRBJ', 'TRB_CDR3',
-               'TRAC', 'TRBC', 'TRA_leader', 'TRB_leader', 'Linker', 'Linked_nt', 'Linked_aa', 'Warnings/Errors']
+               'TRAC', 'TRBC', 'TRA_leader', 'TRB_leader', 'Linker', 'Link_order',
+              'TRA_5_prime_seq', 'TRA_3_prime_seq', 'TRB_5_prime_seq', 'TRB_3_prime_seq',
+               'Linked_nt', 'Linked_aa', 'Warnings/Errors']
 
 if __name__ == '__main__':
 
@@ -87,8 +93,7 @@ if __name__ == '__main__':
     if not os.path.isfile(input_args['in_file']):
         raise IOError(input_args['in_file'] + " not detected - please check and specify in file again.")
 
-    # TODO opener function for gzipped
-    with open(input_args['in_file'], 'r') as in_file:
+    with fxn.opener(input_args['in_file']) as in_file:
 
         line_count = 0
         out_data = ['\t'.join(out_headers)]
@@ -115,7 +120,7 @@ if __name__ == '__main__':
                 # ... along with chain-specific dicts which are then folded into
                 for c in ['TRA', 'TRB']:
 
-                    with warnings.catch_warnings(record=True) as all_warns:
+                    with warnings.catch_warnings(record=True) as chain_warnings:
                         warnings.simplefilter("always")
 
                         tcr_bits = {}
@@ -127,6 +132,7 @@ if __name__ == '__main__':
 
                         if tcr_bits:
 
+                            # At the very least we need the relevant TCR info (V/J/CDR3)
                             if not all(section in tcr_bits for section in ['v', 'j', 'cdr3']):
                                 warnings.warn("Incomplete TCR information - need V/J/CDR3 as minimum.")
 
@@ -135,40 +141,77 @@ if __name__ == '__main__':
                                 tcr_bits = fxn.tweak_thimble_input(tcr_bits, input_args)
 
                                 try:
-                                    out_list, stitched = st.stitch(tcr_bits, c, tcr_dat[c],
+                                    out_list, stitched, offset = st.stitch(tcr_bits, c, tcr_dat[c],
                                                                    tcr_functionality[c], codons,
                                                                    input_args['j_warning_threshold'])
                                     sorted_row_bits[c + '_nt'] = stitched
-                                    sorted_row_bits[c + '_aa'] = fxn.translate_nt(stitched)
+                                    sorted_row_bits[c + '_aa'] = fxn.translate_nt('N' * offset + stitched)
                                     sorted_row_bits.update(dict(list(zip([c + x for x in stitch_list_fields], out_list))))
 
                                 except Exception as message:
                                     sorted_row_bits['Warnings/Errors'] += '(' + c + ') ' + str(message)
                                     sorted_row_bits['Warnings/Errors'] += 'Cannot stitch a sequence for ' + c + '. '
 
-                    # Store all warning messages too, in same field, ignoring irrelevant errors
-                    # (including Biopython's len%3 != 0 error - not very helpful given
+                        # Store all chain related warning messages too, in same field, ignoring irrelevant errors
+                        # (ignoring Biopython's len%3 != 0 error, which isn't very helpful given the circumstances)
+                        sorted_row_bits['Warnings/Errors'] += ' '.join(
+                            ['(' + c + ') ' + str(chain_warnings[x].message) for x in range(len(chain_warnings))
+                             if 'Biopython' not in str(chain_warnings[x].category) and
+                             'DeprecationWarning' not in str(chain_warnings[x].category)])
+
+                with warnings.catch_warnings(record=True) as link_warnings:
+                    warnings.simplefilter("always")
+
+                    # If sequences are to be linked, determine the appropriate linker sequence and join together
+                    if sorted_row_bits['Linker']:
+
+                        if sorted_row_bits['Link_order']:
+                            sorted_row_bits['Link_order'] = sorted_row_bits['Link_order'].upper()
+
+                            # Only allow valid orders
+                            if sorted_row_bits['Link_order'] not in ['BA', 'AB']:
+                                warnings.warn("Error: given link order not valid (not AB or BA) - defaulting to BA.")
+                                sorted_row_bits['Link_order'] = 'BA'
+
+                        else:
+                            # Default option is B
+                            sorted_row_bits['Link_order'] = 'BA'
+
+                        tr1, tr2 = sorted_row_bits['Link_order'][0], sorted_row_bits['Link_order'][1]
+
+                        if sorted_row_bits['TRA_nt'] and sorted_row_bits['TRB_nt']:
+                            try:
+                                linker_seq = fxn.get_linker_seq(sorted_row_bits['Linker'], linker_dict)
+
+                                linked = sorted_row_bits['TR' + tr1 + '_nt'] + \
+                                         linker_seq + sorted_row_bits['TR' + tr2 + '_nt']
+                                sorted_row_bits['Linked_nt'] = linked
+                                sorted_row_bits['Linked_aa'] = fxn.translate_nt('N' * offset + linked)
+
+                                # Add warnings if sequences applied at maybe the wrong ends of things
+                                if (sorted_row_bits['TRA_5_prime_seq'] and ord == 'BA') or \
+                                    (sorted_row_bits['TRB_5_prime_seq'] and ord == 'AB'):
+                                    warnings.warn("Warning: " + ord + " order specified, but "
+                                                                "3\' chain has an additional 5\' sequence provided. ")
+
+                                if (sorted_row_bits['TRA_3_prime_seq'] and ord == 'AB') or \
+                                    (sorted_row_bits['TRB_3_prime_seq'] and ord == 'BA'):
+                                    warnings.warn("Warning: " + ord + " order specified, but "
+                                                                "5\' chain has an additional 3\' sequence provided. ")
+
+                            # Store any error messages
+                            except Exception as message:
+                                sorted_row_bits['Warnings/Errors'] += str(message)
+
+
+                        else:
+                            warnings.warn("Error: need both a TRA and TRB to link. ")
+
+                    # And add any warnings/errors derived from the linkage
                     sorted_row_bits['Warnings/Errors'] += ' '.join(
-                        ['(' + c + ') ' + str(all_warns[x].message) for x in range(len(all_warns))
-                         if 'Biopython' not in str(all_warns[x].category) and
-                         'DeprecationWarning' not in str(all_warns[x].category)])
-
-                # If sequences are to be linked, determine the appropriate linker sequence and join together
-                if sorted_row_bits['Linker']:
-                    if sorted_row_bits['TRA_nt'] and sorted_row_bits['TRB_nt']:
-                        try:
-                            linker_seq = fxn.get_linker_seq(sorted_row_bits['Linker'], linker_dict)
-                            # TODO allow specification of order (a-b or b-a)?ubo
-                            linked = sorted_row_bits['TRB_nt'] + linker_seq + sorted_row_bits['TRA_nt']
-                            sorted_row_bits['Linked_nt'] = linked
-                            sorted_row_bits['Linked_aa'] = fxn.translate_nt(linked)
-
-                        # Store any error messages
-                        except Exception as message:
-                            sorted_row_bits['Warnings/Errors'] += str(message)
-
-                    else:
-                        sorted_row_bits['Warnings/Errors'] += "Error: need both a TRA and TRB to link. "
+                        ['(Link) ' + str(link_warnings[x].message) for x in range(len(link_warnings))
+                         if 'Biopython' not in str(link_warnings[x].category) and
+                         'DeprecationWarning' not in str(link_warnings[x].category)])
 
                 # Store output as one long string, for a single write-out once input file is finished
                 out_data.append('\t'.join([sorted_row_bits[x] for x in out_headers]))
@@ -182,5 +225,3 @@ if __name__ == '__main__':
     with open(input_args['out_file'], 'w') as out_file:
         out_string = '\n'.join(out_data)
         out_file.write(out_string)
-
-    # TODO add options for bracketing sequences? E.g. Kozak, stops, etc
