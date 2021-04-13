@@ -20,7 +20,7 @@ from Bio import BiopythonWarning
 import warnings
 warnings.simplefilter('ignore', BiopythonWarning)
 
-__version__ = '0.5.1'
+__version__ = '0.6.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -247,6 +247,40 @@ def get_imgt_data(tcr_chain, gene_types, species):
     return tcr_data, functionality
 
 
+def get_additional_genes(imgt_data, imgt_functionality):
+    """
+    :param imgt_data: the nested dict produced by get_imgt_data containing V/J/C sequence data
+    :param imgt_functionality: the nested dict with imgt_stated functionality
+    :return: the same dicts supplemented with any genes found in the 'additional genes.fasta' file
+    """
+
+    with open('../Data/additional-genes.fasta', 'r') as in_file:
+        for fasta_id, seq, blank in read_fa(in_file):
+            bits = fasta_id.split('|')
+
+            if len(bits) < 5:
+                raise IOError("Sequence in additional-genes.fasta doesn't have enough fields in header: " + bits[0])
+
+            if '*' in bits[1]:
+                gene, allele = bits[1].upper().split('*')
+            else:
+                raise IOError("Sequence in additional-genes.fasta doesn't have correct gene name format: " + bits[1])
+
+            if bits[3]:
+                functionality_call = bits[3].replace('(', '').replace(')', '').replace('[', '').replace(']', '')
+            else:
+                functionality_call = 'F'
+
+            seq_type = bits[4]
+            if seq_type not in ['V-REGION', 'J-REGION', 'EX1+EX2+EX3+EX4', 'L-PART1+L-PART2']:
+                raise IOError("Sequence in additional-genes.fasta doesn't have valid gene type: " + bits[4])
+
+            imgt_data[seq_type][gene][allele] = seq
+            imgt_functionality[gene][allele] = functionality_call
+
+    return imgt_data, imgt_functionality
+
+
 def tidy_n_term(n_term_nt):
     """
     Tidy up the germline N-terminal half (i.e. pre-CDR3, L+V) of the nt seq so that it's nicely divisible by 3
@@ -263,26 +297,60 @@ def tidy_n_term(n_term_nt):
     return trimmed, translate_nt(trimmed)
 
 
-def tidy_c_term(c_term_nt, chain, species):
+def find_stop(seq):
+    """
+    :param seq: a translated amino acid sequence
+    :return: the position of the first stop codon (*) inside - if none, return length of whole sequence
+    """
+    if '*' in seq:
+        return seq.index('*')
+    else:
+        return len(seq)
+
+
+def tidy_c_term(c_term_nt, chain, species, skip):
     """
     Tidy up the germline C-terminal half (i.e. post-CDR3, J+C) of the nt seq so that it's the right frame/trimmed
     :param c_term_nt: done['j'] + done['c']
     :param chain: TCR chain (TRA/TRB)
     :param species: human or mouse
+    :param skip: boolean, whether or not to skip the C region checks  # TODO figure out how this will work with no known sequences!
     :return: c_term_nt trimmed/in right frame
     """
 
-    # TODO allow command line option to disregard C region checks (necessary for custom C genes)
     c_aa = {'HUMAN': {'trac': "IQNPDPA", 'trbc1': "DLKNVF", 'trbc2': "DLNKVF", 'trac-stop': '*DLQDCK'},
             'MOUSE': {'trac': "IQNPEPA", 'trbc1': "DLRNVT", 'trbc2': "DLRNVT", 'trac-stop': '*GLQD'}}
+
+    translations = {}  # key = frame (0, 1, or 2)
 
     # Try every frame, look for the frame that contains the appropriate sequence
     for f in range(4):
 
         if f == 3:
-            raise Exception("Error: could not find an in-frame constant region.")
+            if skip:
+                # Try to figure out the best translation frame, by picking the one with the longest pre-stop sequence
+                best = -1
+                position = -1
+                for frame in translations:
+                    stop = find_stop(translations[frame])
+                    if stop > position:
+                        best = frame
+                        position = stop
+
+                if best == 2:
+                    warnings.warn("Note: expected reading frame " + str(best) + " used for translating C terminus. ")
+                else:
+                    warnings.warn("Warning: reading frame " + str(best) + " used for translating C terminus, "
+                    "instead of the expected reading frame 2 - double check your input/output sequences are correct. ")
+
+                return c_term_nt[best:], translated
+
+            else:
+                raise Exception("Error: could not find an in-frame constant region.")
 
         translated = translate_nt(c_term_nt[f:])
+        translations[f] = translated
+
         if chain == 'TRA':
             if c_aa[species]['trac'] in translated:
                 stop_index_aa = translated.index(c_aa[species]['trac-stop'])  # Account for late exon TRAC stop codons
@@ -498,9 +566,11 @@ def tweak_thimble_input(stitch_dict, cmd_args):
     :param cmd_args: command line arguments passed to thimble
     :return: Fixed stitchr dict (species capitalised, TCR names blanked)
     """
-
     stitch_dict['species'] = cmd_args['species'].upper()
     stitch_dict['name'] = ''
+    for region in ['v', 'j', 'cdr3', 'c']:
+        stitch_dict[region] = stitch_dict[region].upper()
+
     return stitch_dict
 
 

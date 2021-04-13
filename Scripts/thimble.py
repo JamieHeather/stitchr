@@ -18,11 +18,11 @@ import argparse
 import sys
 import os
 
-__version__ = '0.3.1'
+__version__ = '0.4.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
-#sys.tracebacklimit = 0
+sys.tracebacklimit = 0
 
 
 def args():
@@ -46,6 +46,9 @@ def args():
 
     parser.add_argument('-cu', '--codon_usage', required=False, type=str,
                 help='Path to a file of Kazusa-formatted codon usage frequencies. Optional.')
+
+    parser.add_argument('-xg', '--extra_genes', action='store_true', required=False, default=False,
+       help='Optional flag to use additional (non-database/-natural) sequences in the \'additional-genes.fasta\' file.')
 
     parser.add_argument('-jt', '--j_warning_threshold', required=False, type=int, default=3,
                 help='J gene substring length warning threshold. Default = 3. '
@@ -89,6 +92,13 @@ if __name__ == '__main__':
         tcr_dat[c] = tmp_tcr_dat
         tcr_functionality[c] = tmp_functionality
 
+        if 'extra_genes' in input_args:
+            if input_args['extra_genes']:
+                tcr_dat[c], tcr_functionality[c] = fxn.get_additional_genes(tcr_dat[c], tcr_functionality[c])
+                input_args['skip_c_checks'] = True
+            else:
+                input_args['skip_c_checks'] = False
+
     # Then go through in file and stitch each TCR on each line
     if not os.path.isfile(input_args['in_file']):
         raise IOError(input_args['in_file'] + " not detected - please check and specify in file again.")
@@ -123,14 +133,15 @@ if __name__ == '__main__':
                     with warnings.catch_warnings(record=True) as chain_warnings:
                         warnings.simplefilter("always")
 
-                        tcr_bits = {}
+                        tcr_bits = {'skip_c_checks': input_args['skip_c_checks']}
 
                         # Convert naming to output formats
                         for field in [x for x in sorted_row_bits if c in x]:
                             if sorted_row_bits[field]:
                                 tcr_bits[convert_fields[field]] = sorted_row_bits[field]
 
-                        if tcr_bits:
+                        # Determine whether or not there's supposed to be a TCR for this chain
+                        if len(tcr_bits) > 1:
 
                             # At the very least we need the relevant TCR info (V/J/CDR3)
                             if not all(section in tcr_bits for section in ['v', 'j', 'cdr3']):
@@ -146,7 +157,8 @@ if __name__ == '__main__':
                                                                    input_args['j_warning_threshold'])
                                     sorted_row_bits[c + '_nt'] = stitched
                                     sorted_row_bits[c + '_aa'] = fxn.translate_nt('N' * offset + stitched)
-                                    sorted_row_bits.update(dict(list(zip([c + x for x in stitch_list_fields], out_list))))
+                                    sorted_row_bits.update(dict(list(zip([c + x for x in stitch_list_fields],
+                                                                         out_list))))
 
                                 except Exception as message:
                                     sorted_row_bits['Warnings/Errors'] += '(' + c + ') ' + str(message)

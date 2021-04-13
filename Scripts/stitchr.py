@@ -15,7 +15,7 @@ import argparse
 import warnings
 import sys
 
-__version__ = '0.5.1'
+__version__ = '0.6.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -72,11 +72,18 @@ def args():
     parser.add_argument('-3p', '--3_prime_seq', required=False, type=str, default='',
                 help='Optional sequence to add to the 3\' out the output sequence (e.g. a stop codon).')
 
+    parser.add_argument('-xg', '--extra_genes', action='store_true', required=False, default=False,
+                help='Optional flag to use additional (non-database/-natural) '
+                     'sequences in the \'additional-genes.fasta\' file.')
+
+    parser.add_argument('-sc', '--skip_c_checks', action='store_true', required=False, default=False,
+                help='Optional flag to skip usual constant region gene checks.')
+
     return parser.parse_args()
 
 
 def stitch(specific_args, locus, tcr_info, functionality, codon_dict, j_warning_threshold):
-    """
+    """skip_c_checks
     Core function, that performs the actual TCR stitching
     :param specific_args: basic input arguments of a given rearrangement (e.g. V/J/CDR3)
     :param locus: which chain is this looking at, i.e. TRA or TRB
@@ -160,7 +167,8 @@ def stitch(specific_args, locus, tcr_info, functionality, codon_dict, j_warning_
 
     # Get the germline encoded bits
     n_term_nt, n_term_aa = fxn.tidy_n_term(done['l'] + done['v'])
-    c_term_nt, c_term_aa = fxn.tidy_c_term(done['j'] + done['c'], locus, specific_args['species'])
+    c_term_nt, c_term_aa = fxn.tidy_c_term(done['j'] + done['c'], locus,
+                                           specific_args['species'], specific_args['skip_c_checks'])
 
     # Then figure out where the CDR3 will slot in - look at the CDR3 edges to see how much overlap needs to be removed
     # Start with 4 residues chunks, move from end of V gene up to 10 residues in (very generous deletion allowance)
@@ -203,6 +211,13 @@ if __name__ == '__main__':
     input_args, chain, codons = fxn.sort_input(vars(args()))
 
     imgt_dat, tcr_functionality = fxn.get_imgt_data(chain, gene_types, input_args['species'])
+
+    if 'extra_genes' in input_args:
+        if input_args['extra_genes']:
+            imgt_dat, tcr_functionality = fxn.get_additional_genes(imgt_dat, tcr_functionality)
+            input_args['skip_c_checks'] = True
+    else:
+        input_args['skip_c_checks'] = False
 
     out_list, stitched, offset = stitch(input_args, chain, imgt_dat, tcr_functionality, codons,
                                 input_args['j_warning_threshold'])
