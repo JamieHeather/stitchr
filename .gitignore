@@ -9,6 +9,7 @@
 !bulk_input_example.tsv
 !bulk_input_template.tsv
 !Data/linkers.tsv
+!stitchr-logo.png
 TODO.md
 venv
 venv*

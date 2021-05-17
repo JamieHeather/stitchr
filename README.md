@@ -1,4 +1,6 @@
-#stiTChR 0.6.1
+![](stitchr-logo.png)
+
+# 0.6.1
 
 ### Stitch together TCR coding nucleotide sequences from V/J/CDR3 information
 
@@ -12,7 +14,7 @@ The script takes the known V/J/CDR3 information, and uses that to pull out the r
 
 ### Installation and dependencies
 
-As of version 0.4 ```stiTChR``` is designed to be run on Python 3.8, and has primarily been tested on Python 3.7.7 and 3.8.3. 
+As of version 0.4 `stitchr` is designed to be run on Python 3.8, and has primarily been tested on Python 3.7.7 and 3.8.3. 
 
 Simply clone the repo to a desired location, navigate to the Scripts directory, then you can run the script via the command line as detailed below.
 
@@ -24,7 +26,7 @@ pip3 install biopython
 
 ## Example usage 
 
-```stiTChR``` uses relative paths. Please ensure you are in the Scripts directory to run the script. 
+`Stitchr` uses relative paths. Please ensure you are in the Scripts directory to run the script. 
 
 ```bash
 python3 stitchr.py -v [IMGT V gene] -j [IMGT J gene] -cdr3 [CDR3aa]
@@ -54,11 +56,11 @@ If you request an allele for which there isn't complete sequence data, the scrip
 
 By default the script will use the TRBC gene located in the same cluster as the J gene (i.e. TRBJ1-1 through TRBJ1-6 will get TRBC1, while TRBJ2-1 through TRBJ2-7 will get TRBC2). This can be overriden (see optional arguments).
 
-By default stiTChR does not include stop codons at the end of the coding sequence; if desired, this must be specified using the 3' flag (`-3p`), i.e. `-3p TAA`, `-3p TAG`, or `-3p TGA`. Similarly, no sequence is included before that of the IMGT-recorded L1 leader sequence. If desired, this can be added using the 5' flag (`-5p`), e.g. to add the pre-start codon section of an optimal Kozak sequence: `-5p GCCGCCACC`. 
+By default `stitchr` does not include stop codons at the end of the coding sequence; if desired, this must be specified using the 3' flag (`-3p`), i.e. `-3p TAA`, `-3p TAG`, or `-3p TGA`. Similarly, no sequence is included before that of the IMGT-recorded L1 leader sequence. If desired, this can be added using the 5' flag (`-5p`), e.g. to add the pre-start codon section of an optimal Kozak sequence: `-5p GCCGCCACC`. 
 
 All required files are included in the repo. If you want to change or update the IMGT data files, you'll need to re-run `split-imgt-data.py` - see below.
 
-```StiTChR``` can be run in a higher-throughput mode, using a tab-separated input file - see the instructions for [**```thimble```**](#Thimble) below.
+`Stitchr` can be run in a higher-throughput mode, using a tab-separated input file - see the instructions for [**`thimble`**](#Thimble) below.
 
 ### Optional arguments
 
@@ -82,7 +84,7 @@ The default codon usage files are taken straight from the default Kazusa [human]
 
 #### Providing a partial amino acid sequence
 
-If you provide a partial amino acid sequence ```stiTChR``` will perform a rudimentary pairwise alignment, just to give a quick visual assessment of the quality of the sequence generation.
+If you provide a partial amino acid sequence `stitchr` will perform a rudimentary pairwise alignment, just to give a quick visual assessment of the quality of the sequence generation.
 
 #### A fancier example
 
@@ -180,9 +182,9 @@ This produces even more mismatches! This is an instance where the constant regio
 
 #### A mouse example
 
-```StiTChR``` also supports murine TCRs, however it should be noted that due to poorer quality annotations in IMGT the sequences produced should be treated with even more caution than used for human data. Different mouse strains often have different alleles (and different numbers of gene family members), so accuracy of stitched TCRs will depend both on the quality of both germline gene information and TCR clonotyping. Note that due to IMGT/GENE-DB mouse annotations at the time of writing, the most complete constant regions came from B10.D2 mice for TRAC, and B10.A mice for TRBC, so those are the mouse constant regions provided with the package.
+`Stitchr` also supports murine TCRs, however it should be noted that due to poorer quality annotations in IMGT the sequences produced should be treated with even more caution than used for human data. Different mouse strains often have different alleles (and different numbers of gene family members), so accuracy of stitched TCRs will depend both on the quality of both germline gene information and TCR clonotyping. Note that due to IMGT/GENE-DB mouse annotations at the time of writing, the most complete constant regions came from B10.D2 mice for TRAC, and B10.A mice for TRBC, so those are the mouse constant regions provided with the package.
 
-Here's an example of how to run ```stiTChR``` on everyone's favourite mouse TCR, OT-I (with the actual sequence inferred from [this plasmid on AddGene](https://www.addgene.org/52111/):
+Here's an example of how to run `stitchr` on everyone's favourite mouse TCR, OT-I (with the actual sequence inferred from [this plasmid on AddGene](https://www.addgene.org/52111/):
 
 ```bash
 python3 stitchr.py -s mouse -v TRBV12-1 -j TRBJ2-7 -cdr3 CASSRANYEQYF
@@ -191,11 +193,11 @@ python3 stitchr.py -s mouse -v TRAV14-1 -j TRAJ33 -cdr3 CAASDNYQLIW
 
 #### A note on CDR3 C-terminal residues
 
-```StiTChR``` assumes that the J gene will not undergo deletion past the C-terminal residue of the CDR3 junction (which occurs approximately in the middle of the J). Thus the code looks for the appropriate residue at the end of the CDR3, which in the majority of cases will be a phenylalanine (F). However in some cases it might be something else, like a W (not uncommon in human TRAJ/mice genes) or even something more exotic like a C, L or J (which occur in certain mouse J genes). Note that most of these non-F/W residues are found in J genes with a predicted ['ORF' IMGT status](http://www.imgt.org/IMGTScientificChart/SequenceDescription/IMGTfunctionality.html), and thus might not contribute to functioning TCRs, but stiTChR will still let you generate a plausible sequence using them.
+`Stitchr` assumes that the J gene will not undergo deletion past the C-terminal residue of the CDR3 junction (which occurs approximately in the middle of the J). Thus the code looks for the appropriate residue at the end of the CDR3, which in the majority of cases will be a phenylalanine (F). However in some cases it might be something else, like a W (not uncommon in human TRAJ/mice genes) or even something more exotic like a C, L or J (which occur in certain mouse J genes). Note that most of these non-F/W residues are found in J genes with a predicted ['ORF' IMGT status](http://www.imgt.org/IMGTScientificChart/SequenceDescription/IMGTfunctionality.html), and thus might not contribute to functioning TCRs, but `stitchr` will still let you generate a plausible sequence using them.
 
 ### Generating new IMGT input files
 
-IMGT does get updated on a schedule that doesn't necessarily link to this repo's update schedule, so you may wish to occasionally update the raw TCR gene data used by stiTChR.
+IMGT does get updated on a schedule that doesn't necessarily link to this repo's update schedule, so you may wish to occasionally update the raw TCR gene data used by `stitchr`.
 
 In order to update the input IMGT data for a given species, say humans, you can follow these steps:
 
@@ -213,16 +215,16 @@ In order to update the input IMGT data for a given species, say humans, you can 
 This script will go through the compendium fasta file and split out the separate alpha/beta chain sequences to separate files.
 
 Note that EX1+EX2+EX3+EX4 annotations may not exist for all constant regions in all species. Instead an entry can be manually produced by combining the individual entries (EX1, EX2, EX3, and EX4). 
-This is what was done for the Mus musculus TRBC genes. You don't even necessarily need all sections to be present, only up to the stop codon (presuming that's what you want in the output). mRNA/cDNA sequences make a good source of complete constant regions for loci with incomplete exon annotations. Regardless, ```stitchr``` requires that the fifth pipe ('|') delimited fasta header field is listed as 'EX1+EX2+EX3+EX4'.
+This is what was done for the Mus musculus TRBC genes. You don't even necessarily need all sections to be present, only up to the stop codon (presuming that's what you want in the output). mRNA/cDNA sequences make a good source of complete constant regions for loci with incomplete exon annotations. Regardless, `stitchr` requires that the fifth pipe ('|') delimited fasta header field is listed as 'EX1+EX2+EX3+EX4'.
 
-Also note that if you are adapting stiTChR to additional loci/species, there is an additional file that must be produced to account for the fact that some J genes do not terminate their CDR3s with a canonical phenylalanine residue. The ```J-residue-exceptions.csv``` file in each species data directory allows users to provide these explicitly. Note that for some pseudogenes it may not be immediately apparent (or relevant) what the equivalent residue should be, so one column of that csv file allows users to denote 'low confidence' non-canonical residue calls (although this information is not used by stiTChR yet).
+Also note that if you are adapting `stitchr` to additional loci/species, there is an additional file that must be produced to account for the fact that some J genes do not terminate their CDR3s with a canonical phenylalanine residue. The ```J-residue-exceptions.csv``` file in each species data directory allows users to provide these explicitly. Note that for some pseudogenes it may not be immediately apparent (or relevant) what the equivalent residue should be, so one column of that csv file allows users to denote 'low confidence' non-canonical residue calls (although this information is not used by `stitchr` yet).
 
 
 #### Providing additional gene sequences
 
 Sometimes you may wish to generate TCRs using additional gene sequences which won't be provided by IMGT (at least in the context of a given species). This can be used to introduce sequences from other loci/species, and modified or otherwise non-naturally occurring gene combinations.
 
-Genes to be included can be added to the Data/additional-genes.fasta file, and then when ```stitchr``` or ```thimble``` is run these sequences will be read in by use of the `-xg` flag. As constant region gene switching is a common modification used in TCR expression and engineering studies, human alpha/beta/gamma/delta and mouse alpha/beta constant regions have been preloaded into this file. Genes added to this fasta must have a FASTA header in the format:
+Genes to be included can be added to the Data/additional-genes.fasta file, and then when `stitchr` or `thimble` is run these sequences will be read in by use of the `-xg` flag. As constant region gene switching is a common modification used in TCR expression and engineering studies, human alpha/beta/gamma/delta and mouse alpha/beta constant regions have been preloaded into this file. Genes added to this fasta must have a FASTA header in the format:
 
 ```
 >accession/ID|gene*allele|species|functionality|sequence type
@@ -234,25 +236,25 @@ Only the second and fifth fields are important for these additional genes, and a
 
 * Functional leader sequences usually have lengths that are multiples of 3. They don't need to be, but if they're not the V gene will need to account for it to maintain the reading frame.
 * The 3' nucleotide of the J gene is the first nucleotide of the first codon of the constant region.
-* Constant regions in default settings are trimmed by the script to run up to the codon just before the first stop codon. This is not required, and stop codons can be left in if desired, but care must be taken if the intention is to use ```thimble``` with these genes to make bicistronic expression constructs. It's recommended to leave stop codons off any constant regions added to additional-genes.fasta, and then provide them in ```thimble``` instead as needed.
+* Constant regions in default settings are trimmed by the script to run up to the codon just before the first stop codon. This is not required, and stop codons can be left in if desired, but care must be taken if the intention is to use `thimble` with these genes to make bicistronic expression constructs. It's recommended to leave stop codons off any constant regions added to additional-genes.fasta, and then provide them in `thimble` instead as needed.
 * Most of the gene sequence and format checks cannot be applied, so extra care must be taken to ensure input genes are valid. For instance, using the `-xg` flag automatically sets the `-sc` flag, which skips the usual constant region frame check (as ```stitchr``` doesn't know what frame is intended, see below).
-* Extra genes added via the additional-genes.fasta file are supplemented to the working dictionaries in ```stitcher``` *after* IMGT gene sequences are read in; any extra genes with the same gene name/allele combination as one already in the IMGT dataset will overwrite the default sequence. If you wish to use both in the same rearrangement or ```thimble``` run, use novel naming in the input FASTA file - e.g. the example constant regions added have 'm' and 'h' prefixes (denoting their human or mouse origin). 
+* Extra genes added via the additional-genes.fasta file are supplemented to the working dictionaries in ```stitcher``` *after* IMGT gene sequences are read in; any extra genes with the same gene name/allele combination as one already in the IMGT dataset will overwrite the default sequence. If you wish to use both in the same rearrangement or `thimble` run, use novel naming in the input FASTA file - e.g. the example constant regions added have 'm' and 'h' prefixes (denoting their human or mouse origin). 
 
 #### Skipping constant region checks
 
-For the default loci covered (human and mouse TRA/TRB), ```stitchr``` has a constant region frame-checking function that uses known correctly-translated sequences to infer the right frame (and where appropriate, placement of endogenous stop codons). If users wish to override this checks - e.g. if they are providing their own constant region sequences via the `-xg` flag - then ```stitchr``` will instead determine the correct frame of the C terminal domain by finding the one with the longest stretch of amino acids before hitting a stop codon.
+For the default loci covered (human and mouse TRA/TRB), `stitchr` has a constant region frame-checking function that uses known correctly-translated sequences to infer the right frame (and where appropriate, placement of endogenous stop codons). If users wish to override this checks - e.g. if they are providing their own constant region sequences via the `-xg` flag - then `stitchr` will instead determine the correct frame of the C terminal domain by finding the one with the longest stretch of amino acids before hitting a stop codon.
 
 # Thimble  0.3.1
 
-### Run ```stiTChR``` high-throughput on multiple and paired TCRs
+### Run `stitchr` high-throughput on multiple and paired TCRs
 
-Instead of running ```stiTChR``` on rearrangements one by one, you can fill out the necessary details into a tab separated file (.tsv) and submit it to ```thimble```.
+Instead of running `stitchr` on rearrangements one by one, you can fill out the necessary details into a tab separated file (.tsv) and submit it to `thimble`.
 
-The format of the input data is specified in the file 'bulk_input_template.tsv', located in the root directory, with some examples shown in 'bulk_input_example.tsv'. All of the recombination-specific fields that can ordinarily be specified at the command line in ```stiTChR``` can be applied per row using ```thimble```, with the exception of species which must be kept the same for all TCRs in a given run.
+The format of the input data is specified in the file 'bulk_input_template.tsv', located in the root directory, with some examples shown in 'bulk_input_example.tsv'. All of the recombination-specific fields that can ordinarily be specified at the command line in `stitchr` can be applied per row using `thimble`, with the exception of species which must be kept the same for all TCRs in a given run.
 
-Note that the input to ```thimble``` can also be used to generate rearrangements for both the alpha and beta chain of a given clonotype on one row, with additional options to link those sequences together (e.g. for gene synthesis). A number of x2A potential linkers are provided in the Data/linkers.tsv file. If custom linkers are desired, you can either edit that linkers file or just enter the nucleotide sequence of the desired linker into the Linker column of the input tsv. ```thimble``` will allow linkers that disrupt the frame (i.e. have a length not divisible by 3) but will throw a warning, so use carefully. 5' and 3' sequences can be added to both ends of either chain in a heterodimer, again allowing but throwing a warning if a custom sequence could potentially disrupt the frame. 
+Note that the input to `thimble` can also be used to generate rearrangements for both the alpha and beta chain of a given clonotype on one row, with additional options to link those sequences together (e.g. for gene synthesis). A number of x2A potential linkers are provided in the Data/linkers.tsv file. If custom linkers are desired, you can either edit that linkers file or just enter the nucleotide sequence of the desired linker into the Linker column of the input tsv. `thimble` will allow linkers that disrupt the frame (i.e. have a length not divisible by 3) but will throw a warning, so use carefully. 5' and 3' sequences can be added to both ends of either chain in a heterodimer, again allowing but throwing a warning if a custom sequence could potentially disrupt the frame. 
 
-By default, ```thimble``` produces linked TCRs in the order 5' - beta chain - linker - alpha chain - 3', as [this has been shown to increase the surface presentation of ectopic TCRs](https://doi.org/10.1038/mtna.2012.52). However this can still be specified with the 'Link_order' column in the input template file, using 'AB' or 'BA' to refer to 'alpha-beta' or 'beta-alpha' orders respectively. Link order is ignored if no linker is provided.
+By default, `thimble` produces linked TCRs in the order 5' - beta chain - linker - alpha chain - 3', as [this has been shown to increase the surface presentation of ectopic TCRs](https://doi.org/10.1038/mtna.2012.52). However this can still be specified with the 'Link_order' column in the input template file, using 'AB' or 'BA' to refer to 'alpha-beta' or 'beta-alpha' orders respectively. Link order is ignored if no linker is provided.
 
 Any warnings and errors generated on a per-TCR basis are recorded in the final output file; it is recommended that users check this information, to ensure they understand the potential limitations of a specific sequence.  
 
