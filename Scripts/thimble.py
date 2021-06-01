@@ -18,7 +18,7 @@ import argparse
 import sys
 import os
 
-__version__ = '0.4.1'
+__version__ = '0.4.2'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -110,7 +110,7 @@ if __name__ == '__main__':
 
         for line in in_file:
 
-            bits = line.replace('\n', '').replace('\"', '').split('\t')
+            bits = line.replace('\n', '').replace('\r', '').replace('\"', '').split('\t')
 
             # Check there's the right number of columns (with the right headers)
             if line_count == 0:

@@ -15,12 +15,9 @@ import re
 import sys
 import textwrap
 import datetime
-from Bio.Seq import translate
-from Bio import BiopythonWarning
 import warnings
-warnings.simplefilter('ignore', BiopythonWarning)
 
-__version__ = '0.6.1'
+__version__ = '0.7.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -460,15 +457,6 @@ def get_optimal_codons(specified_cu_file, species):
     return out_dict
 
 
-def translate_nt(nt_seq):
-    """
-    :param nt_seq: DNA sequence to translate
-    :return: amino acid sequence, translated using biopython
-    """
-
-    return translate(nt_seq)
-
-
 def get_j_exception_residues(species):
     """
     :param species: HUMAN or MOUSE
@@ -582,3 +570,39 @@ def opener(in_file):
         return gzip.open(in_file, 'rt')
     else:
         return open(in_file, 'r')
+
+
+def translate_nt(nt_seq):
+    """
+    :param nt_seq: Nucleotide sequence to be translated
+    :return: corresponding amino acid sequence
+    """
+
+    aa_seq = ''
+    for i in range(0, len(nt_seq), 3):
+        codon = nt_seq[i:i+3]
+        if len(codon) == 3:
+            try:
+                aa_seq += codons[codon]
+            except:
+                raise IOError("Cannot translate codon: " + codon)
+
+    return aa_seq
+
+
+codons = {'AAA': 'K', 'AAC': 'N', 'AAG': 'K', 'AAT': 'N',
+          'ACA': 'T', 'ACC': 'T', 'ACG': 'T', 'ACT': 'T',
+          'AGA': 'R', 'AGC': 'S', 'AGG': 'R', 'AGT': 'S',
+          'ATA': 'I', 'ATC': 'I', 'ATG': 'M', 'ATT': 'I',
+          'CAA': 'Q', 'CAC': 'H', 'CAG': 'Q', 'CAT': 'H',
+          'CCA': 'P', 'CCC': 'P', 'CCG': 'P', 'CCT': 'P',
+          'CGA': 'R', 'CGC': 'R', 'CGG': 'R', 'CGT': 'R',
+          'CTA': 'L', 'CTC': 'L', 'CTG': 'L', 'CTT': 'L',
+          'GAA': 'E', 'GAC': 'D', 'GAG': 'E', 'GAT': 'D',
+          'GCA': 'A', 'GCC': 'A', 'GCG': 'A', 'GCT': 'A',
+          'GGA': 'G', 'GGC': 'G', 'GGG': 'G', 'GGT': 'G',
+          'GTA': 'V', 'GTC': 'V', 'GTG': 'V', 'GTT': 'V',
+          'TAA': '*', 'TAC': 'Y', 'TAG': '*', 'TAT': 'Y',
+          'TCA': 'S', 'TCC': 'S', 'TCG': 'S', 'TCT': 'S',
+          'TGA': '*', 'TGC': 'C', 'TGG': 'W', 'TGT': 'C',
+          'TTA': 'L', 'TTC': 'F', 'TTG': 'L', 'TTT': 'F'}

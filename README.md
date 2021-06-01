@@ -14,15 +14,9 @@ The script takes the known V/J/CDR3 information, and uses that to pull out the r
 
 ### Installation and dependencies
 
-As of version 0.4 `stitchr` is designed to be run on Python 3.8, and has primarily been tested on Python 3.7.7 and 3.8.3. 
+`Stitchr` is designed to be run on Python 3, and has primarily been tested on Python 3.7.7 and 3.8.3. 
 
 Simply clone the repo to a desired location, navigate to the Scripts directory, then you can run the script via the command line as detailed below.
-
-The only non-default package used is Biopython, which can be installed via `pip`:
-
-```bash
-pip3 install biopython
-```
 
 ## Example usage 
 
@@ -34,6 +28,7 @@ python3 stitchr.py -v [IMGT V gene] -j [IMGT J gene] -cdr3 [CDR3aa]
 python3 stitchr.py -v TRBV7-3*01 -j TRBJ1-1*01 -cdr3 CASSYLQAQYTEAFF
 
 python3 stitchr.py -v TRAV1-2 -j TRAJ33 -cdr3 CAVLDSNYQLIW
+
 ```
 
 ### Usage notes
