@@ -118,7 +118,7 @@ col2 = [
 
     [sg.Text('TRAJ')], [sg.InputText('', key='TRAJ', size=sz)],
 
-    [sg.Text('TRA CDR3')], [sg.InputText('', key='TRA_CDR3', size=sz)],
+    [sg.Text('TRA CDR3 junction')], [sg.InputText('', key='TRA_CDR3', size=sz)],
 
     [sg.Text('TRA name')], [sg.InputText('', key='TRA_name', size=sz)],
 
@@ -146,7 +146,7 @@ col3 = [
 
     [sg.Text('TRBJ')], [sg.InputText('', key='TRBJ', size=sz)],
 
-    [sg.Text('TRB CDR3')], [sg.InputText('', key='TRB_CDR3', size=sz)],
+    [sg.Text('TRB CDR3 junction')], [sg.InputText('', key='TRB_CDR3', size=sz)],
 
     [sg.Text('TRB name')], [sg.InputText('', key='TRB_name', size=sz)],
 

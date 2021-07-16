@@ -1,4 +1,4 @@
-![](stitchr-logo.png)
+![](Images/stitchr-logo.png)
 
 # 0.6.1
 
@@ -17,6 +17,12 @@ The script takes the known V/J/CDR3 information, and uses that to pull out the r
 `Stitchr` is designed to be run on Python 3, and has primarily been tested on Python 3.7.7 and 3.8.3. 
 
 Simply clone the repo to a desired location, navigate to the Scripts directory, then you can run the script via the command line as detailed below.
+
+The only non-standard Python module used is `PySimpleGUI`, which is only required for users that wish to use the [**graphical user interface version (`gui-stitchr`)**](#gui-stitchr). This can be installed via `pip`, e.g.:
+
+```bash
+pip3 install PySimpleGUI
+```
 
 ## Example usage 
 
@@ -68,7 +74,7 @@ All required files are included in the repo. If you want to change or update the
 * `-n` - provide a name for the TCR chain, which will be included in the FASTA file header
 * `-3p` - provide a sequence to come immediately after the end of the constant region (e.g. a stop codon)
 * `-5p` - provide a sequence to come immediately before the start of the L1 leader sequence (e.g. a Kozak sequence)
-* `-xg` - toggle providing additional/custom genes to be stitched into TCR transcripts in the Data/additiona-genes.fasta file
+* `-xg` - toggle providing additional/custom genes to be stitched into TCR transcripts in the Data/additional-genes.fasta file
 * `-sc` - toggle skipping the constant region gene check
 
 #### Codon usage files
@@ -239,13 +245,14 @@ Only the second and fifth fields are important for these additional genes, and a
 
 For the default loci covered (human and mouse TRA/TRB), `stitchr` has a constant region frame-checking function that uses known correctly-translated sequences to infer the right frame (and where appropriate, placement of endogenous stop codons). If users wish to override this checks - e.g. if they are providing their own constant region sequences via the `-xg` flag - then `stitchr` will instead determine the correct frame of the C terminal domain by finding the one with the longest stretch of amino acids before hitting a stop codon.
 
-# Thimble  0.3.1
+# Thimble 
+### 0.3.1
 
 ### Run `stitchr` high-throughput on multiple and paired TCRs
 
 Instead of running `stitchr` on rearrangements one by one, you can fill out the necessary details into a tab separated file (.tsv) and submit it to `thimble`.
 
-The format of the input data is specified in the file 'bulk_input_template.tsv', located in the root directory, with some examples shown in 'bulk_input_example.tsv'. All of the recombination-specific fields that can ordinarily be specified at the command line in `stitchr` can be applied per row using `thimble`, with the exception of species which must be kept the same for all TCRs in a given run.
+The format of the input data is specified in the file 'input_template.tsv', located in the Templates directory, with some examples shown in the 'thimble_input_example.tsv' file. All of the recombination-specific fields that can ordinarily be specified at the command line in `stitchr` can be applied per row using `thimble`, with the exception of species (which must be kept the same for all TCRs in a given `thimble` run).
 
 Note that the input to `thimble` can also be used to generate rearrangements for both the alpha and beta chain of a given clonotype on one row, with additional options to link those sequences together (e.g. for gene synthesis). A number of x2A potential linkers are provided in the Data/linkers.tsv file. If custom linkers are desired, you can either edit that linkers file or just enter the nucleotide sequence of the desired linker into the Linker column of the input tsv. `thimble` will allow linkers that disrupt the frame (i.e. have a length not divisible by 3) but will throw a warning, so use carefully. 5' and 3' sequences can be added to both ends of either chain in a heterodimer, again allowing but throwing a warning if a custom sequence could potentially disrupt the frame. 
 
@@ -255,6 +262,8 @@ Any warnings and errors generated on a per-TCR basis are recorded in the final o
 
 
 ## Example usage 
+
+Like with `stitchr` itself, `thimble` is designed to be run from inside the Scripts directory.
 
 ```bash
 python3 thimble.py -in [input tsv] -o [output tsv] 
@@ -269,3 +278,51 @@ python3 thimble.py -in ../bulk_input_example.tsv -o testing
 * `-cu` - use an alternative codon usage file, from which to generate the sequences for the non-templated residues (see below)
 * `-xg` - toggle providing additional/custom genes to be stitched into TCR transcripts in the Data/additiona-genes.fasta file
 * `-jt` - length of J gene substring that has to be matched to avoid throwing a warning (decrease to get fewer notices about short J matches), default = 3
+
+# GUI-stitchr 
+### 0.2.0
+
+A graphical interface has been developed, for users that are less comfortable at the command line or who prefer a more immediately interactive session. It can be launched from inside the Scripts directory like so:
+
+```bash
+python3 gui-stitchr.py
+```
+
+This will launch the PySimpleGUI-powered interface that replicates the core functionality of `stitchr`, with some of the additional capabilities of `thimble` - specifically the ability to generate bicistronic paired alpha/beta sequences. 
+
+The fields and buttons of the interface are shown in the two following images, where the upper image shows the options at launch, and the second image shows a completed stitched TCR with the link option selected. Note that as with regular `stitchr`, `gui-stitchr` requires a V, J, and CDR3 junction sequence as a minimum to produce a sequence for either chain. Furthermore, as with `thimble`, it can only link chains for a single TCR if both independent chains are successfully stitchable.
+
+`Gui-stitchr` can use the same tab-delimited input template as `thimble` (Templates/input_template.tsv), but it only takes one TCR at a time. Any subsequent rows will be ignored. An example paired human TCR file is included for reference (Templates/gui_input_example.tsv).
+
+1. '**Example data**'. Autofills the menu with valid example parameters.
+2. '**Reset form**'. Clears the form.
+3. '**Find TCR input file**'. Loads a file browser window to locate a TCR input file as specified in the input_template.tsv format.
+4. '**Upload TCR details**'. Having selected a file with option (3), this button uploads the data and uses it to population the fields
+5. '**Species**'. Click either radio button to select human or mouse.
+6. '**Additional genes**'. If you wish to add additional genes in the TCRs which are not featured in the pre-programmed germline data for this species, they can be added here (as per using the `-xg` flag in `stitchr/thimble`) in FASTA format. Note that [unlike when provided genes via the additional-genes.fasta file](#providing-additional-gene-sequences), sequences should be provided with a simple FASTA header identifier, just with a short TCR name (and ideally with an allele number, *\*XX*). FASTA names must also not be the name of an existing gene. As the TCR gene names are included in the output, it's recommended that a name that will not accidentally be mistaken as another/currently described germline gene is used.
+7. '**Link TRA/TRB**'. Checkbox to enable linking of stitched alpha and beta chains.
+8. '**Linker**'. If the checkbox in (7) is ticked, stitched TCRs will be joined by the linker specified in this dropdown. Options are drawn from the Data/linkers.tsv file, or users can select 'Custom', which will make a text box appear. Note that no sanity checks (e.g. DNA validity or reading frame) are made for linker/linked sequences, so users should be sure of what linker sequences they choose to use.
+9. '**Link order**'. If the checkbox in (7) is ticked, stitched TCRs will be produced in this order. By default 'BA' (beta/alpha) is selected.
+10. '**Run Stitchr**'. Button to run `stitchr` using the information filled in elsewhere in the interface. 
+11. '**Export output**'. Save the stitched TCR DNA sequences as a FASTA file. 
+12. '**Exit**'. Closes the `gui-stitchr` interface.
+13. '**TRAV**'. TCR alpha chain V gene.
+14. '**TRAJ**'. TCR alpha chain J gene.
+15. '**TRA CDR3 junction**'. TCR alpha chain CDR3 junction sequence (from conserved C to F).
+16. '**TRA name**'. Arbitrary string to name the alpha chain (optional).
+17. '**TRA leader**'. Optionally select an alternative leader sequence. As with regular `stitchr`, this can be either a specified gene entry in the pre-programmed IMGT data or supplied via box (6), or alternatively a simple DNA string can be entered (e.g. 'ATG' for a minimal start codon in the absence of a leader sequence).
+18. '**TRAC**'. TCR alpha chain constant region.
+19. '**TRA 5' sequence**'. Optional arbitrary sequence to be appended to the 5' of the alpha chain. Note that no sanity checks are applied to this sequence.
+20. '**TRA 3' sequence**'. Optional arbitrary sequence to be appended to the 3' of the alpha chain. Note that no sanity checks are applied to this sequence.
+21. '**TRA out**'. Text box into which stitched alpha chain sequences will be written.
+22. '**TRB parameters**'. As with items 13-21, but for the beta chain.
+23. '**Linked out**'.
+
+![](Images/gui-stitchr-1.png)
+
+![](Images/gui-stitchr-2.png)
+
+
+
+
+
