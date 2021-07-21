@@ -17,7 +17,7 @@ import textwrap
 import datetime
 import warnings
 
-__version__ = '0.7.1'
+__version__ = '0.8.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -120,19 +120,9 @@ def sort_input(cmd_line_args):
     """
     tidied_args = tidy_input(cmd_line_args)
 
-    # Check the CDR3
-    if len(tidied_args['cdr3']) < 8:
-        raise ValueError("CDR3 is too short (< 8 amino acids)")
-
     # Check the species is an appropriate one
     if tidied_args['species'] not in ['HUMAN', 'MOUSE']:
         raise ValueError("Invalid species option given. Only acceptable defaults are \'human\' or \'mouse\'.")
-
-    # Get codon data, and use to check that there's no unexpected characters in the CDR3
-    codons = get_optimal_codons(tidied_args['codon_usage'], tidied_args['species'])
-    if len([x for x in list(set([x for x in tidied_args['cdr3']])) if x not in list(codons.keys())]) > 0:
-        raise ValueError("Unexpected character in CDR3 string. "
-                         "Please use only one-letter standard amino acid designations.")
 
     # If additional optional 5'/3' sequences are provided, check they are valid DNA sequences
     for end in ['5', '3']:
@@ -146,7 +136,7 @@ def sort_input(cmd_line_args):
 
     chain = get_chain(tidied_args['v'], tidied_args['j'])
     finished_args = autofill_input(tidied_args, chain)
-    return finished_args, chain, codons
+    return finished_args, chain
 
 
 def tidy_input(cmd_line_args):

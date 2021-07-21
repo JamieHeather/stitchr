@@ -1,6 +1,6 @@
 ![](Images/stitchr-logo.png)
 
-# 0.6.1
+# 0.7.0
 
 ### Stitch together TCR coding nucleotide sequences from V/J/CDR3 information
 
@@ -8,9 +8,9 @@
 
 ### Summary
 
-Sometimes you need a complete TCR nucleotide or amino acid sequence, but all you have is limited information. This script aims to generate *a*\* coding nucleotide sequence for a given rearrangement (e.g. for use when generating TCR expression vectors) in those situations.
+Sometimes you need a complete TCR nucleotide or amino acid sequence, but all you have is limited information. This script aims to generate a coding nucleotide sequence for a given rearrangement (e.g. for use when generating TCR expression vectors) in those situations.
 
-The script takes the known V/J/CDR3 information, and uses that to pull out the relevant germline TCR nucleotide sequences and stitch them together, using common codons to fill in the non-templated regions. Its modular approach can be used for the automated generation of TCR sequences for gene synthesis and functional testing.
+The script takes the known V/J/CDR3 information, and uses that to pull out the relevant germline TCR nucleotide sequences and stitch them together. Its modular approach can be used for the automated generation of TCR sequences for gene synthesis and functional testing.
 
 ### Installation and dependencies
 
@@ -26,27 +26,26 @@ pip3 install PySimpleGUI
 
 ## Example usage 
 
-`Stitchr` uses relative paths. Please ensure you are in the Scripts directory to run the script. 
+`Stitchr` uses relative paths. Please ensure you are in the Scripts directory to run the script. The only required fields are the minimal components describing a single rearranged alpha or beta chain: V gene name, J gene name, and CDR3 sequence (either DNA or amino acids).
 
 ```bash
 python3 stitchr.py -v [IMGT V gene] -j [IMGT J gene] -cdr3 [CDR3aa]
 
 python3 stitchr.py -v TRBV7-3*01 -j TRBJ1-1*01 -cdr3 CASSYLQAQYTEAFF
 
-python3 stitchr.py -v TRAV1-2 -j TRAJ33 -cdr3 CAVLDSNYQLIW
-
+python3 stitchr.py -v TRAV1-2 -j TRAJ33 -cdr3 TGTGCTGTGCTGGATAGCAACTATCAGTTAATCTGG
 ```
 
 ### Usage notes
 
-*This script will almost certainly not produce the original recombined sequences that encoded the original TCRs; it merely recreates an equivalent full length sequence that will encode the same amino acid sequences. It aims to produce a sequence as close to germline as possible - so all CDR3 residues that *can* be germline encoded are such, in this ouput. Non-templated residues in the CDR3 (or those templated by the D gene, which is treated as non-templated here) are chosen from known codon usage frequencies.
+This script can take either amino acid or nucleotide sequences for the CDR3 junction. However when submitting an amino acid CDR3 sequence, `stitchr` will in most cases **not** produce the actual recombined sequences that encoded the original TCRs, apart from a few edge cases (such as particularly germ-like like alpha chain reararngements). When provided with a nucleotide CDR3 sequence `stitchr` can simply line up the edges of the V and the J and pop it in. However when given an amino acid CDR3 sequence, `stitchr` recreates an equivalent full length DNA sequence that will encode the same protein sequence. It aims to produce a sequence as close to germline as possible, so all CDR3 residues that *can* be germline encoded by the V and J genes are. Non-templated residues in the CDR3 (or those templated by the D gene, which is treated as non-templated for the purpose of stitching) are chosen from taking the most commonly used codon per residue.
 
 This script currently only works on human and mouse alpha/beta TCR chains, but should be readily adapted to any other species/locus providing you can get all the correct data in IMGT format.
 
 Care must be taken to ensure that the correct TCR informaton is input. E.g. ensure that:
 * You're using proper IMGT gene nomenclature
     * Older/deprecated gene names will not work
-* You have the correct and full [CDR3 **junction** sequence](http://www.imgt.org/FAQ/#question39)
+* You have the correct and full [CDR3 **junction** sequence](http://www.imgt.org/FAQ/#question39), either as amino acid or DNA sequences 
     * I.e. running inclusively from the conserved cysteine to the conserved phenylalanine (or rarely, tryptophan) residues
 * You are using the right alleles for the TCR genes in question if known (i.e. the bit after the asterisk in the gene name)
     * This is especially important when making mouse TCRs, as different strains have their own alleles for many genes
@@ -246,7 +245,7 @@ Only the second and fifth fields are important for these additional genes, and a
 For the default loci covered (human and mouse TRA/TRB), `stitchr` has a constant region frame-checking function that uses known correctly-translated sequences to infer the right frame (and where appropriate, placement of endogenous stop codons). If users wish to override this checks - e.g. if they are providing their own constant region sequences via the `-xg` flag - then `stitchr` will instead determine the correct frame of the C terminal domain by finding the one with the longest stretch of amino acids before hitting a stop codon.
 
 # Thimble 
-### 0.3.1
+### 0.4.2
 
 ### Run `stitchr` high-throughput on multiple and paired TCRs
 
@@ -292,7 +291,7 @@ This will launch the PySimpleGUI-powered interface that replicates the core func
 
 The fields and buttons of the interface are shown in the two following images, where the upper image shows the options at launch, and the second image shows a completed stitched TCR with the link option selected. Note that as with regular `stitchr`, `gui-stitchr` requires a V, J, and CDR3 junction sequence as a minimum to produce a sequence for either chain. Furthermore, as with `thimble`, it can only link chains for a single TCR if both independent chains are successfully stitchable.
 
-`Gui-stitchr` can use the same tab-delimited input template as `thimble` (Templates/input_template.tsv), but it only takes one TCR at a time. Any subsequent rows will be ignored. An example paired human TCR file is included for reference (Templates/gui_input_example.tsv).
+`Gui-stitchr` can use the same tab-delimited input template as `thimble` (Templates/input_template.tsv), but it only takes one TCR at a time. Any rows after the second in the template input file will be ignored. An example paired human TCR file is included for reference (Templates/gui_input_example.tsv).
 
 1. '**Example data**'. Autofills the menu with valid example parameters.
 2. '**Reset form**'. Clears the form.
@@ -308,7 +307,7 @@ The fields and buttons of the interface are shown in the two following images, w
 12. '**Exit**'. Closes the `gui-stitchr` interface.
 13. '**TRAV**'. TCR alpha chain V gene.
 14. '**TRAJ**'. TCR alpha chain J gene.
-15. '**TRA CDR3 junction**'. TCR alpha chain CDR3 junction sequence (from conserved C to F).
+15. '**TRA CDR3 junction**'. TCR alpha chain CDR3 junction sequence (from conserved C to F, DNA or amino acid).
 16. '**TRA name**'. Arbitrary string to name the alpha chain (optional).
 17. '**TRA leader**'. Optionally select an alternative leader sequence. As with regular `stitchr`, this can be either a specified gene entry in the pre-programmed IMGT data or supplied via box (6), or alternatively a simple DNA string can be entered (e.g. 'ATG' for a minimal start codon in the absence of a leader sequence).
 18. '**TRAC**'. TCR alpha chain constant region.
@@ -316,7 +315,7 @@ The fields and buttons of the interface are shown in the two following images, w
 20. '**TRA 3' sequence**'. Optional arbitrary sequence to be appended to the 3' of the alpha chain. Note that no sanity checks are applied to this sequence.
 21. '**TRA out**'. Text box into which stitched alpha chain sequences will be written.
 22. '**TRB parameters**'. As with items 13-21, but for the beta chain.
-23. '**Linked out**'.
+23. '**Linked out**'. If the checkbox at (7) is ticked and both the TRA and TRB chains are successfully stitched, this box outputs the combined linked sequences, connected by the sequence in (8) in the order specified in (9).
 
 ![](Images/gui-stitchr-1.png)
 

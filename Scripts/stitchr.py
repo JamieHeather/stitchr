@@ -15,7 +15,7 @@ import argparse
 import warnings
 import sys
 
-__version__ = '0.6.1'
+__version__ = '0.7.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -83,7 +83,7 @@ def args():
 
 
 def stitch(specific_args, locus, tcr_info, functionality, codon_dict, j_warning_threshold):
-    """skip_c_checks
+    """
     Core function, that performs the actual TCR stitching
     :param specific_args: basic input arguments of a given rearrangement (e.g. V/J/CDR3)
     :param locus: which chain is this looking at, i.e. TRA or TRB
@@ -106,6 +106,7 @@ def stitch(specific_args, locus, tcr_info, functionality, codon_dict, j_warning_
         else:
             gene = specific_args[r]
             allele = '01'
+            warnings.warn("No allele specified for " + gene + " - defaulting to *01. ")
             # TODO if  there were a 'strain' option for mice, appropriate allele selection would happen here
 
         # Check this gene exists
@@ -119,14 +120,14 @@ def stitch(specific_args, locus, tcr_info, functionality, codon_dict, j_warning_
 
                 # Check it's likely to translate in frame
                 if len(specific_args['l']) % 3 != 0:
-                    warnings.warn("User specified leader sequence is not evenly divisible by 3. "
-                                  "Stitched TCR frame will likely be wrong.")
+                    warnings.warn("User specified leader sequence is not evenly divisible by 3 - "
+                                  "stitched TCR frame will likely be wrong. ")
 
                 # ...and jump ahead to the stitching (skipping irrelevant TCR gene checks)
                 continue
 
             raise ValueError("Error: " + gene +
-                             " is not found in the IMGT data for this chain/species. Please check your gene name.")
+                             " is not found in the IMGT data for this chain/species. Please check your gene name. ")
 
         # And if it does, check whether or not the listed allele has a present value
         if allele not in tcr_info[regions[r]][gene]:
@@ -157,13 +158,32 @@ def stitch(specific_args, locus, tcr_info, functionality, codon_dict, j_warning_
         warnings.warn("Warning: " + used_alleles['j'] + " has a \'low confidence\' CDR3-ending motif. ")
 
     # TODO allow users to force ignore the J CDR3 terminal residue check?
+
+    # Then determine whether CDR3 has been provided in amino or nucleic acid form
+    if fxn.dna_check(specific_args['cdr3']):
+        specific_args['cdr3_nt'] = specific_args['cdr3']
+        specific_args['cdr3'] = fxn.translate_nt(specific_args['cdr3_nt'])
+        warnings.warn("CDR3 junction provided as DNA sequence: \'" + specific_args['cdr3_nt'] + '\'. ')
+        if len(specific_args['cdr3_nt']) % 3 != 0:
+            warnings.warn("Warning: length of CDR3 DNA sequence provided is not evenly divisible by 3 - "
+                          "stitched TCR frame will likely be wrong. ")
+
+    # Check the CDR3 isn't too short
+    if len(specific_args['cdr3']) < 8:
+        raise ValueError("CDR3 is too short (< 8 amino acids)")
+
+    # Get codon data, and use to check that there's no unexpected characters in the CDR3
+    if len([x for x in list(set([x for x in specific_args['cdr3']])) if x not in list(codon_dict.keys())]) > 0:
+        raise ValueError("Unexpected character in CDR3 string. "
+                         "Please use only one-letter standard amino acid designations. ")
+
     # Then check the C-terminus of the CDR3 has an appropriate residue (putting the default F in the dict if not there)
     if used_alleles['j'] not in j_residue_exceptions:
         j_residue_exceptions[used_alleles['j']] = 'F'
 
     if specific_args['cdr3'][-1] != j_residue_exceptions[used_alleles['j']]:
         raise ValueError("Error: CDR3 provided does not end with the expected residue for this J gene (" +
-                    j_residue_exceptions[used_alleles['j']] + "). Deletion this far in to the J is extremely unlikely. ")
+                  j_residue_exceptions[used_alleles['j']] + "). Deletion this far in to the J is extremely unlikely. ")
 
     # Get the germline encoded bits
     n_term_nt, n_term_aa = fxn.tidy_n_term(done['l'] + done['v'])
@@ -176,9 +196,14 @@ def stitch(specific_args, locus, tcr_info, functionality, codon_dict, j_warning_
     c_term_nt_trimmed, cdr3_c_end = fxn.determine_j_interface(specific_args['cdr3'], c_term_nt, c_term_aa,
                                                               j_warning_threshold)
 
-    # Generate the non-templated sequences using common codons established earlier
-    non_templated_aa = specific_args['cdr3'][cdr3_n_offset:cdr3_c_end]
-    non_templated_nt = fxn.rev_translate(non_templated_aa, codon_dict)
+    # Determine non-templated CDR3 sequence (either from codon-dict determined generation, or provided NT sequence)
+    if 'cdr3_nt' in specific_args:
+        non_templated_nt = specific_args['cdr3_nt'][cdr3_n_offset*3:cdr3_c_end*3]
+
+    else:
+        # Generate the non-templated sequences using common codons established earlier
+        non_templated_aa = specific_args['cdr3'][cdr3_n_offset:cdr3_c_end]
+        non_templated_nt = fxn.rev_translate(non_templated_aa, codon_dict)
 
     # If optional 5'/3' sequences are specified, add them to the relevant place
     if '5_prime_seq' in specific_args:
@@ -208,8 +233,8 @@ if __name__ == '__main__':
 
     # Get input arguments, determine the TCR chain in use, get codon table, then load the IMGT data in
     fxn.check_scripts_dir()
-    input_args, chain, codons = fxn.sort_input(vars(args()))
-
+    input_args, chain = fxn.sort_input(vars(args()))
+    codons = fxn.get_optimal_codons(input_args['codon_usage'], input_args['species'])
     imgt_dat, tcr_functionality = fxn.get_imgt_data(chain, gene_types, input_args['species'])
 
     if 'extra_genes' in input_args:
