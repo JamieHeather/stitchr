@@ -17,7 +17,7 @@ import thimble as th
 import collections as coll
 import warnings
 
-__version__ = '0.2.0'
+__version__ = '0.3.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -95,6 +95,8 @@ col1 = [
     [sg.Text('Link order', size=third_sz, font=(fnt, 12))],
     [sg.Radio('AB', "RADIO2", key='rad_AB'), sg.Radio('BA', "RADIO2", key='rad_BA', default=True)],
 
+    [sg.Checkbox('Seamless stitching', key='chk_seamless', enable_events=True, font=(fnt, 12))],
+
     [sg.Button('Run Stitchr', size=(int(box_width/4), 2), font=(fnt, 20))],
 
     [sg.InputText(key='Export output', do_not_clear=False, enable_events=True, visible=False,
@@ -104,9 +106,11 @@ col1 = [
 
     sg.Button('Exit', size=quart_sz)],
 
-    [sg.Text('Linked out', key='linked_out_text', visible=False)],
-    [sg.MLine(default_text='', size=(int(box_width/2), 10), key='linked_out', visible=False, font=out_box_font)]
+    [sg.Text('Linked out', key='linked_out_text')],
+    [sg.MLine(default_text='', size=(int(box_width/2), 10), key='linked_out',font=out_box_font)],
 
+    [sg.Text('Linked log', key='linked_log_text')],
+    [sg.MLine(default_text='', size=(int(box_width / 2), 5), key='linked_log', font=out_box_font)],
 ]
 
 # Alpha column
@@ -133,7 +137,10 @@ col2 = [
      sg.InputText('', key='TRA_3_prime_seq', size=half_sz)],
 
     [sg.Text('TRA out')],
-    [sg.MLine(default_text='', size=(box_width-9, 20), key='TRA_out', font=out_box_font)]
+    [sg.MLine(default_text='', size=(box_width-9, 20), key='TRA_out', font=out_box_font)],
+
+    [sg.Text('TRA log', key='TRA_log_text')],
+    [sg.MLine(default_text='', size=(box_width-9, 5), key='TRA_log', font=out_box_font)]
 
 ]
 
@@ -161,7 +168,10 @@ col3 = [
      sg.InputText('', key='TRB_3_prime_seq', size=half_sz)],
 
     [sg.Text('TRB out')],
-    [sg.MLine(default_text='', size=(box_width-9, 20), key='TRB_out', font=out_box_font)]
+    [sg.MLine(default_text='', size=(box_width-9, 20), key='TRB_out', font=out_box_font)],
+
+    [sg.Text('TRB log', key='TRB_log_text')],
+    [sg.MLine(default_text='', size=(box_width-9, 5), key='TRB_log', font=out_box_font)]
 
 ]
 
@@ -169,7 +179,9 @@ layout = [[sg.Column(col1, element_justification='c'),
            sg.Column(col2, element_justification='l'),
            sg.Column(col3, element_justification='l')]]
 
-window = sg.Window("stitchr", layout)
+window = sg.Window("stitchr", layout, finalize=True)
+
+window.bind('<Escape>', 'Exit')
 
 example_data = {
     'HUMAN': {
@@ -225,10 +237,15 @@ while True:
 
     elif event == 'Reset form':
 
-        window['linked_out'].update('')
-
         for field in example_data[species]:
             window[field].update('')
+
+        for field in ['linked_out', 'linked_out_text',
+                      'linked_log', 'linked_log_text',
+                      'TRA_log', 'TRA_log_text',
+                      'TRB_log', 'TRB_log_text']:
+            if field.endswith('log') or field.endswith('out'):
+                window[field].update('')
 
         outputs = coll.defaultdict()
 
@@ -277,7 +294,7 @@ while True:
                                     window['rad_AB'].update(value=False)
                                     window['rad_BA'].update(value=True)
                                 else:
-                                    raise IOError("Invalid link order input - must be AB or BA.")
+                                    raise warnings.warn("Invalid link order input - must be AB or BA.")
 
                         # ... and linker sequence
                         elif th.in_headers[x] == 'Linker':
@@ -297,6 +314,11 @@ while True:
                 line_count += 1
 
     elif event == 'Run Stitchr':
+        
+        warning_msgs = coll.defaultdict(str)
+
+        window['linked_out'].update('')
+        window['linked_log'].update('')
 
         # Disable stitchr button while code is running
         window['Run Stitchr'].update(disabled=True)
@@ -328,106 +350,134 @@ while True:
                 if not fxn.dna_check(extra_gene[1]):
                     warnings.warn("Warning: user-provided gene " + extra_gene[0] + " contains non-DNA sequences.")
 
+        # Check if seamless stitching selected
+        if values['chk_seamless']:
+            seamless = True
+        else:
+            seamless = False
+
         # Then stitch each individual chain...
         for chain in ['TRA', 'TRB']:
 
-            if values[chain + 'V'] and values[chain + 'J'] and values[chain + '_CDR3']:
+            window[chain + '_out'].update('')
+            window[chain + '_log'].update('')
 
-                try:
-                    tcr_dat, functionality = fxn.get_imgt_data(chain, st.gene_types, species)
+            with warnings.catch_warnings(record=True) as chain_log:
+                warnings.simplefilter("always")
 
-                    # If additional genes provided, just add them to all possible gene segment types
-                    if values['additional_genes'] != extra_gene_text + '\n':
-                        for extra_gene in outputs['additional_fastas']:
-                            gene, allele = extra_gene[0].split('*')
+                if values[chain + 'V'] and values[chain + 'J'] and values[chain + '_CDR3']:
+    
+                    try:
+                        tcr_dat, functionality, partial = fxn.get_imgt_data(chain, st.gene_types, species)
+    
+                        # If additional genes provided, just add them to all possible gene segment types
+                        if values['additional_genes'] != extra_gene_text + '\n':
+                            for extra_gene in outputs['additional_fastas']:
+                                gene, allele = extra_gene[0].split('*')
+    
+                                for gene_type in tcr_dat.keys():
+    
+                                    if gene not in tcr_dat[gene_type]:
+                                        tcr_dat[gene_type][gene] = coll.defaultdict(list)
+    
+                                    if allele in tcr_dat[gene_type][gene]:
+                                        raise warnings.warn("User provided gene/allele combination " + extra_gene[0] +
+                                                      " already exists in TCR germline data. Please change and try.")
+                                    else:
+                                        tcr_dat[gene_type][gene][allele] = extra_gene[1].upper()
+                                        functionality[gene][allele] = '?'
+    
+                        tcr_bits = {'v': values[chain + 'V'], 'j': values[chain + 'J'], 'cdr3': values[chain + '_CDR3'],
+                                    'skip_c_checks': False, 'species': species, 'seamless': seamless,
+                                    'name': values[chain + '_name'].replace(' ', '_')}
+    
+                        # Can't do C checks if user providing genes, as it may be a C
+                        if values['additional_genes'] != extra_gene_text + '\n':
+                            tcr_bits['skip_c_checks'] = True
+    
+                        for end in ['5', '3']:
+                            if values[chain + '_' + end + '_prime_seq']:
+                                tcr_bits[end + '_prime_seq'] = values[chain + '_' + end + '_prime_seq']
+    
+                        for section in ['_leader', 'C']:
+                            if values[chain + section]:
+                                tcr_bits[th.convert_fields[chain + section]] = values[chain + section]
+    
+                        tcr_bits = fxn.autofill_input(tcr_bits, chain)
+    
+                        # Run the stitching
+                        outputs[chain + '_out_list'], outputs[chain + '_stitched'], outputs[chain + '_offset'] = st.stitch(
+                            tcr_bits, chain, tcr_dat, functionality, partial, codons, 3)
+    
+                        outputs[chain + '_out_str'] = '|'.join(outputs[chain + '_out_list'])
+                        outputs[chain + '_fasta'] = fxn.fastafy('nt|' + outputs[chain + '_out_str'],
+                                                                outputs[chain + '_stitched'])
 
-                            for gene_type in tcr_dat.keys():
+                        window[chain + '_out'].update(outputs[chain + '_fasta'])
+    
+                    except Exception as message:
+                        warning_msgs[chain + '_out'] = str(message)
 
-                                if gene not in tcr_dat[gene_type]:
-                                    tcr_dat[gene_type][gene] = coll.defaultdict(list)
+                elif values[chain + 'V'] or values[chain + 'J'] or values[chain + '_CDR3']:
+                    warnings.warn('V gene, J gene, and CDR3 sequence are all required to stitch a TCR chain.')
 
-                                if allele in tcr_dat[gene_type][gene]:
-                                    raise IOError("User provided gene/allele combination " + extra_gene[0] +
-                                                  " already exists in TCR germline data. Please change and try.")
-                                else:
-                                    tcr_dat[gene_type][gene][allele] = extra_gene[1].upper()
-                                    functionality[gene][allele] = '?'
+            warning_msgs[chain + '_out'] += ''.join([str(chain_log[x].message) for x in range(len(chain_log))
+                                                    if 'DeprecationWarning' not in str(chain_log[x].category)])
 
-                    tcr_bits = {'v': values[chain + 'V'], 'j': values[chain + 'J'], 'cdr3': values[chain + '_CDR3'],
-                                'skip_c_checks': False, 'species': species,
-                                'name': values[chain + '_name'].replace(' ', '_')}
-
-                    # Can't do C checks if user providing genes, as it may be a C
-                    if values['additional_genes'] != extra_gene_text + '\n':
-                        tcr_bits['skip_c_checks'] = True
-
-                    for end in ['5', '3']:
-                        if values[chain + '_' + end + '_prime_seq']:
-                            tcr_bits[end + '_prime_seq'] = values[chain + '_' + end + '_prime_seq']
-
-                    for section in ['_leader', 'C']:
-                        if values[chain + section]:
-                            tcr_bits[th.convert_fields[chain + section]] = values[chain + section]
-
-                    tcr_bits = fxn.autofill_input(tcr_bits, chain)
-
-                    # Run the stitching
-                    outputs[chain + '_out_list'], outputs[chain + '_stitched'], outputs[chain + '_offset'] = st.stitch(
-                        tcr_bits, chain, tcr_dat, functionality, codons, 3)
-
-                    outputs[chain + '_out_str'] = '|'.join(outputs[chain + '_out_list'])
-                    outputs[chain + '_fasta'] = fxn.fastafy('nt|' + outputs[chain + '_out_str'],
-                                                            outputs[chain + '_stitched'])
-
-                    window[chain + '_out'].update(outputs[chain + '_fasta'])
-
-                except Exception as message:
-                    window[chain + '_out'].update(message)
+            window[chain + '_log'].update(warning_msgs[chain + '_out'])
 
         # ... and if asked for, link together
         if values['chk_linker']:
 
-            # Only link if both chains present
-            try:
-                if 'TRA_out_str' in outputs and 'TRB_out_str' in outputs:
+            with warnings.catch_warnings(record=True) as link_log:
+                warnings.simplefilter("always")
 
-                    # Determine order
-                    if values['rad_AB'] and not values['rad_BA']:
-                        tr1, tr2 = 'A', 'B'
-                    elif values['rad_BA'] and not values['rad_AB']:
-                        tr1, tr2 = 'B', 'A'
-                    else:
-                        raise IOError("Undetermined link order.")
+                # Only link if both chains present
+                try:
+                    if 'TRA_out_str' in outputs and 'TRB_out_str' in outputs:
 
-                    # Stick together, first verifying linker
-                    outputs['linker'] = values['linker_choice']
-                    if outputs['linker'] == 'Custom':
-                        if values['custom_linker']:
-                            linkers['Custom'] = values['custom_linker']
+                        # Determine order
+                        if values['rad_AB'] and not values['rad_BA']:
+                            tr1, tr2 = 'A', 'B'
+                        elif values['rad_BA'] and not values['rad_AB']:
+                            tr1, tr2 = 'B', 'A'
                         else:
-                            window['linked_out'].update("Cannot output linked sequence: custom linker chosen, "
-                                                        "but not provided", visible=True)
+                            raise warnings.warn("Undetermined link order.")
 
-                    outputs['linker_seq'] = fxn.get_linker_seq(outputs['linker'], linkers)
+                        # Stick together, first verifying linker
+                        outputs['linker'] = values['linker_choice']
+                        if outputs['linker'] == 'Custom':
+                            if values['custom_linker']:
+                                linkers['Custom'] = values['custom_linker']
+                            else:
+                                window['linked_log'].update("Cannot output linked sequence: custom linker chosen, "
+                                                            "but not provided")
 
-                    outputs['linked'] = outputs['TR' + tr1 + '_stitched'] + \
-                                        outputs['linker_seq'] + \
-                                        outputs['TR' + tr2 + '_stitched']
+                        outputs['linker_seq'] = fxn.get_linker_seq(outputs['linker'], linkers)
 
-                    outputs['linked_header'] = '_'.join([outputs['TR' + tr1 + '_out_str'],
-                                                         outputs['linker'],
-                                                         outputs['TR' + tr2 + '_out_str']])
+                        outputs['linked'] = outputs['TR' + tr1 + '_stitched'] + \
+                                            outputs['linker_seq'] + \
+                                            outputs['TR' + tr2 + '_stitched']
 
-                    outputs['linked_fasta'] = fxn.fastafy(outputs['linked_header'], outputs['linked'])
+                        outputs['linked_header'] = '_'.join([outputs['TR' + tr1 + '_out_str'],
+                                                             outputs['linker'],
+                                                             outputs['TR' + tr2 + '_out_str']])
 
-                    window['linked_out_text'].update(visible=True)
-                    window['linked_out'].update(outputs['linked_fasta'], visible=True)
+                        outputs['linked_fasta'] = fxn.fastafy(outputs['linked_header'], outputs['linked'])
 
-                else:
-                    raise IOError("Valid TRA and TRB chains required for linking.")
+                        window['linked_out'].update(outputs['linked_fasta'])
 
-            except Exception as message:
-                window['linked_out'].update(message)
+                    else:
+                        raise warnings.warn("Valid TRA and TRB chains required for linking.")
+
+                except Exception as message:
+                    warning_msgs['linked'] += str(message)
+
+            warning_msgs['linked_out'] += ''.join([str(link_log[x].message) for x in range(len(link_log))
+                                                    if 'DeprecationWarning' not in str(link_log[x].category)])
+
+            if warning_msgs['linked_out']:
+                window['linked_log'].update(warning_msgs['linked_out'])
 
         # Re-enable stitchr button once completed
         window['Run Stitchr'].update(disabled=False)
@@ -450,6 +500,7 @@ while True:
                     with open(out_file, 'w') as out_file:
                         out_file.write(out_str)
 
+
     elif event == 'linker_choice':
 
         window['chk_linker'].update(value=True)
@@ -463,3 +514,5 @@ while True:
         break
 
 window.close()
+
+# TODO output a file of warnings?
