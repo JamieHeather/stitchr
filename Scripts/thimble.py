@@ -17,12 +17,13 @@ import warnings
 import argparse
 import sys
 import os
+from time import time
 
-__version__ = '0.4.2'
+__version__ = '0.4.4'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
-sys.tracebacklimit = 0
+#sys.tracebacklimit = 0
 
 
 def args():
@@ -44,11 +45,15 @@ def args():
     parser.add_argument('-s', '--species', required=False, type=str, default='human',
                 help='Species. Optional. Only available default options are \'human\' or \'mouse\'. Default = human.')
 
-    parser.add_argument('-cu', '--codon_usage', required=False, type=str,
-                help='Path to a file of Kazusa-formatted codon usage frequencies. Optional.')
-
     parser.add_argument('-xg', '--extra_genes', action='store_true', required=False, default=False,
        help='Optional flag to use additional (non-database/-natural) sequences in the \'additional-genes.fasta\' file.')
+
+    parser.add_argument('-sl', '--seamless', action='store_true', required=False, default=False,
+                help='Optional flag to integrate known nucleotide sequences seamlessly. \n'
+                     'NB: nucleotide sequences covering the CDR3 junction with additional V gene context required.')
+
+    parser.add_argument('-cu', '--codon_usage', required=False, type=str,
+                help='Path to a file of Kazusa-formatted codon usage frequencies. Optional.')
 
     parser.add_argument('-jt', '--j_warning_threshold', required=False, type=int, default=3,
                 help='J gene substring length warning threshold. Default = 3. '
@@ -79,6 +84,7 @@ if __name__ == '__main__':
     # Get input arguments, get the required data read in
     fxn.check_scripts_dir()
     input_args = vars(args())
+    start = time()
 
     codons = fxn.get_optimal_codons(input_args['codon_usage'], input_args['species'].upper())
     linker_dict = fxn.get_linker_dict()
@@ -88,7 +94,7 @@ if __name__ == '__main__':
 
     for c in ['TRA', 'TRB']:
 
-        tmp_tcr_dat, tmp_functionality = fxn.get_imgt_data(c, st.gene_types, input_args['species'].upper())
+        tmp_tcr_dat, tmp_functionality, partial = fxn.get_imgt_data(c, st.gene_types, input_args['species'].upper())
         tcr_dat[c] = tmp_tcr_dat
         tcr_functionality[c] = tmp_functionality
 
@@ -134,6 +140,9 @@ if __name__ == '__main__':
                         warnings.simplefilter("always")
 
                         tcr_bits = {'skip_c_checks': input_args['skip_c_checks']}
+                        if 'seamless' in input_args:
+                            if input_args['seamless']:
+                                tcr_bits['seamless'] = True
 
                         # Convert naming to output formats
                         for field in [x for x in sorted_row_bits if c in x]:
@@ -153,7 +162,7 @@ if __name__ == '__main__':
 
                                 try:
                                     out_list, stitched, offset = st.stitch(tcr_bits, c, tcr_dat[c],
-                                                                   tcr_functionality[c], codons,
+                                                                   tcr_functionality[c], partial, codons,
                                                                    input_args['j_warning_threshold'])
                                     sorted_row_bits[c + '_nt'] = stitched
                                     sorted_row_bits[c + '_aa'] = fxn.translate_nt('N' * offset + stitched)
@@ -168,8 +177,7 @@ if __name__ == '__main__':
                         # (ignoring Biopython's len%3 != 0 error, which isn't very helpful given the circumstances)
                         sorted_row_bits['Warnings/Errors'] += ' '.join(
                             ['(' + c + ') ' + str(chain_warnings[x].message) for x in range(len(chain_warnings))
-                             if 'Biopython' not in str(chain_warnings[x].category) and
-                             'DeprecationWarning' not in str(chain_warnings[x].category)])
+                             if 'DeprecationWarning' not in str(chain_warnings[x].category)])
 
                 with warnings.catch_warnings(record=True) as link_warnings:
                     warnings.simplefilter("always")
@@ -215,7 +223,6 @@ if __name__ == '__main__':
                             except Exception as message:
                                 sorted_row_bits['Warnings/Errors'] += str(message)
 
-
                         else:
                             warnings.warn("Error: need both a TRA and TRB to link. ")
 
@@ -229,6 +236,9 @@ if __name__ == '__main__':
                 out_data.append('\t'.join([sorted_row_bits[x] for x in out_headers]))
 
             line_count += 1
+
+    time_taken = time() - start
+    print("Took", str(round(time_taken, 2)), "seconds")
 
     # Write out data
     if not input_args['out_file'].lower().endswith('.tsv'):
