@@ -38,7 +38,9 @@ python3 stitchr.py -v TRAV1-2 -j TRAJ33 -cdr3 TGTGCTGTGCTGGATAGCAACTATCAGTTAATCT
 
 ### Usage notes
 
-This script can take either amino acid or nucleotide sequences for the CDR3 junction. However when submitting an amino acid CDR3 sequence, `stitchr` will in most cases **not** produce the actual recombined sequences that encoded the original TCRs, apart from a few edge cases (such as particularly germ-like like alpha chain reararngements). When provided with a nucleotide CDR3 sequence `stitchr` can simply line up the edges of the V and the J and pop it in. However when given an amino acid CDR3 sequence, `stitchr` recreates an equivalent full length DNA sequence that will encode the same protein sequence. It aims to produce a sequence as close to germline as possible, so all CDR3 residues that *can* be germline encoded by the V and J genes are. Non-templated residues in the CDR3 (or those templated by the D gene, which is treated as non-templated for the purpose of stitching) are chosen from taking the most commonly used codon per residue.
+This script can take either amino acid or nucleotide sequences for the CDR3 junction. However when submitting an amino acid CDR3 sequence, `stitchr` will in most cases **not** produce the actual recombined sequences that encoded the original TCRs, apart from a few edge cases (such as particularly germ-like like alpha chain reararngements). In these cases, `stitchr` recreates an equivalent full length DNA sequence that will encode the same protein sequence. It aims to produce a sequence as close to germline as possible, so all CDR3 residues that *can* be germline encoded by the V and J genes are. Non-templated residues in the CDR3 (or those templated by the D gene, which is treated as non-templated for the purpose of stitching) are chosen from taking the most commonly used codon per residue.
+
+When provided with a nucleotide CDR3 sequence `stitchr` can simply line up the edges of the V and the J and pop it in. (The exception that might still produce slightly different nucleotide sequences is when during non-templated deletion and addition a long stretch of V or J gene nucleotides were removed and then a different sequence coincidentally encoding the same amino acids was introduced.)
 
 This script currently only works on human and mouse alpha/beta TCR chains, but should be readily adapted to any other species/locus providing you can get all the correct data in IMGT format.
 
@@ -215,7 +217,7 @@ In order to update the input IMGT data for a given species, say humans, you can 
 This script will go through the compendium fasta file and split out the separate alpha/beta chain sequences to separate files.
 
 Note that EX1+EX2+EX3+EX4 annotations may not exist for all constant regions in all species. Instead an entry can be manually produced by combining the individual entries (EX1, EX2, EX3, and EX4). 
-This is what was done for the Mus musculus TRBC genes. You don't even necessarily need all sections to be present, only up to the stop codon (presuming that's what you want in the output). mRNA/cDNA sequences make a good source of complete constant regions for loci with incomplete exon annotations. Regardless, `stitchr` requires that the fifth pipe ('|') delimited fasta header field is listed as 'EX1+EX2+EX3+EX4'.
+This is what was done for the Mus musculus TRBC genes. You don't even necessarily need all sections to be present, only up to the stop codon (presuming that's what you want in the output). mRNA/cDNA sequences make a good source of complete constant regions for loci with incomplete exon annotations. Regardless, `stitchr` requires that the fifth pipe- ('|') delimited fasta header field is listed as 'EX1+EX2+EX3+EX4'.
 
 Also note that if you are adapting `stitchr` to additional loci/species, there is an additional file that must be produced to account for the fact that some J genes do not terminate their CDR3s with a canonical phenylalanine residue. The ```J-residue-exceptions.csv``` file in each species data directory allows users to provide these explicitly. Note that for some pseudogenes it may not be immediately apparent (or relevant) what the equivalent residue should be, so one column of that csv file allows users to denote 'low confidence' non-canonical residue calls (although this information is not used by `stitchr` yet).
 
@@ -267,7 +269,7 @@ Like with `stitchr` itself, `thimble` is designed to be run from inside the Scri
 ```bash
 python3 thimble.py -in [input tsv] -o [output tsv] 
 
-python3 thimble.py -in ../bulk_input_example.tsv -o testing 
+python3 thimble.py -in ../Templates/thimble_input_example.tsv -o testing 
 ```
 
 ### Optional arguments
