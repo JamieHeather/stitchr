@@ -11,13 +11,12 @@ import collections as coll
 import gzip
 import os
 import re
-import re
 import sys
 import textwrap
 import datetime
 import warnings
 
-__version__ = '0.8.0'
+__version__ = '0.9.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -106,7 +105,7 @@ def get_chain(v, j):
 
     if v.startswith('TRB') and j.startswith('TRB'):
         return 'TRB'
-    elif v.startswith('TRA') and j.startswith('TRA'):
+    elif (v.startswith('TRA') or v.startswith('TRD')) and j.startswith('TRA'):
         return 'TRA'
     else:
         raise ValueError("Please ensure you're providing full IMGT gene names (allele number optional), " +
@@ -131,8 +130,9 @@ def sort_input(cmd_line_args):
                 raise IOError("Provided " + end + "\' sequence contains non-DNA characters.")
 
             if len(end + '_prime_seq') % 3 != 0:
-                warnings.warn("Warning: length of " + end + "\' sequence provided is not divisible by 3."
-                                                      " Ensure sequence is padded properly if needed to be in frame.")
+                warnings.warn(
+                    "Warning: length of " + end + "\' sequence provided is not divisible by 3. "
+                                                  "Ensure sequence is padded properly if needed to be in frame.")
 
     chain = get_chain(tidied_args['v'], tidied_args['j'])
     finished_args = autofill_input(tidied_args, chain)
@@ -191,16 +191,17 @@ def get_imgt_data(tcr_chain, gene_types, species):
     :param tcr_chain: TRA or TRB
     :param gene_types: list of TYPES of genes to be expected in a final TCR mRNA, in their IMGT nomenclature
     :param species: human or mouse, for use if a specific absolute path not specified
-    :return: triply nested dict: { region { gene { allele { seq } } } - plus doubly nested dict with V/J functionalities
+    :return: triply nested dict of TCR data: { region { gene { allele { seq } } }; a doubly nested dict with V/J
+      functionalities, and a doubly nested dict of genes filtered out due to being partial in their 5' or 3' (or both)
     """
 
     # Run some basic sanity/input file checks
     if tcr_chain not in ['TRA', 'TRB']:
-        raise ValueError("Incorrect chain detected, cannot get IMGT data")
+        raise ValueError("Incorrect chain detected, cannot get IMGT data. ")
 
     in_file_path = os.path.join(data_dir,  species, tcr_chain + '.fasta')
     if not os.path.isfile(in_file_path):
-        raise IOError(tcr_chain + '.fasta not detected in the Data directory. Please run split-imgt-data.py first.')
+        raise IOError(tcr_chain + '.fasta not detected in the Data directory. Please run split-imgt-data.py first. ')
 
     # Read in the data to a nested dict
     tcr_data = {}
@@ -208,30 +209,40 @@ def get_imgt_data(tcr_chain, gene_types, species):
         tcr_data[gene_type] = coll.defaultdict(nest)
 
     functionality = coll.defaultdict(nest)
+    partial_genes = coll.defaultdict(nest)
 
     with open(in_file_path, 'r') as in_file:
         for fasta_id, seq, blank in read_fa(in_file):
             bits = fasta_id.split('|')
             if len(bits) < 13:
-                raise IOError("Input TCR FASTA file does not fit the IMGT header format.")
+                raise IOError("Input TCR FASTA file does not fit the IMGT header format. ")
 
             gene, allele = bits[1].split('*')
-            functionality_call = bits[3].replace('(', '').replace(')', '').replace('[', '').replace(']', '')
+            functionality_call = bits[3]
             seq_type = bits[4]
             partial_flag = bits[13]
 
             functionality[gene][allele] = functionality_call
 
-            if 'partial' not in partial_flag:
+            if 'partial' in partial_flag:
+                partial_genes[gene][allele] = partial_flag
+            else:
                 tcr_data[seq_type][gene][allele] = seq.upper()
-                # TODO write out to separate list, to throw a warning for those TCRs where those alleles are asked for
 
     for gene_type in gene_types:
         if len(tcr_data[gene_type]) == 0:
             raise Exception("No entries for " + gene_type + " in IMGT data.\n" 
-                "Please ensure all appropriate data is in the Data/imgt-data.fasta file, and re-run split-imgt-data.py")
+             "Please ensure all appropriate data is in the Data/imgt-data.fasta file, and re-run split-imgt-data.py. ")
 
-    return tcr_data, functionality
+    return tcr_data, functionality, partial_genes
+
+
+def strip_functionality(functionality_str):
+    """
+    :param functionality_str: functionality string as present in an IMGT FASTA header
+    :return: the core functionality (F/ORF/P) minus any brackets
+    """
+    return functionality_str.replace('(', '').replace(')', '').replace('[', '').replace(']', '')
 
 
 def get_additional_genes(imgt_data, imgt_functionality):
@@ -300,7 +311,7 @@ def tidy_c_term(c_term_nt, chain, species, skip):
     Tidy up the germline C-terminal half (i.e. post-CDR3, J+C) of the nt seq so that it's the right frame/trimmed
     :param c_term_nt: done['j'] + done['c']
     :param chain: TCR chain (TRA/TRB)
-    :param species: human or mouse
+    :param species: HUMAN or MOUSE
     :param skip: boolean, whether or not to skip the C region checks  # TODO figure out how this will work with no known sequences!
     :return: c_term_nt trimmed/in right frame
     """
@@ -358,7 +369,7 @@ def determine_v_interface(cdr3aa, n_term_nuc, n_term_amino):
     :param cdr3aa: CDR3 region (protein sequence as provided)
     :param n_term_nuc: DNA encoding the germline N terminal portion (i.e. L1+2 + V gene), with no untranslated bp
     :param n_term_amino: translation of n_term_nuc
-    :return: appropriately trimmed n_term_nuc, plus the number of residues the CDR3's N term can be trimmed by
+    :return: appropriately trimmed n_term_nuc, plus the number of AA residues the CDR3's N term can be trimmed by
     """
 
     for c in reversed(list(range(1, 5))):
@@ -375,38 +386,65 @@ def determine_v_interface(cdr3aa, n_term_nuc, n_term_amino):
     raise Exception("Unable to locate N terminus of CDR3 in V gene correctly. Please ensure sequence plausibility. ")
 
 
-def determine_j_interface(cdr3aa, c_term_nuc, c_term_amino, j_warning_threshold):
+def find_cdr3_c_term(cdr3_chunk, j_seq):
+    """
+    Take a C terminal section of a CDR3 and find its germline contribution from the J (using the G..|..G pattern)
+    :param cdr3_chunk: a portion of the CDR3 junction, having had V germline contributions removed
+    :param j_seq:  the sequence of the germline J gene in which should lie the cdr3_chunk (or a subsequent substring)
+    :yield: the index of all hits of cdr3_chunk followed by G or XXG in j_seq (i.e. nesting it at the conserved spot)
+    """
+    i = j_seq.find(cdr3_chunk)
+    while i != -1:
+        if j_seq[i + len(cdr3_chunk)] == 'G':
+            yield i
+        elif j_seq[i + len(cdr3_chunk) + 2] == 'G':
+            yield i
+        i = j_seq.find(cdr3_chunk, i+1)
+
+
+def determine_j_interface(cdr3_cterm_aa, c_term_nuc, c_term_amino, gl_nt_j_len, j_warning_threshold):
     """
     Determine germline J contribution, and subtract from the the CDR3 (to leave just non-templated residues)
     Starts with the whole CDR3 (that isn't contributed by V) and looks for successively N-terminal truncated
     regions in the germline J-REGION.
-    :param cdr3aa: CDR3 region (protein sequence as provided)
+    :param cdr3_cterm_aa: CDR3 region (protein sequence), minus the N-terminal V gene germline contributions
     :param c_term_nuc: DNA encoding the germline C terminal portion (i.e. J + C genes), with no untranslated bp
     :param c_term_amino: translation of c_term_nuc (everything downstream of recognisable end of the V)
+    :param gl_nt_j_len: length of germline nucleotide J gene used (to only search for CDR3 C terminal in J)
     :param j_warning_threshold: int threshold value, if a J substring length match is shorter it will throw a warning
     :return: the nt seq of the C-terminal section of the TCR and number of bases into CDR3 that are non-templated
     """
 
+    # Figure out how long into the C terminus we need to look, i.e. as far as the J gene stretches
+    search_len = int(gl_nt_j_len / 3)
+
     # Determine germline J contribution - going for longest possible, starting with whole CDR3
-    for c in reversed(list(range(1, len(cdr3aa)))):
+    # 'c' here is effectively the number of CDR3 AA not contributed to from J (and V, from prior steps)
+    for c in reversed(list(range(1, len(cdr3_cterm_aa)))):
+        c_term_cdr3_chunk = cdr3_cterm_aa[-c:]
 
-        c_term_cdr3_chunk = cdr3aa[-c:]
+        # Look for the decreasing chunks of the CDR3 in the theoretical translation of this J gene as germline
+        search = [x for x in find_cdr3_c_term(c_term_cdr3_chunk, c_term_amino[:search_len])]
+        if search:
+            if len(search) == 1:
+                cdr3_c_end = search[0]
 
-        if c_term_cdr3_chunk in c_term_amino:
-            # Check the putative found remnant of the J gene actually falls within the sequence contributed by the J
-            # TODO NB other species/loci may have J genes longer than 22, so this value may require changing
-            if c_term_amino.index(c_term_cdr3_chunk) > 22:
-                continue
+                c_term_nt_trimmed = c_term_nuc[cdr3_c_end * 3:]
 
-            # Otherwise carry on - warning the user if the match is short (which it likely shouldn't be for J genes)
-            cdr3_c_end = cdr3aa.rfind(c_term_cdr3_chunk)
-            c_term_nt_trimmed = c_term_nuc[c_term_amino.index(c_term_cdr3_chunk) * 3:]
+                # Add a warning if the detected J match is too far or too shore
+                if cdr3_c_end > 22:
+                    warnings.warn("Warning: germline match \'" + c_term_cdr3_chunk + "\' was found " + str(search.start())
+                                  + " residues past the start of the J, which is an extremely unlikely TCR. ")
 
-            if c <= j_warning_threshold:
-                warnings.warn("Note: while a J match has been found, it was only the string \"" +
-                              c_term_cdr3_chunk + "\". ")
+                if c <= j_warning_threshold:
+                    warnings.warn("Note: while a J match has been found, it was only the string \"" +
+                                  c_term_cdr3_chunk + "\". ")
 
-            return c_term_nt_trimmed, cdr3_c_end
+            elif len(search) > 1 and len(c_term_cdr3_chunk) == 1:
+                raise ValueError("CDR3 seemingly deleted up to/past conserved CDR3 junction terminating residue, but "
+                                 "multiple motif hits found - unable to locate C terminus of CDR3. ")
+
+            return c_term_nt_trimmed, len(cdr3_cterm_aa) - c
 
     # Shouldn't be able to get here to throw an error, but just in case
     raise ValueError("Unable to locate C terminus of CDR3 in J gene correctly. Please ensure sequence plausibility. ")
@@ -554,7 +592,8 @@ def tweak_thimble_input(stitch_dict, cmd_args):
 
 def opener(in_file):
     """
-    Choose the appropriate file opening command
+    :param in_file: path to file to be opened
+    :return: the appropriate file opening command (open or gzip.open)
     """
     if in_file.endswith('.gz'):
         return gzip.open(in_file, 'rt')
@@ -570,7 +609,7 @@ def translate_nt(nt_seq):
 
     aa_seq = ''
     for i in range(0, len(nt_seq), 3):
-        codon = nt_seq[i:i+3]
+        codon = nt_seq[i:i+3].upper()
         if len(codon) == 3:
             try:
                 aa_seq += codons[codon]
@@ -578,6 +617,57 @@ def translate_nt(nt_seq):
                 raise IOError("Cannot translate codon: " + codon)
 
     return aa_seq
+
+
+def check_suffix_prefix(five_prime_seq, three_prime_seq):
+    """
+    :param five_prime_seq: the 5' (or upstream) sequence, in which to look for a suffix
+    :param three_prime_seq: the 3' (or downstream) sequence, in which to look for a prefix
+    :return: sequence corresponding to the overlap between the five_prime and three_prime seqs
+    Based off code from Stack Overflow user 'Mad Physicist' - see https://stackoverflow.com/questions/58598805/
+    """
+
+    steps = range(min(len(five_prime_seq), len(three_prime_seq)) - 1, -1, -1)
+    return next((three_prime_seq[:n] for n in steps if five_prime_seq[-n:] == three_prime_seq[:n]), '')
+
+
+def find_v_overlap(v_germline, nt_cdr3):
+    """
+    :param v_germline: nucleotide sequence of the 5' part of the germline TCR (i.e. L+V)
+    :param nt_cdr3: user provided nucleotide sequences covering (and potentially exceeding) the CDR3 junction
+    :return: v_germline sequence running up to (but not including) where it overlaps with the nt_cdr3 sequence,
+             and the overlapped sequence (to be subtracted from the CDR3 junction nt before checking for J overlap)
+    """
+
+    longest_overlap = ''
+    index_longest = 0
+    for i in range(len(v_germline) - 1, -1, -1):
+        tmp_fp = v_germline[:i]
+        overlap = check_suffix_prefix(tmp_fp, nt_cdr3)
+        if len(overlap) > len(longest_overlap):
+            longest_overlap = overlap
+            index_longest = i
+
+    return v_germline[:index_longest - len(longest_overlap)], longest_overlap
+
+
+def find_j_overlap(nt_cdr3, j_germline):
+    """
+    :param nt_cdr3: user provided nucleotide sequences covering (and potentially exceeding) the CDR3 junction
+    :param j_germline: nucleotide sequence of the 3' part of the germline TCR (i.e. J+C)
+    :return: j_germline sequence running from (but not including) where it overlaps with the nt_cdr3 sequence
+    """
+
+    longest_overlap = ''
+    index_longest = 0
+    for i in range(len(j_germline)):
+        tmp_j = j_germline[i:]
+        overlap = check_suffix_prefix(nt_cdr3, tmp_j)
+        if len(overlap) > len(longest_overlap):
+            longest_overlap = overlap
+            index_longest = i
+
+    return j_germline[index_longest + len(longest_overlap):]
 
 
 codons = {'AAA': 'K', 'AAC': 'N', 'AAG': 'K', 'AAT': 'N',
