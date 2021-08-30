@@ -428,10 +428,8 @@ def determine_j_interface(cdr3_cterm_aa, c_term_nuc, c_term_amino, gl_nt_j_len, 
 
     # Determine germline J contribution - going for longest possible, starting with whole CDR3
     # 'c' here is effectively the number of CDR3 AA not contributed to from J (and V, from prior steps)
-    print(cdr3_cterm_aa, c_term_amino)
     for c in reversed(list(range(1, len(cdr3_cterm_aa)))):
         c_term_cdr3_chunk = cdr3_cterm_aa[-c:]
-        print(c_term_cdr3_chunk)
 
         # Look for the decreasing chunks of the CDR3 in the theoretical translation of this J gene as germline
         search = [x for x in find_cdr3_c_term(c_term_cdr3_chunk, c_term_amino[:search_len], False)]

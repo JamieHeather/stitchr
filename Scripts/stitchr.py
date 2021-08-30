@@ -177,7 +177,6 @@ def stitch(specific_args, locus, tcr_info, functionality, partial_info, codon_di
         else:
             raise ValueError("Cannot find TCR sequence data for "
                              + r.upper() + " gene: " + gene + '*' + allele + ". ")
-    print(done)
 
     # Get information about the C-terminal residue of the CDR3 *should* be, given that J gene
     j_residue_exceptions, low_confidence_js = fxn.get_j_exception_residues(specific_args['species'])
