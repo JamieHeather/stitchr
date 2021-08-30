@@ -16,7 +16,7 @@ import textwrap
 import datetime
 import warnings
 
-__version__ = '0.9.0'
+__version__ = '0.10.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -386,19 +386,27 @@ def determine_v_interface(cdr3aa, n_term_nuc, n_term_amino):
     raise Exception("Unable to locate N terminus of CDR3 in V gene correctly. Please ensure sequence plausibility. ")
 
 
-def find_cdr3_c_term(cdr3_chunk, j_seq):
+def find_cdr3_c_term(cdr3_chunk, j_seq, strict):
     """
-    Take a C terminal section of a CDR3 and find its germline contribution from the J (using the G..|..G pattern)
+    Take a C terminal section of a CDR3 and find its germline contribution from the J (using the  pattern)
     :param cdr3_chunk: a portion of the CDR3 junction, having had V germline contributions removed
-    :param j_seq:  the sequence of the germline J gene in which should lie the cdr3_chunk (or a subsequent substring)
+    :param j_seq: the sequence of the germline J gene in which should lie the cdr3_chunk (or a subsequent substring)
+    :param strict: boolean flag determining whether strict (GXG) or non-strict (G..|..G) pattern is used
     :yield: the index of all hits of cdr3_chunk followed by G or XXG in j_seq (i.e. nesting it at the conserved spot)
     """
     i = j_seq.find(cdr3_chunk)
     while i != -1:
-        if j_seq[i + len(cdr3_chunk)] == 'G':
-            yield i
-        elif j_seq[i + len(cdr3_chunk) + 2] == 'G':
-            yield i
+
+        if strict:
+            if j_seq[i + len(cdr3_chunk)] == 'G' and j_seq[i + len(cdr3_chunk) + 2] == 'G':
+                yield i
+
+        else:
+            if j_seq[i + len(cdr3_chunk)] == 'G':
+                yield i
+            elif j_seq[i + len(cdr3_chunk) + 2] == 'G':
+                yield i
+
         i = j_seq.find(cdr3_chunk, i+1)
 
 
@@ -420,11 +428,13 @@ def determine_j_interface(cdr3_cterm_aa, c_term_nuc, c_term_amino, gl_nt_j_len, 
 
     # Determine germline J contribution - going for longest possible, starting with whole CDR3
     # 'c' here is effectively the number of CDR3 AA not contributed to from J (and V, from prior steps)
+    print(cdr3_cterm_aa, c_term_amino)
     for c in reversed(list(range(1, len(cdr3_cterm_aa)))):
         c_term_cdr3_chunk = cdr3_cterm_aa[-c:]
+        print(c_term_cdr3_chunk)
 
         # Look for the decreasing chunks of the CDR3 in the theoretical translation of this J gene as germline
-        search = [x for x in find_cdr3_c_term(c_term_cdr3_chunk, c_term_amino[:search_len])]
+        search = [x for x in find_cdr3_c_term(c_term_cdr3_chunk, c_term_amino[:search_len], False)]
         if search:
             if len(search) == 1:
                 cdr3_c_end = search[0]
@@ -433,16 +443,27 @@ def determine_j_interface(cdr3_cterm_aa, c_term_nuc, c_term_amino, gl_nt_j_len, 
 
                 # Add a warning if the detected J match is too far or too shore
                 if cdr3_c_end > 22:
-                    warnings.warn("Warning: germline match \'" + c_term_cdr3_chunk + "\' was found " + str(search.start())
-                                  + " residues past the start of the J, which is an extremely unlikely TCR. ")
+                    warnings.warn("Warning: germline match \'" + c_term_cdr3_chunk + "\' was found " +
+                        str(search.start()) + " residues past the start of the J, which is an extremely unlikely TCR. ")
 
                 if c <= j_warning_threshold:
                     warnings.warn("Note: while a J match has been found, it was only the string \"" +
                                   c_term_cdr3_chunk + "\". ")
 
+            # If no single match found using the non-strict conserved J motif pattern (G..|..G), use the strict GXG
             elif len(search) > 1 and len(c_term_cdr3_chunk) == 1:
-                raise ValueError("CDR3 seemingly deleted up to/past conserved CDR3 junction terminating residue, but "
-                                 "multiple motif hits found - unable to locate C terminus of CDR3. ")
+                warnings.warn("Note: while a J match has been found, it was only the string \"" +
+                              c_term_cdr3_chunk + "\", which occurs in two positions. ")
+
+                search2 = [x for x in find_cdr3_c_term(c_term_cdr3_chunk, c_term_amino[:search_len], True)]
+
+                if len(search2) == 1:
+                    cdr3_c_end = search2[0]
+                    c_term_nt_trimmed = c_term_nuc[cdr3_c_end * 3:]
+
+                else:
+                    raise ValueError("CDR3 seemingly deleted up to/past conserved CDR3 junction terminating residue, "
+                                     "but multiple motif hits found - unable to locate C terminus of CDR3. ")
 
             return c_term_nt_trimmed, len(cdr3_cterm_aa) - c
 
@@ -637,11 +658,16 @@ def find_v_overlap(v_germline, nt_cdr3):
     :param nt_cdr3: user provided nucleotide sequences covering (and potentially exceeding) the CDR3 junction
     :return: v_germline sequence running up to (but not including) where it overlaps with the nt_cdr3 sequence,
              and the overlapped sequence (to be subtracted from the CDR3 junction nt before checking for J overlap)
+    Note that this function allows for a very generous (supra-physiological) upper limit of 50 deletions from the V
     """
 
     longest_overlap = ''
     index_longest = 0
-    for i in range(len(v_germline) - 1, -1, -1):
+    # Have to count backwards from the the end of the V; only need to go as far as the provided nt_cdr3 length (although
+    # some of that will contain J gene residues)
+    # Note that the positive check is against the outside chance someone provides an inconsistently short V gene
+    for i in [x for x in range(len(v_germline) - 1, len(v_germline) - len(nt_cdr3), -1) if x > 0]:
+
         tmp_fp = v_germline[:i]
         overlap = check_suffix_prefix(tmp_fp, nt_cdr3)
         if len(overlap) > len(longest_overlap):
