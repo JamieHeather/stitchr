@@ -1,6 +1,6 @@
 ![](Images/stitchr-logo.png)
 
-# 0.7.0
+# 0.8.1
 
 ### Stitch together TCR coding nucleotide sequences from V/J/CDR3 information
 
@@ -64,7 +64,30 @@ All required files are included in the repo. If you want to change or update the
 
 `Stitchr` can be run in a higher-throughput mode, using a tab-separated input file - see the instructions for [**`thimble`**](#Thimble) below.
 
-### Optional arguments
+#### Seamless mode
+
+If users care about accurately replicating the exact nucleotide sequence of specific V(D)J rearrangements, and they have additional nucleotide sequences beyond the edges of the CDR3 junction, they can make use of the optional `-sl` 'seamless' flag to stitch together the complete recombined sequence as faithfully as possible.
+
+E.g. instead of these first two options:
+```bash
+python3 stitchr.py -v TRBV7-6 -j TRBJ1-4 -cdr3 CASSSGQGLGEKLFF
+python3 stitchr.py -v TRBV7-6 -j TRBJ1-4 -cdr3 TGTGCCAGCAGTTCCGGACAGGGCTTGGGAGAAAAACTGTTTTTT
+```
+
+... you would run (NB non-CDR3 nucleotides shown in lower case for display purposes):
+```bash
+python3 stitchr.py -sl -v TRBV7-6 -j TRBJ1-4 -cdr3 catgtatcgcTGTGCCAGCAGTTCCGGACAGGGCTTGGGAGAAAAACTGTTTTTTggcagtggaa
+```
+
+In this example aligning the results shows that the second serine in the CDR3 was actually encoded by 'AGT' in the rearrangement: the 'AGC' codon present in the germline gene must have been deleted and this alternative 'S' codon added or completed by Tdt. Thus while all options should produce the same amino acid sequence, the seamless option allows for truer generation of the sequence as was present in the clonotype. Note that the seamless option adds significantly to the time it takes to run `stitchr` (which only really matters when running it on high-throughput datasets using `thimble`).
+
+In order to best use the seamless option, please ensure that:
+* You have sufficient nucleotide context on either side of the CDR3 (especially the V) - ideally 20-30 nucleotides.
+* Do not include any leader or constant region nucleotides - this may involve trimming nucleotide sequences.
+* Ensure your V gene and allele calling is accurate, or at the very least that the contextual sequence lacks polymorphisms or errors in its very 5'. 
+  * `stitchr` will attempt to detect and deal with single nucleotide mismatches with the stated allele, but more complex polymorphisms will result in a failure.
+  
+### Other optional arguments
 
 * `-h` - see a help menu, containing all the command line options
 * `-c` - specify a particular constant region gene (in the case of TRBC) or allele
@@ -199,7 +222,7 @@ python3 stitchr.py -s mouse -v TRAV14-1 -j TRAJ33 -cdr3 CAASDNYQLIW
 
 ### Generating new IMGT input files
 
-IMGT does get updated on a schedule that doesn't necessarily link to this repo's update schedule, so you may wish to occasionally update the raw TCR gene data used by `stitchr`.
+IMGT does get updated on a schedule that doesn't necessarily link to this repo's update schedule, so you may wish to occasionally update the raw TCR gene data used by `stitchr`. We recommend that you update the germline TCR data for `stitchr` at the same time you update the database used in whatever TCR gene annotation software you use.
 
 In order to update the input IMGT data for a given species, say humans, you can follow these steps:
 
