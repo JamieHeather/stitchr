@@ -16,7 +16,7 @@ import warnings
 import sys
 
 
-__version__ = '0.8.0'
+__version__ = '0.8.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -177,6 +177,7 @@ def stitch(specific_args, locus, tcr_info, functionality, partial_info, codon_di
         else:
             raise ValueError("Cannot find TCR sequence data for "
                              + r.upper() + " gene: " + gene + '*' + allele + ". ")
+    print(done)
 
     # Get information about the C-terminal residue of the CDR3 *should* be, given that J gene
     j_residue_exceptions, low_confidence_js = fxn.get_j_exception_residues(specific_args['species'])
@@ -220,20 +221,38 @@ def stitch(specific_args, locus, tcr_info, functionality, partial_info, codon_di
 
         n_term_nt_trimmed, v_overlap = fxn.find_v_overlap(n_term_nt_raw, specific_args['cdr3_nt'])
 
+        # Check for suspiciously short V gene overlaps
+        if len(v_overlap) < 10:
+            warnings.warn("Only short V gene overlap detected (" + v_overlap + ") for seamless stitching. " )
+
+            # Most common cause = unexpected polymorphism (e.g. SNP or PCR error) in the 5' of the padding sequence
+            # Try the overlap search again, starting from one position upstream of the previous match
+            n_term_nt_trimmed_2, v_overlap_2 = fxn.find_v_overlap(n_term_nt_raw,
+                                                                  specific_args['cdr3_nt'][len(v_overlap)+1:])
+
+            if len(v_overlap_2) > 10:
+                warnings.warn("A longer (" + str(len(v_overlap_2)) + " nt) overlap was found after trimming the "
+                              "short overlap +1 off, and stitching continued (NB: presumed SNP or PCR error). ")
+
+                n_term_nt_trimmed = n_term_nt_trimmed_2[:-(len(v_overlap) + 1)]
+                v_overlap = specific_args['cdr3_nt'][:len(v_overlap) + len(v_overlap_2) + 1]
+
+            else:
+                raise ValueError("No longer overlap was found even after trimming that short overlap + 1. Please check "
+                                 "the V gene call and that the CDR3 padding sequence doesn't contain polymorphisms. ")
+
         c_term_nt_trimmed = fxn.find_j_overlap(specific_args['cdr3_nt'][len(v_overlap):], c_term_nt_raw)
         stitched_nt = n_term_nt_trimmed + specific_args['cdr3_nt'] + c_term_nt_trimmed
 
         # Use the tidy_c_term functionality to frame check/trim excess
         stitched_nt, stitched_trans = fxn.tidy_c_term(stitched_nt, locus, specific_args['species'], False)
 
-        # If there's a SNP in the edges of the contextual padding this can cause and indel,
+        # Catch more 5' SNP errors: if there's a SNP in the edges of the contextual padding this can cause and indel,
         # ... which means tidy_c_term will trim some nt from the 5' of the gene, which we can use to trigger an IOError
         if not stitched_nt.startswith(done['l']):
             raise ValueError("An indel has been detected during seamless stitching, which is usually caused by "
-                             "polymorphisms in the padding  sequence relative to the genes selected: please either "
+                             "polymorphisms in the padding sequence relative to the genes selected: please either "
                              "ensure selected alleles are correct or provide more context beyond any polymorphisms. ")
-
-        # TODO add another sanity check: if there's a massive deletion, but the overlap is short, throw a warning/discount?
 
     # Otherwise run regular amino-acid based germline determination
     else:
