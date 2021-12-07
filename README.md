@@ -324,9 +324,9 @@ The fields and buttons of the interface are shown in the two following images, w
 4. '**Upload TCR details**'. Having selected a file with option (3), this button uploads the data and uses it to population the fields
 5. '**Species**'. Click either radio button to select human or mouse.
 6. '**Additional genes**'. If you wish to add additional genes in the TCRs which are not featured in the pre-programmed germline data for this species, they can be added here (as per using the `-xg` flag in `stitchr/thimble`) in FASTA format. Note that [unlike when provided genes via the additional-genes.fasta file](#providing-additional-gene-sequences), sequences should be provided with a simple FASTA header identifier, just with a short TCR name (and ideally with an allele number, *\*XX*). FASTA names must also not be the name of an existing gene. As the TCR gene names are included in the output, it's recommended that a name that will not accidentally be mistaken as another/currently described germline gene is used.
-7. '**Link TRA/TRB**'. Checkbox to enable linking of stitched alpha and beta chains.
-8. '**Linker**'. If the checkbox in (7) is ticked, stitched TCRs will be joined by the linker specified in this dropdown. Options are drawn from the Data/linkers.tsv file, or users can select 'Custom', which will make a text box appear. Note that no sanity checks (e.g. DNA validity or reading frame) are made for linker/linked sequences, so users should be sure of what linker sequences they choose to use.
-9. '**Link order**'. If the checkbox in (7) is ticked, stitched TCRs will be produced in this order. By default 'BA' (beta/alpha) is selected.
+7. '**Link TRA/TRB**'. Checkbox to enable linking of stitched alpha and beta chains (left), and linker dropdown box to select a sequence to join alpha/beta chain recombinations from if box ticked (right). Options are drawn from the Data/linkers.tsv file, or users can select 'Custom', which will make a text box appear. Note that no sanity checks (e.g. DNA validity or reading frame) are made for linker/linked sequences, so users should be sure of what linker sequences they choose to use.
+8. '**Link order**'. If the checkbox in (7) is ticked, stitched TCRs will be produced in this order. By default 'BA' (beta/alpha) is selected.
+9. '**Seamless stitching**'. Ticking this checkbox activates the seamless stitching mode (the equivalent of using `-sl` in regular `stitchr`). Junction sequences should be provided at nucleotides with padding nucleotides (ideally >20) on either side of the conserved junction-defining residues.
 10. '**Run Stitchr**'. Button to run `stitchr` using the information filled in elsewhere in the interface. 
 11. '**Export output**'. Save the stitched TCR DNA sequences as a FASTA file. 
 12. '**Exit**'. Closes the `gui-stitchr` interface.
@@ -339,12 +339,13 @@ The fields and buttons of the interface are shown in the two following images, w
 19. '**TRA 5' sequence**'. Optional arbitrary sequence to be appended to the 5' of the alpha chain. Note that no sanity checks are applied to this sequence.
 20. '**TRA 3' sequence**'. Optional arbitrary sequence to be appended to the 3' of the alpha chain. Note that no sanity checks are applied to this sequence.
 21. '**TRA out**'. Text box into which stitched alpha chain sequences will be written.
-22. '**TRB parameters**'. As with items 13-21, but for the beta chain.
-23. '**Linked out**'. If the checkbox at (7) is ticked and both the TRA and TRB chains are successfully stitched, this box outputs the combined linked sequences, connected by the sequence in (8) in the order specified in (9).
+22. '**TRA log**'. Text box into which information, warnings, and errors produced in the stitching of this rearrangement will be output.
+23. '**TRB parameters**'. As with items 13-21, but for the beta chain.
+24. '**Linked out**'. If the checkbox at (7) is ticked and both the TRA and TRB chains are successfully stitched, this box outputs the combined linked sequences, connected by the sequence in (8) in the order specified in (9).
+25. '**Linked log**'. Text box into which linkage-related run comments will be output.
 
-![](Images/gui-stitchr-1.png)
+![](Images/gui-stitchr.png)
 
-![](Images/gui-stitchr-2.png)
 
 
 
