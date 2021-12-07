@@ -20,7 +20,7 @@ __version__ = '0.8.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
-sys.tracebacklimit = 0
+#sys.tracebacklimit = 0
 
 
 def args():
