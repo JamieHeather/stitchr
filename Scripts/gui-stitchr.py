@@ -17,7 +17,7 @@ import thimble as th
 import collections as coll
 import warnings
 
-__version__ = '0.3.0'
+__version__ = '0.3.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -33,14 +33,6 @@ def check_species(value_data):
         return 'MOUSE'
     else:
         raise IOError('Species cannot be determined')
-
-
-def check_is_file(path_to_file):
-    """
-    :param path_to_file: Path to file in question
-    """
-    if not os.path.isfile(path_to_file):
-        raise IOError("Cannot find file: " + path_to_file)
 
 
 def read_fasta_box(fasta_text):
@@ -256,62 +248,69 @@ while True:
     elif event == "Upload TCR details":
 
         # This section uses the Thimble format input file to populate the GUI fields
-        check_is_file(values['uploaded_tcr'])
 
-        with open(values['uploaded_tcr'], 'r') as in_file:
-            line_count = 0
+        # First check file details
+        if not os.path.isfile(values['uploaded_tcr']):
+            sg.Popup('Please use \'Find TCR input file\' button to try again.', title = 'TCR file not found')
+        else:
 
-            for line in in_file:
-                bits = line.replace('\n', '').replace('\r', '').split('\t')
+            with open(values['uploaded_tcr'], 'r') as in_file:
+                line_count = 0
 
-                # Use header line to check it's the right file format
-                if line_count == 0:
-                    if bits != th.in_headers:
-                        raise IOError("Input TCR file doesn't have expected columns. Refer to template.")
+                for line in in_file:
+                    bits = line.replace('\n', '').replace('\r', '').split('\t')
 
-                # Then use the data line to replace any matching entries on the webform
-                elif line_count == 1:
-                    for x in range(len(th.in_headers)):
+                    # Use header line to check it's the right file format
+                    if line_count == 0:
+                        if bits != th.in_headers:
+                            sg.Popup("Input TCR file doesn't have expected columns.\n"
+                                     "Please refer to template and try again.",
+                                     title="TCR file error")
+                            break
 
-                        # Have to add TCR name field individually, as it's only provided once per line
-                        if x == 0:
-                            window['TRA_name'].update(bits[x])
-                            window['TRB_name'].update(bits[x])
+                    # Then use the data line to replace any matching entries on the webform
+                    elif line_count == 1:
+                        for x in range(len(th.in_headers)):
 
-                        # Then only update those fields that are shared
-                        elif th.in_headers[x] in example_data[species]:
-                            window[th.in_headers[x]].update(bits[x])
+                            # Have to add TCR name field individually, as it's only provided once per line
+                            if x == 0:
+                                window['TRA_name'].update(bits[x])
+                                window['TRB_name'].update(bits[x])
 
-                        # Update link order...
-                        elif th.in_headers[x] == 'Link_order':
-                            window['chk_linker'].update(value=True)
+                            # Then only update those fields that are shared
+                            elif th.in_headers[x] in example_data[species]:
+                                window[th.in_headers[x]].update(bits[x])
 
-                            if bits[x]:
-                                if bits[x] == 'AB':
-                                    window['rad_AB'].update(value=True)
-                                    window['rad_BA'].update(value=False)
-                                elif bits[x] == 'BA':
-                                    window['rad_AB'].update(value=False)
-                                    window['rad_BA'].update(value=True)
-                                else:
-                                    raise warnings.warn("Invalid link order input - must be AB or BA.")
+                            # Update link order...
+                            elif th.in_headers[x] == 'Link_order':
+                                window['chk_linker'].update(value=True)
 
-                        # ... and linker sequence
-                        elif th.in_headers[x] == 'Linker':
-                            window['chk_linker'].update(value=True)
+                                if bits[x]:
+                                    if bits[x] == 'AB':
+                                        window['rad_AB'].update(value=True)
+                                        window['rad_BA'].update(value=False)
+                                    elif bits[x] == 'BA':
+                                        window['rad_AB'].update(value=False)
+                                        window['rad_BA'].update(value=True)
+                                    else:
+                                        raise warnings.warn("Invalid link order input - must be AB or BA.")
 
-                            if bits[x]:
-                                if bits[x] in linkers.keys():
-                                    window['linker_choice'].update(value=bits[x])
-                                else:
-                                    window['linker_choice'].update('Custom')
-                                    window['custom_linker'].update(bits[x], visible=True)
+                            # ... and linker sequence
+                            elif th.in_headers[x] == 'Linker':
+                                window['chk_linker'].update(value=True)
 
-                elif line_count > 1:
-                    warnings.warn("More than one data line detected in input TCR file. Ignoring lines after first.")
-                    break
+                                if bits[x]:
+                                    if bits[x] in linkers.keys():
+                                        window['linker_choice'].update(value=bits[x])
+                                    else:
+                                        window['linker_choice'].update('Custom')
+                                        window['custom_linker'].update(bits[x], visible=True)
 
-                line_count += 1
+                    elif line_count > 1:
+                        warnings.warn("More than one data line detected in input TCR file. Ignoring lines after first.")
+                        break
+
+                    line_count += 1
 
     elif event == 'Run Stitchr':
         
