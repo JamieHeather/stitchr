@@ -312,7 +312,8 @@ def tidy_c_term(c_term_nt, chain, species, skip):
     :param c_term_nt: done['j'] + done['c']
     :param chain: TCR chain (TRA/TRB)
     :param species: HUMAN or MOUSE
-    :param skip: boolean, whether or not to skip the C region checks  # TODO figure out how this will work with no known sequences!
+    :param skip: boolean, whether or not to skip the C region checks
+    # TODO figure out skip option would work with no known sequences
     :return: c_term_nt trimmed/in right frame
     """
 
@@ -352,7 +353,7 @@ def tidy_c_term(c_term_nt, chain, species, skip):
         if chain == 'TRA':
             if c_aa[species]['trac'] in translated:
                 stop_index_aa = translated.index(c_aa[species]['trac-stop'])  # Account for late exon TRAC stop codons
-                c_term_nt = c_term_nt[:(stop_index_aa * 3) + 2]  # And offset by 2 nt to account for TRAC starting frame
+                c_term_nt = c_term_nt[:(stop_index_aa * 3) + f]  # And offset by the frame to prevent trailing nt
                 translated = translate_nt(c_term_nt[f:])
                 break
 
