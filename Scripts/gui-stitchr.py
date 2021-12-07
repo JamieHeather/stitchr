@@ -15,7 +15,7 @@ import functions as fxn
 import stitchr as st
 import thimble as th
 import collections as coll
-import warnings
+import warningsupu
 
 __version__ = '0.3.1'
 __author__ = 'Jamie Heather'
