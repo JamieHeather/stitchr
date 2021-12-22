@@ -15,9 +15,9 @@ import functions as fxn
 import stitchr as st
 import thimble as th
 import collections as coll
-import warningsupu
+import warnings
 
-__version__ = '0.3.1'
+__version__ = '0.3.2'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
