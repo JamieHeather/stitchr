@@ -212,20 +212,20 @@ This produces even more mismatches! This is an instance where the constant regio
 
 | **Common Name**        | **Genus species**      | **TRA** | **TRB** | **TRG** | **TRD** |
 |------------------------|------------------------|:-------:|:-------:|:-------:|:-------:|
-| **CAT**                | Felis catus            |    ✔    |    ✔    |    ✔    |    ✔    |
-| **COW**                | Bos taurus             |    ✔    |    ✔    |    ✔    |    ✔    |
-| **CYNOMOLGUS\_MONKEY** | Macaca fascicularis    |         |    ✔    |         |         |
-| **DOG**                | Canis lupus familiaris |    ✔    |    ✔    |    ✔    |    ✔    |
-| **DOLPHIN**            | Tursiops truncatus     |    ✔    |         |    ✔    |    ✔    |
-| **DROMEDARY**          | Camelus dromedarius    |         |    ✔    |    ✔    |         |
-| **FERRET**             | Mustela putorius furo  |         |    ✔    |         |         |
-| **HUMAN**              | Homo sapiens           |    ✔    |    ✔    |    ✔    |    ✔    |
-| **MOUSE**              | Mus musculus           |    ✔    |    ✔    |    ✔    |    ✔    |
-| **NAKED\_MOLE-RAT**    | Heterocephalus glaber  |    ✔    |    ✔    |    ✔    |    ✔    |
-| **PIG**                | Sus scrofa             |         |    ✔    |         |         |
-| **RABBIT**             | Oryctolagus cuniculus  |         |    ✔    |    ✔    |    ✔    |
-| **RHESUS\_MONKEY**     | Macaca mulatta         |    ✔    |    ✔    |    ✔    |    ✔    |
-| **SHEEP**              | Ovis aries             |    ✔    |    ✔    |         |    ✔    |
+| **CAT**                | *Felis catus*           |    ✔    |    ✔    |    ✔    |    ✔    |
+| **COW**                | *Bos taurus*             |    ✔    |    ✔    |    ✔    |    ✔    |
+| **CYNOMOLGUS\_MONKEY** | *Macaca fascicularis*    |         |    ✔    |         |         |
+| **DOG**                | *Canis lupus familiaris* |    ✔    |    ✔    |    ✔    |    ✔    |
+| **DOLPHIN**            | *Tursiops truncatus*     |    ✔    |         |    ✔    |    ✔    |
+| **DROMEDARY**          | *Camelus dromedarius*    |         |    ✔    |    ✔    |         |
+| **FERRET**             | *Mustela putorius furo*  |         |    ✔    |         |         |
+| **HUMAN**              | *Homo sapiens*           |    ✔    |    ✔    |    ✔    |    ✔    |
+| **MOUSE**              | *Mus musculus*           |    ✔    |    ✔    |    ✔    |    ✔    |
+| **NAKED\_MOLE-RAT**    | *Heterocephalus glaber*  |    ✔    |    ✔    |    ✔    |    ✔    |
+| **PIG**                | *Sus scrofa*             |         |    ✔    |         |         |
+| **RABBIT**             | *Oryctolagus cuniculus*  |         |    ✔    |    ✔    |    ✔    |
+| **RHESUS\_MONKEY**     | *Macaca mulatta*         |    ✔    |    ✔    |    ✔    |    ✔    |
+| **SHEEP**              | *Ovis aries*             |    ✔    |    ✔    |         |    ✔    |
 
 The species can be specified using the `-s / --species` command line flag when running your `stitchr` command. E.g.\, here's an example using everyone's favourite mouse TCR, OT-I (sequences inferred from [this plasmid on AddGene](https://www.addgene.org/52111/):
 
