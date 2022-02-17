@@ -23,7 +23,7 @@ __version__ = '0.5.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
-# sys.tracebacklimit = 0
+sys.tracebacklimit = 0  # uncomment when debugging
 
 
 def args():

@@ -20,7 +20,7 @@ __version__ = '0.11.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
-# sys.tracebacklimit = 0
+sys.tracebacklimit = 0  # uncomment when debugging
 data_dir = os.path.normpath('../Data/')
 
 
