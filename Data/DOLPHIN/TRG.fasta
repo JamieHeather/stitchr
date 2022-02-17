@@ -1,0 +1,38 @@
+>JH473572|TRGV1*01|Tursiops truncatus|F|L-PART1+L-PART2|9969..10014+10129..10142|60 nt|1| | | | |60+0=60| | |~LEADER
+atgccgtcactgttccacgtgctcgctctgacagtccttggggctttatgtgtgtatggt
+>JH473572|TRGV2*01|Tursiops truncatus|F|L-PART1+L-PART2|21768..21810+21920..21930|54 nt|1| | | | |54+0=54| | |~LEADER
+atggcactcctggaagcgatcctcttctcctccctctgggcttttggccttggg
+>IMGT000015|TRGV2*02|Tursiops truncatus|F|L-PART1+L-PART2|23900..23942+24052..24062|54 nt|1| | | | |54+0=54| | |~LEADER
+atggcactcctggaagcgatcctcttctcctccctctgggcttttggccttggg
+>JH473572|TRGV1*01|Tursiops truncatus|F|V-REGION|10143..10448|306 nt|1| | | | |306+0=306| | |~VARIABLE
+gcaggtcatctagagcaacctcaactctccactaccaaaaagctgtcaaaaacagcccgc
+ctggaatgcgtggtatctggtgtaaccatttctaaaatgtctgtatattggtatcaagaa
+agacctggcgaagccatgcagcacctgctacacattttacctaacaacaccgtcagaagg
+gactcagacgttacactgggcaagtttgaggcagacaagaaacccgaaacttctacgtcg
+accctcaccattcacaatgtacaggaacaagacgcggccacctactattgtgccctctgg
+gaagtg
+>IMGT000015|TRGV2*02|Tursiops truncatus|F|V-REGION|24063..24368|306 nt|1| | | | |306+0=306| | |~VARIABLE
+caattaaagtcggagcaacctgtaatatcagttactggagtaagagataagagtgtagtt
+atatcttgcaaggtatcctctcaagactttagcaacgaatacatccactggtaccggcat
+aaaccaaatcagggtatagaacatctagcatacgtcgtaacagtccctgctctaaaagac
+ttaggagggaagaaaaacaagattgaggccagaaaagaagtccgcacctccacttctacc
+ttgaacataagattcttacagaaagaagatgaggccacgtactactgtgcctggtgggtt
+tatgtc
+>JH473572|TRGJ1*01|Tursiops truncatus|F|J-REGION|28081..28140|60 nt|3| | | | |60+0=60| | |~JOINING
+ataggtcaggttggatcaagatatttggaggaggaactaagctcatagtaactctccctg
+>JH473572|TRGJ2*01|Tursiops truncatus|F|J-REGION|31029..31088|60 nt|3| | | | |60+0=60| | |~JOINING
+ggctaacacatggcaagagcgtcaaagtgtttggttctggaacacagctcattgttacag
+>JH473572|TRGJ3*01|Tursiops truncatus|F|J-REGION|34677..34726|50 nt|2| | | | |50+0=50| | |~JOINING
+gagttattacataaaaattttcggcgatgggacaaaacttgtggtcacag
+>IMGT000015|TRGJ3*02|Tursiops truncatus|F|J-REGION|37286..37335|50 nt|2| | | | |50+0=50| | |~JOINING
+gaattattacataaaaattttcggcgatgggacaaaacttgtggtcacag
+>JH473572|TRGC*01|Tursiops truncatus|F|EX1+EX2+EX3|?|506 nt|?| | | | |506+0=506| |~CONSTANT
+atagaagccttgatggagacatgtctcccaagcccactatatttcttccttcgattgatg
+aaataaacctccatgaggctggaacacatctttgccttctcgagaagtttttccctgatg
+tcattaaggtctattggaaagaaaagaatggcaacaaagttctggaatcccagcagggaa
+atatcatcaagactaatgatacatacatgaaattcagctggctgaccgtgactaaaaatt
+caatggataatgaactcgtatgtatcgtcaaacacgagaataataaaagaggaattgatc
+aagagattcttttcccttcaattgagaataaggtcactacacatgcctgcgtgaaaaaag
+gaagtgattccctgcagctgcagctcacgaacacctgtgcctgctacacctacctccttc
+tcctcctcaagagcttggtctactttgtcatcatctccttctgtgtgtgtagaagaacag
+ccgtctgcggccatgggaagagctcg

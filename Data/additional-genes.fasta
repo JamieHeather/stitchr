@@ -1,4 +1,4 @@
->M64239|mTRAC*01|Mus musculus_B10.D2-H2dm1|F|EX1+EX2+EX3+EX4|86100..86360+87683..87727+88567..88674+89262..89774|927 nt|3| | | | |927+0=927| | |
+>M64239|mTRAC*01|Mus musculus_B10.D2-H2dm1|F|EX1+EX2+EX3+EX4|86100..86360+87683..87727+88567..88674+89262..89774|927 nt|3| | | | |927+0=927| | |~CONSTANT
 acatccagaacccagaacctgctgtgtaccagttaaaagatcctcggtctcaggacagca
 ccctctgcctgttcaccgactttgactcccaaatcaatgtgccgaaaaccatggaatctg
 gaacgttcatcactgacaaaactgtgctggacatgaaagctatggattccaagagcaatg
@@ -7,7 +7,7 @@ acgccacctaccccagttcagacgttccctgtgatgccacgttgactgagaaaagctttg
 aaacagatatgaacctaaactttcaaaacctgtcagttatgggactccgaatcctcctgc
 tgaaagtagccggatttaacctgctcatgacgctgaggctgtggtccagt
 
->M26053|mTRBC1*01|Mus musculus_B10.A|F|EX1+EX2+EX3+EX4|62..436|375 nt|3| | | | |375+0=375| | |edited-JH
+>M26053|mTRBC1*01|Mus musculus_B10.A|F|EX1+EX2+EX3+EX4|62..436|375 nt|3| | | | |375+0=375| | |~CONSTANT
 aggatctgagaaatgtgactccacccaaggtctccttgtttgagccatcaaaagcagaga
 ttgcaaacaaacaaaaggctaccctcgtgtgcttggccaggggcttcttccctgaccacg
 tggagctgagctggtgggtgaatggcaaggaggtccacagtggggtcagcacggaccctc
@@ -17,7 +17,7 @@ aggaggacaagtggccagagggctcacccaaacctgtcacacagaacatcagtgcagagg
 cctggggccgagcagactgtgggattacctcagcatcctatcaacaaggggtcttgtctg
 ccaccatcctctatgagatcctgctagggaaaggtcaaaagaaagaattca
 
->M26057|mTRBC2*01|Mus musculus_B10.A|F|EX1+EX2+EX3+EX4|63..437|375 nt|3| | | | |375+0=375| | |edited-JH
+>M26057|mTRBC2*01|Mus musculus_B10.A|F|EX1+EX2+EX3+EX4|63..437|375 nt|3| | | | |375+0=375| | |~CONSTANT
 aggatctgagaaatgtgactccacccaaggtctccttgtttgagccatcaaaagcagaga
 ttgcaaacaaacaaaaggctaccctcgtgtgcttggccaggggcttcttccctgaccacg
 tggagctgagctggtgggtgaatggcaaggaggtccacagtggggtcagcacggaccctc
@@ -28,7 +28,7 @@ cctggggccgagcagactgtggaatcacttcagcatcctatcatcagggggttctgtctg
 caaccatcctctatgagatcctactggggaaggccaccctatatgctgtgctggtcagtg
 gcctagtgctgatggccatggtcaagaaaaaaaattcc
 
->X02883|hTRAC*01|Homo sapiens|F|EX1+EX2+EX3+EX4|273..545+2408..2452+3324..3431+4369..4899|957 nt|3| | | | |957+0=957| | |
+>X02883|hTRAC*01|Homo sapiens|F|EX1+EX2+EX3+EX4|273..545+2408..2452+3324..3431+4369..4899|957 nt|3| | | | |957+0=957| | |~CONSTANT
 atatccagaaccctgaccctgccgtgtaccagctgagagactctaaatccagtgacaagt
 ctgtctgcctattcaccgattttgattctcaaacaaatgtgtcacaaagtaaggattctg
 atgtgtatatcacagacaaaactgtgctagacatgaggtctatggacttcaagagcaaca
@@ -46,7 +46,7 @@ gttctcttgggctctaggtcctggagaatgttgtgagggtttatttttttttaatagtgt
 tcataaagaaatacatagtattcttcttctcaagacgtggggggaaattatctcattatc
 gaggccctgctatgctgtgtgtctgggcgtgttgtatgtcctgctgccgatgccttc
 
->M12887|hTRBC1*01|Homo sapiens|F|EX1+EX2+EX3+EX4|213..599+1041..1058+1211..1317+1640..1657|530 nt|3| | | | |530+0=530| | |
+>M12887|hTRBC1*01|Homo sapiens|F|EX1+EX2+EX3+EX4|213..599+1041..1058+1211..1317+1640..1657|530 nt|3| | | | |530+0=530| | |~CONSTANT
 aggacctgaacaaggtgttcccacccgaggtcgctgtgtttgagccatcagaagcagaga
 tctcccacacccaaaaggccacactggtgtgcctggccacaggcttcttccccgaccacg
 tggagctgagctggtgggtgaatgggaaggaggtgcacagtggggtcagcacggacccgc
@@ -57,7 +57,7 @@ tcagcgccgaggcctggggtagagcagactgtggctttacctcggtgtcctaccagcaag
 gggtcctgtctgccaccatcctctatgagatcctgctagggaaggccaccctgtatgctg
 tgctggtcagcgcccttgtgttgatggccatggtcaagagaaaggatttc
 
->L36092|hTRBC1*02|Homo sapiens|F|EX1+EX2+EX3+EX4|645749..646135+646577..646594+646747..646853+647176..647193|530 nt|3| | | | |530+0=530| | |
+>L36092|hTRBC1*02|Homo sapiens|F|EX1+EX2+EX3+EX4|645749..646135+646577..646594+646747..646853+647176..647193|530 nt|3| | | | |530+0=530| | |~CONSTANT
 aggacctgaacaaggtgttcccacccgaggtcgctgtgtttgagccatcagaagcagaga
 tctcccacacccaaaaggccacactggtgtgcctggccacaggcttcttccccgaccacg
 tggagctgagctggtgggtgaatgggaaggaggtgcacagtggggtcagcacagacccgc
@@ -68,7 +68,7 @@ tcagcgccgaggcctggggtagagcagactgtggctttacctcggtgtcctaccagcaag
 gggtcctgtctgccaccatcctctatgagatcctgctagggaaggccaccctgtatgctg
 tgctggtcagcgcccttgtgttgatggccatggtcaagagaaaggatttc
 
->M22148|hTRDC*01|Homo sapiens|F|EX1+EX2+EX3+EX4| | nt| |NB: EX4 missing!| | | | | | |
+>M22148|hTRDC*01|Homo sapiens|F|EX1+EX2+EX3+EX4| | nt| |NB: EX4 missing!| | | | | | |~CONSTANT
 gaagtcagcctcataccaaaccatccgtttttgtcatgaaaaatggaacaaatgtcgctt
 gtctggtgaaggaattctaccccaaggatataagaataaatctcgtgtcatccaagaaga
 taacagagtttgatcctgctattgtcatctctcccagtgggaagtacaatgctgtcaagc
@@ -79,7 +79,7 @@ ccaaag
 ccatagttcataccgagaaggtgaacatgatgtccctcacagtgcttgggctacgaatgc
 tgtttgcaaagactgttgccgtcaattttctcttgactgccaagttatttttcttg
 
->M14996|hTRGC1*01|Homo sapiens|F|EX1+EX2+EX3+EX4| | nt| |NB: EX4 missing!| | | | | | |
+>M14996|hTRGC1*01|Homo sapiens|F|EX1+EX2+EX3+EX4| | nt| |NB: EX4 missing!| | | | | | |~CONSTANT
 ataaacaacttgatgcagatgtttcccccaagcccactatttttcttccttcaattgctg
 aaacaaagctccagaaggctggaacatacctttgtcttcttgagaaatttttccctgatg
 ttattaagatacattggcaagaaaagaagagcaacacgattctgggatcccaggagggga
@@ -91,7 +91,7 @@ atacactactgctgcagctcacaaacacctctgcatattacatgtacctcctcctgctcc
 tcaagagtgtggtctattttgccatcatcacctgctgtctgcttagaagaacggctttct
 gctgcaatggagagaaatca
 
->M15002|hTRGC2*01|Homo sapiens|F|EX1+EX2+EX3+EX4| | nt| |NB: EX4 missing!| | | | | | |
+>M15002|hTRGC2*01|Homo sapiens|F|EX1+EX2+EX3+EX4| | nt| |NB: EX4 missing!| | | | | | |~CONSTANT
 ataaacaacttgatgcagatgtttcccccaagcccactatttttcttccttcaattgctg
 aaacaaaactccagaaggctggaacatacctttgtcttcttgagaaatttttcccagata
 ttattaagatacattggcaagaaaagaagagcaacacgattctgggatcccaggagggga

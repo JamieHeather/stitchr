@@ -1,0 +1,65 @@
+>IMGT000004|TRDV1*01|Canis lupus familiaris_boxer|P|L-PART1+L-PART2|321660..321702+322083..322090|51 nt|1| | | | |51+0=51| | |~LEADER
+atgttaaggataaaaggactgccgaaggcatatggcacttcacgatccaat
+>IMGT000004|TRDV2*01|Canis lupus familiaris_boxer|P|L-PART1+L-PART2|605053..605103+605254..605261|59 nt|1| | | | |59+0=59| | |~LEADER
+atgtcccacagagggcatcctcccttatctatctcagcctcttctggacagggttatgt
+>IMGT000004|TRDV3*01|Canis lupus familiaris_boxer|F|L-PART1+L-PART2|659949..659985+659693..659706|51 nt|1| | | | |51+0=51| |rev-compl|~LEADER
+atgatttttcttgtgggctttagccttttgcttttttacaagggtgtgctg
+>IMGT000004|TRDV4*01|Canis lupus familiaris_boxer|F|L-PART1+L-PART2|582001..582046+582229..582239|57 nt|1| | | | |57+0=57| | |~LEADER
+atgctgtggacctgtcccctcttctacctcaccctcttctgtgcaggggtctcactg
+>IMGT000004|TRDV5*01|Canis lupus familiaris_boxer|F|L-PART1+L-PART2|543662..543716+543884..543894|66 nt|1| | | | |66+0=66| | |~LEADER
+atggagtccagactgcccgctgtgttgtgcattgtggcggccttcatccaccttggttcc
+agcaat
+>IMGT000004|TRDV1*01|Canis lupus familiaris_boxer|P|V-REGION|322091..322374|284 nt|1| | | | |284+0=284| | |~VARIABLE
+gtggcctcaagtcacgtccagcagccacatccatgtgagaggagccagacatccagtgcc
+ctgaactgtctgtataaaacaaggcagaacacatactatattttttggtatatgcagctt
+gccagtggagagatcactatccttgctcatcaggattcttttgaccagaatgcaaagaat
+ggttgatagtctataaaactacagaaggcagctaaatcctcagctttaccatttcaacct
+tacagctggaagattcagcaaagtatttctgtgctctccaggaa
+>IMGT000004|TRDV3*01|Canis lupus familiaris_boxer|F|V-REGION|659399..659692|294 nt|1| | | | |294+0=294| |rev-compl|~VARIABLE
+tgtgagcaagtgatccagagctccctggaacagatggtggcaagtggcagtaaggtgaca
+ctgctctgcacttacgacacttcatattcaaacccagatttgtactggtaccgaataagg
+tcagatcattcctttcagtttatcctttacagggataacactcaatccagaaatgcagat
+tttactcagggtcgattttctgtactacataatccgtcccagaaaaccttccacttggtg
+atctcccaggtggagcctgaagacagtgccacttactactgtgccatagatacc
+>IMGT000004|TRDV4*01|Canis lupus familiaris_boxer|F|V-REGION|582240..582527|288 nt|1| | | | |288+0=288| | |~VARIABLE
+gatatcattttggaaccagaaaccaaaaccctgactgttctagttggagagcctgccacc
+ttccgctgcaacgtaacaggaggggacttgaagaactatcaggtgagctggtataggaag
+aatgaagataactccctgactttaatatacagacagagcaacaataccaatgacaattta
+aggagtaatttcaaaggaaataccgatgcttcaaagagtcaatgtatactcgacattgaa
+aaagcaacaacagcaaacgccggtacctattactgcgcagcagatatc
+>IMGT000004|TRDV5*01|Canis lupus familiaris_boxer|F|V-REGION|543895..544183|289 nt|1| | | | |289+0=289| | |~VARIABLE
+tcagagacggtccgtcaatctcagaataaagtgtataaacaagagggagaatctgtgacc
+ttggactgcagcttcaccctcagctttaactactatgtgatgaactggtatcaacagcct
+ttcggtgagaggatgactgaagtcatgagtatttattctgatagcaccagctcttcgaaa
+ggacgatattctgtgtcatttcagaaaggaaacaaaattctaacgctcaccatcacaggc
+ttaacgcttacagactcaggcgtctatttctgtgctgttggagaagttc
+>IMGT000004|TRDJ1*01|Canis lupus familiaris_boxer|F|J-REGION|639557..639607|51 nt|3| | | | |51+0=51| | |~JOINING
+ttacaaataagctcttctttggaaaaggaactcacctggttgtagaagcaa
+>IMGT000004|TRDJ2*01|Canis lupus familiaris_boxer|F|J-REGION|645679..645726|48 nt|3| | | | |48+0=48| | |~JOINING
+cagtatccatgatctttggcaaaggagcctatctggtggtagaaccat
+>IMGT000004|TRDJ3*01|Canis lupus familiaris_boxer|ORF|J-REGION|647775..647846|72 nt|3| | | | |72+0=72| | |~JOINING
+gcctgaagaaagccgttagtcaggcttttggtcctcttcttcgtcagagattgcgaccag
+ggaaaaaggcaa
+>IMGT000004|TRDJ4*01|Canis lupus familiaris_boxer|F|J-REGION|649884..649942|59 nt|2| | | | |59+0=59| | |~JOINING
+ctcttgggatactcgacagatgttttttggagctggcaccagactcttcgtggagccac
+>IMGT000004|TRDC*01|Canis lupus familiaris_boxer|F|EX1+EX2+EX3+EX4UTR|?|1193 nt|?| | | | |1193+0=1193| |~CONSTANT
+gaagccagcttcctgccaaaccatccgttttcaccatgagaaatgggacagctgttgctt
+gcctggtgaaggatttctaccctaaggctataaacataagacttgaatcatccaagaaac
+tagaagagtatgacactgcaattgccatctctcccagtgggaagtacagtgctgtcaagc
+ttggtcggtatgcagatccaaattcagtgacctgttcagttgaacacaacaatgaaattg
+tgcactccactgactttgagccaaagaaaaaaccttcaggtaatacaaaaccaacagaac
+ctgcaaacgtggagcaaatgtcagagagcttctatgcgcccaaagttcatcacagttccg
+agttcacaactggaacagtgaacatgctgtccctcacagtgttggggctccggatggtgt
+ttgccaagagtcttgccatcaattttgtcttgactgccaagttatttttcttttaaggct
+tctgacttcttggtgattcaagttgacctgtcccagccttgcttgaatggctgctaccca
+aaccagttttccttcgaagacaataaatccagctcattttccagcctggtggaaagacaa
+aagtcctagggagtacgggggttatggtcctaactgctttatatgctgctttataaagag
+atacaggactcattctctttttatttctacaactgatatactttgaaaaaggtggtttgt
+ttctttgactttcttcagaagtagaaagtgaaagtgggatccaacagattcccagctcca
+tgctccccgaagaaaataaatcctgggggatagagagcagatgccctttacctaacatga
+atggctctgctcagcccagcactaggtttgcccctagctggccacaaaagcattttctgc
+ttttcctagtactttacaaacaaaattatatttgacttctcatgcagccaatggggtttc
+taaaacctcatttaaatactctccaagctattagcaaagatcagagtaaaatacagagaa
+aatgtacttcattctattaaatgatttcacaaacatgaatggagtccctctaagttctag
+gcaatgtgccaagggtgcaaagggagttaaggcatgagcctattttcaagcaactaactg
+tgcaagtgtttcttgagggagggaataggaatgagacccctcaattttggctg

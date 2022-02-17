@@ -1,2 +1,0 @@
-imgt-data.fasta_last_modified 2021-05-20
-split-imgt-data.py_last_run 2021-08-22
