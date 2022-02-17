@@ -1,0 +1,591 @@
+>AY644517|TRGV1-1*01|Bos taurus|F|L-PART1+L-PART2|145578..145620+145750..145760|54 nt|1| | | | |54+0=54| | |~LEADER
+atgttgtgggccctagtgctgcctttggttttcctggctcttgtcactcaggta
+>NW_937068|TRGV10-1*01|Bos taurus|F|L-PART1+L-PART2|9531..9573+9403..9413|54 nt|1| | | | |54+0=54| |rev-compl|~LEADER
+atggtctttcgagctaggctgaaaaattccacccatatcttgaacacaagtgga
+>AY644517|TRGV2-1*01|Bos taurus|F|L-PART1+L-PART2|63726..63768+63908..63918|54 nt|1| | | | |54+0=54| | |~LEADER
+atgatgcgggtcccagcgctgcttctggttttcctggctcctgtcacgcaggtg
+>NW_937068|TRGV3-1*01|Bos taurus|F|L-PART1+L-PART2|23803..23845+23685..23695|54 nt|1| | | | |54+0=54| |rev-compl|~LEADER
+atgtcaccactggaagcattcacatttttatccttctgggcttctggacttggg
+>NW_937068|TRGV3-2*01|Bos taurus|F|L-PART1+L-PART2|17881..17923+17764..17774|54 nt|1| | | | |54+0=54| |rev-compl|~LEADER
+atgtcaccattggaagcattcacatttttctccttctggacttttggacatggg
+>AY644518|TRGV5-1*01|Bos taurus|F|L-PART1+L-PART2|94928..94967+95113..95123|51 nt|1| | | | |51+0=51| | |~LEADER
+atgcaggccccagcactgcttctggttgtcctggctcccgtcatgcaggta
+>AY644518|TRGV6-1*01|Bos taurus|F|L-PART1+L-PART2|123741..123816+123902..123912|87 nt|1| | | | |87+0=87| | |~LEADER
+atgggctcttgtctcggggcagggggcagagccgttctgggccgcctggccttcctctgg
+accctcgtggttccaggcatccagcag
+>AC172685|TRGV6-2*01|Bos taurus|F|L-PART1+L-PART2|52516..52591+52677..52687|87 nt|1| | | | |87+0=87| | |~LEADER
+atgggctcttctctcggggcagggggcagagccattctgggccgcctggccctcctctgg
+accctcgtggttccaggcatcccgcag
+>NW_937068|TRGV7-1*01|Bos taurus|F|L-PART1+L-PART2|13826..13868+13705..13715|54 nt|1| | | | |54+0=54| |rev-compl|~LEADER
+atggcattcctggaagcggtcctcttctcctccctctggtcttttggccttggg
+>AY644517|TRGV8-1*01|Bos taurus|F|L-PART1+L-PART2|43894..43936+44062..44072|54 nt|1| | | | |54+0=54| | |~LEADER
+atgccgtgggtcccagcactgtttctggttttcctggctcctgtcacacaggta
+>AY644517|TRGV8-2*01|Bos taurus|F|L-PART1+L-PART2|49632..49674+49800..49810|54 nt|1| | | | |54+0=54| | |~LEADER
+atgctgtgggtcccagcactgcttctggttttcctggctcctatcacacaggta
+>AY644517|TRGV8-3*01|Bos taurus|F|L-PART1+L-PART2|23743..23785+23911..23921|54 nt|1| | | | |54+0=54| | |~LEADER
+atgccgtgggtcccagcactgcttctggttttcctggctcctgtcacacaggta
+>AY644517|TRGV8-4*01|Bos taurus|F|L-PART1+L-PART2|33690..33732+33857..33867|54 nt|1| | | | |54+0=54| | |~LEADER
+atgctgtgggtcccagcactgtttctggttttcctggctcctgtcatgcaggta
+>AY644517|TRGV9-1*01|Bos taurus|F|L-PART1+L-PART2|95330..95372+95526..95536|54 nt|1| | | | |54+0=54| | |~LEADER
+atgctgcgggccccagtgctgcttctggtgttcctggctcttgtcactcaggta
+>AY644517|TRGV9-2*01|Bos taurus|F|L-PART1+L-PART2|117868..117910+118062..118072|54 nt|1| | | | |54+0=54| | |~LEADER
+atgctgcgggccccagtgctgcttctggtgttcctggctcttgtcactcaggta
+>AY644517|TRGV1-1*01|Bos taurus|F|V-REGION|145761..146057|297 nt|1| | | | |297+0=297| | |~VARIABLE
+tcttccaacgccaaaggggcccagatgtcagtcactggcaagacttgggagactgcttct
+ttcacttgcgatcttacacaagatgccacatatatccacctgtacaaacaacaggagggg
+atggctccccaacgccttttctactatgatgtctactacaccaagattcagttcgaatca
+ggaaccaaaaaagaaaaatacagtgtttataaagtcacaggaaggagctacagatttgca
+atcctaaatctggaagacagtgattctgggatgtactactgtgctgtctgggataag
+>D16119|TRGV1-1*02|Bos taurus|(F)|V-REGION|55..342|288 nt|1| | | | |288+0=288| | |~VARIABLE
+tcttccaacgccaaaggggcccagatgtcagtcactggcaagacttgggagactgcttct
+ttcacttgcgatcttacacaagaagccacatatatccacctgtacaaacaacaggagggg
+atggctccccgacgccttttctactatgatgtctactactccaagattcagttcgaatca
+ggaaccaataaagaaaaatacagtgtttataaagtcacaggaaggagctacagatttgca
+atcctaaatctggaagacagtgattctgggatgtactactgtgctgtc
+>D16131|TRGV1-1*03|Bos taurus|(F)|V-REGION|55..346|292 nt|1| | | | |292+0=292| | |~VARIABLE
+tcttccaacgccaaaggggcccagatgtcagtcactggcaagacttgggagactgcttct
+ttcacttgtgatcttacacaagatgccacatatatccacctgtacaaacaacaggagggg
+atggctccccaacgccttttctactatgatgtctactacaccaagattcagttcgaatca
+ggaaccaaaaaagaaaaatacagtgtttataaagtcacaggaaggagctacagatttgca
+atcctaaatctggaagacagtgattctgggatgtactactgtgctgtctggg
+>NW_937068|TRGV10-1*01|Bos taurus|F|V-REGION|9092..9402|311 nt|1| | | | |311+0=311| |rev-compl|~VARIABLE
+gatattccaataacacaacgcataacatcaattaccaagaaaaaaggaaatacggcattt
+cttgaatgccaaataaaaatagataagttaaagaagaatgtatacatgcactggtaccga
+cagaaaccagagcagcctctaaaacgagttctgtatatttcctccaatgagaatgttgtt
+cacgaacaagggattagtgaggaaagatatgaagcaaggaaatggccgagtaactcactg
+gtgagcctcaggatacaccaggctactgaagaggatgcggggctctactattgcgcctgc
+tgggtggaaca
+>AY644517|TRGV2-1*01|Bos taurus|F|V-REGION|63919..64218|300 nt|1| | | | |300+0=300| | |~VARIABLE
+tcttccaacacagaaggggagaagatgtcaatcactaaggcaactgggtctgggtcgtct
+gttgaaatcatttgtgatcttattacccaaaccctcaaatatatccactggtacaagtac
+caggagggcacagctcctcgacgccttctttactacgacatctcctactcaaaggttgtg
+ttggaatcaggagtcagtgaagggaagtacaaagtttataaagagaagagctatactttt
+gcaatcttaaacctgcaagaaagtgattctggaatgtactactgtgctgcctgggagaag
+>NW_937068|TRGV3-1*01|Bos taurus|F|V-REGION|23381..23684|304 nt|1| | | | |304+0=304| |rev-compl|~VARIABLE
+ttatcaaaagtggagcaggcccagatctccctttccacagaagtaaagaaaagtattaac
+atacgttgcaagatagagagcacgaattttgaatcagaaactgtttactggtaccggcag
+aaaaaggatcaggctttggagcatctggtttatgtgacctcaaccacaactgcagctcga
+aatcaagtagatgggaagaacaaaattgaggcaagaaaagatgctcgaatgttcacttcg
+acccttacggtaaatttcatagaaaaagaagatgtgggcatttactactgtgctggctgg
+gact
+>U73187|TRGV3-1*02|Bos taurus|(F)|V-REGION|55..354|300 nt|1| | | | |300+0=300| | |~VARIABLE
+ttatcaaaagtggagcaggcccagatctccctttccacagaagcaaagaaaagtattaac
+atacattgcaagatagagagcacaaattttgaatcagaaattgtttactggtaccggcag
+aaaaagaatcaggctttggagcatctggtttatgtgacctcaaccacaactgcagctcga
+aatcaagtagatggaaagaacaaaattgaggcaagaaaagatgctcgaatgttcacttcg
+acccttacggtaaatttcatagaaaaagaagatgtgggcatttactactgtgctggctgg
+>NW_937068|TRGV3-2*01|Bos taurus|F|V-REGION|17460..17763|304 nt|1| | | | |304+0=304| |rev-compl|~VARIABLE
+ttatcaaaagtggagcaggcccagatctccctttccacagaagcaaagaaaagtattgac
+atacattgcaagatagagagcacaaattttgaatcagacactgttcactggtaccggcag
+aaattgaatcaggttttggagcatctggtttatgtgacctcaatcacaactgcagctcga
+aatcaagtagatgggaagaacaaaattgaggcaagaaaagatgctcgaatgttcacttcg
+acccttacggtaaatttcatagaaaaagaagatgtgggcatttactactgtgctggctgg
+gact
+>U73186|TRGV3-2*02|Bos taurus|(F)|V-REGION|55..355|301 nt|1| | | | |301+0=301| | |~VARIABLE
+ttatcaaaagtggagcaggcccagatctccctttccacagaagcaaagaaaagtattgac
+atacattgcaagatagagagcacaaattttgaatcagacactgttcactggtaccggcag
+aaattgaatcaggttttggagcatctggcttatgtgacctcaatcacaactgcagctcga
+aaacaagtagatgggaagaacaaaattgaggcaagaaaagatgctcgaatgttcacttcg
+accttgacggtaaatttcatagaaaaagaagatgtgggcatttactactgtgctggctgg
+g
+>AY644518|TRGV5-1*01|Bos taurus|F|V-REGION|95124..95408|285 nt|1| | | | |285+0=285| | |~VARIABLE
+tcttccaacttgatgttaatcactagtaagactggggagactgcttcgttcccttgtgat
+cttacacaaggggccacctatatccacttgtacaaacatgaggaggggacggccccccga
+cgccttttatactacgacagctacaactcaaaggctgtgcttgaatcaggaatcagtgga
+acaaaataccatgtctataagggcacagggaggagctatacatttgcaatcctaaatctg
+caagcaagtgattccggcatatactactgtgctatctgggataag
+>D16126|TRGV5-1*03|Bos taurus|(F)|V-REGION|52..336|285 nt|1| | | | |285+0=285| | |~VARIABLE
+tattccaacttgatgttaatcactagtaagactggggagactgcttccttcccttgtgat
+cttacacaaggggccacctatatccacttgtacaaacatgaggaggggacggccccccga
+cgccttttatactacgacagctacaactcaaaggctgtgcttgaatcaggaatcagtgga
+acaaaataccaagtctataagggcacagggaggagctatacatttgcaatcctaaatctg
+caagcaagtgattccggcatatactactgtgctatctgggataag
+>D16128|TRGV5-1*04|Bos taurus|(F)|V-REGION|52..334|283 nt|1| | | | |283+0=283| | |~VARIABLE
+tcttccaacttgatgttcatcactagtaagactggggagactgcttcgttgccttgtgat
+cttacacaaggggccacctatatccacttgtacaaacatgaggaggggactgccccccga
+ctccttttatactactacagctacaactcaaaggctgtgcttgaatcaggaatcagtgga
+acaaaataccatgtctataagggcacagggaggagctatacatttgcaatcctaaatctg
+caagcaagtgattccggcatatactactgtgctatctgggata
+>D16130|TRGV5-1*05|Bos taurus|(F)|V-REGION|52..336|285 nt|1| | | | |285+0=285| | |~VARIABLE
+tcttccaacttgatgttaatcactagtaagacaggggagactgcttcgttcccttgtgat
+cttacacaaggggcaacctatatccacttgtacaaacatgaggaggggacggccacaaga
+cgcattttatactacgacagctacaactcaaaggctgtgcttgaatcaggaatcagtgga
+acaaaataccaagtctataagggcacagggaggagctatacatttgcaatcctaaatctg
+caagaaagtgattccggcatatactactgtgctatctgggataag
+>AY644518|TRGV5-2*01|Bos taurus|(F)|V-REGION|134770..135054|285 nt|1| | | | |285+0=285| | |~VARIABLE
+tcttccaacttgatgttaatcactagtaatactggggagactgcttcgttcccttgtgat
+cttacacaaggggccacctatatccacttgtacaaacatgaggaggggatggccccccga
+cgtcttttatactacgacagctacaactcaaaggctgtgcttgaatcaggaatcagtgga
+acaaaataccatgtctataagggcacagggaggagctatacatttacaatcgtaaatctg
+caagcaagtgattccggcatatactactgtgctatctgggataat
+>D16122|TRGV5-2*02|Bos taurus|(F)|V-REGION|52..332|281 nt|1| | | | |281+0=281| | |~VARIABLE
+tcttccaacttgatgttaatcactagtaatactggggagactgcttcgttcccttgtgat
+cttacacaaggggccacctatatccacttgtacaaacatgaggaggggatggccccccga
+cgtcttttatactacgacagctacaactcaaaggctgtgcttgaatcaggaatcagtgga
+acaaaataccatgtctataagggcacagggaggaggtatacatttacaatcgtaaatctg
+caagcaagtgattccggcatatactactgtgctatctggga
+>D13653|TRGV5-2*03|Bos taurus|(F)|V-REGION|52..333|282 nt|1| | | | |282+0=282| | |~VARIABLE
+tcttccaacttgatgttaatcactagtaatactggggagactgcttcgttcccttgtgat
+cttacacaaggggccacctatatccacttgtacaaacatgaggaggggatggccccccga
+cgtcttttatactacgacagctacaactcaaagactgtgcttgaatcaggaatcagtgga
+acaaaataccatgtctataagggcacagggaggagctatacatttacaatcgtaaatctg
+caagcaagtgattccggcatatactactgtgctatcaataga
+>D16125|TRGV5-2*04|Bos taurus|(F)|V-REGION|52..324|273 nt|1| | | | |273+0=273| | |~VARIABLE
+tcttccaacttgatgttcatcactagtaatactggggagactgcttcgttgccttgtgat
+cttacacaaggggccacctatatccacttgtacaaacatgaggaggggatggccccccga
+cttcttttatactattacagctacaactcaaaggctgtgcttgaatcaggaatcagtgga
+acaaaataccatgtctataagggcacagggaggagctatacatttacaatcgtaaatctg
+caagcaagtgattccggcatatactactgtgct
+>D16127|TRGV5-2*05|Bos taurus|(F)|V-REGION|52..329|278 nt|1| | | | |278+0=278| | |~VARIABLE
+tcttccaacttgatgttcatcactagtaatactggggagactgcttcgttcccttgtgat
+cttacacaaggggccacctatatccacttgtacaaacatgaggaggggatggccccccga
+cttcttttatactactacagctacaactcaaaggctgtgcttgaatcaggaatcagtgga
+acaaaataccatgtctataagggcacagggaggagctatacatttgcaatcctaaatctg
+caagcaagtgattccggcatatactactgtgctatctg
+>D13652|TRGV5-2*06|Bos taurus|(F)|V-REGION|52..334|283 nt|1| | | | |283+0=283| | |~VARIABLE
+tcttccaacttgatgttaatcactagtaatactggggagactgcttcgttcccttgtgat
+cttacacaaggggccacctatatccacttgtacaaacatgaggaggggatggccccccga
+cgtcttttatactacgacagctacaactcaaaggctgtgcttgaatcaggaatcagtgga
+acaaaataccatgtctataagggcacagggaggaggtatacatttacaatcgtaaatctg
+caagcaagtgattccgggatatactactgtgctatctgggata
+>D13649|TRGV5-2*07|Bos taurus|(F)|V-REGION|52..333|282 nt|1| | | | |282+0=282| | |~VARIABLE
+tcttccaacttgatgttaatcactagtaatactggggagactgcttcgttcccttgtgct
+cttacacaaggggccacctatatccacttgtacaaacatgaggaggggatggccccccga
+cgtcttttatactatgacagctacaactcaaaggctgtgcttgaatcaggaatcagtgga
+agaaaataccatgtctataagggcacagggaggagctatacatttacaatcgtaaatctg
+caagcaagtgattccgggatatactactgtgctatctgggat
+>D16124|TRGV5-2*08|Bos taurus|(F)|V-REGION|52..330|279 nt|1| | | | |279+0=279| | |~VARIABLE
+tcttccaacttgatgttaatcactagtaatactggggagactgcttcgttcccttgtgat
+cttacacaaggggccacctatatccacttgtacaaacatgaggaggggatggccccccga
+cgtcttttatactatgacagctacaactcaaaggctgtgcttgaatcaggaatcagtgga
+acaaaataccatgtctataagggcacagggaggagctatacatttacaatcgtaaatctg
+caagcaagtgattcaggcatatactactgtgctatctgg
+>D16120|TRGV5-2*09|Bos taurus|(F)|V-REGION|52..335|284 nt|1| | | | |284+0=284| | |~VARIABLE
+tcttccaacttgatgttcatcactagtaatacaggggagactgcttcgttcccttgtgat
+cttacacaaggggccacctatattcacttgtacaaacatgaggaggggatggccccccga
+cgtcttttatactacgacagctacaactcaaaggcgtgcttgaatcaggaatcagtggaa
+caaaataccatgtctattatgggcacagggaggaggtatacatttacaatcgtaaatctg
+caagcaagtgattccggcatatactactgtgctatctgggataa
+>D16133|TRGV5-2*10|Bos taurus|(F)|V-REGION|52..330|279 nt|1| | | | |279+0=279| | |~VARIABLE
+tcttccaacttgatgttcatcactagtaatacaggggagactgcttcgttcccttgtgat
+cttacacaaggggccacctatattcacttgtacaaacatgaggaggggatggccccccga
+cgtcttttatactatgacagctacaactcaaaggcgtgcttgaagcaggaatcagtggaa
+caaaataccatgtctattatgggcacagggaggagctatacatttacaatcgtaaatctg
+caagcaagtgattccggcatatactactgtgctatctgg
+>AY644518|TRGV6-1*01|Bos taurus|F|V-REGION|123913..124210|298 nt|1| | | | |298+0=298| | |~VARIABLE
+gagatcagggtgttccagcggtccgtgatggtggggcacgcaggtggagctatcactctg
+ccctgtcagatcagtaggtctgtggattacgtccactggttccgccaactggagggccag
+gcccctgagaggcttctctatctagccttgtccaagcgggatgtgcagtgggattcggtc
+ctaagaggtgataaagtcaacgcggcccgcggcgcggatggcaagagctacaccatgtcc
+ttgaggaagctggcgaagagcgacgaaggactgtactactgtgctacctggggatcgg
+>AC172685|TRGV6-2*01|Bos taurus|F|V-REGION|52688..52985|298 nt|1| | | | |298+0=298| | |~VARIABLE
+gagatcagggtgttccagcggtccgtgatggtggggcacgcgggtggagctctcactatg
+ccctgtcagatcagtaagtctgtggattacgtccactggttccgccaactggagggccag
+gcccctgagaggcttctctatctagccttgtccaagcgggatgtgcagtgggattcggtc
+ctaagaggtgataaagtcaacgcagcccgcggcacagatggcaagagctgcaccatgtcc
+ttgaggaagctggcgaagagcgacgaaggactgtactactgtgctacctggggatcgg
+>NW_937068|TRGV7-1*01|Bos taurus|F|V-REGION|13399..13704|306 nt|1| | | | |306+0=306| |rev-compl|~VARIABLE
+caattaactttggtgcaaactgaagtatcagttactggaacaagagaaaagagtataatt
+atgtcttgcaaggtgttctctaaggactttagcaaagattacatccactggtaccggcaa
+aaaccagatcaaggtttagaacagctactttttgtcttagatgcccctgcgctaaacgac
+ttaggagggaagaaaaacaagcttgaggccagaaaagataaaccctcttccacttctacc
+ttgaaaataagtttcttagagaaagaagatgaggccacatactactgtgccggctggttg
+cttgcc
+>AY735449|TRGV7-1*02|Bos taurus|(F)|V-REGION|55..358|304 nt|1| | | | |304+0=304| | |~VARIABLE
+caattaactttggtgcaaactgaagtatcagttactggaacaagagaaaagagtataatt
+atgtcttgcaaggtgttctctaaggactttagcaaagattacatccactggtaccggcaa
+aaaccagatcaaggtttagaacagctactttttgtcttagatgcccctgcgctaaacgac
+ttaggagggaagaaaaacaagcttgaggccagaaaagataaaccctcttccacttctacc
+ttgaaaataagtttcttagagaaagaagatgaggccacatactactgtgctggctggttg
+cttg
+>AY644517|TRGV8-1*01|Bos taurus|F|V-REGION|44073..44363|291 nt|1| | | | |291+0=291| | |~VARIABLE
+tcttccaacatggaagaggacaagttgtcagtcatgagggctactgggtcatctattgta
+atcgattgtgatcttacaggaagctatatccactggtacaaattccaggagggagctgta
+ccccgacgcctcctctactacgatgtctccaactcaaaggctgtgttggactcaggaatc
+agtgaagggaaataccatgcttacaaaggcacagggaagagctacacgtttgtaatctcc
+aacttgcaagaaagtgattctggcacctactactgtgctgtctgggagaag
+>AY644517|TRGV8-2*01|Bos taurus|F|V-REGION|49811..50086|276 nt|1| | | | |276+0=276| | |~VARIABLE
+tcttccaacatggaagaggacaagttgtcagtcatgagggcgactgggtcatctgttgta
+atcgattgtgatcttacaggaagctatatccactggtacaaattccaggagggagctgta
+ccccgacgcctcctctactacgatgtctactactcaaaggttgagttggattcaggaatc
+agtgaaaggaaatatcgtgtttacaaaggcaaaattttaatctccaacttgcaagaaagt
+gattctggcacctactactgtgctgtctgggagaag
+>AY644517|TRGV8-3*01|Bos taurus|F|V-REGION|23922..24212|291 nt|1| | | | |291+0=291| | |~VARIABLE
+tcttccaacatggaagaggacaagttgtcagtcatgagggcgactgggtcatctgttgta
+atcgagtgtgatcttacaggaagctatatccactggtacaaattccaggagggagctgta
+cccggacgccttctctactacgatgtctactactcaaaggttgtgctgggctcaggaatc
+agtgaagggaaataccacgtttacaaaggcacagggaagagctacacatttgtaatctcc
+aacttgcaagaaagtgattctggcacctactactgtgctgtctgggagaag
+>D13648|TRGV8-3*02|Bos taurus|(F)|V-REGION|55..341|287 nt|1| | | | |287+0=287| | |~VARIABLE
+tcttccaacatggaagaggacaagttgtcagtcatgagggctactgggtcatctgttgta
+atcgattgtgatctcacaggaagctatatccactggtacaaattccaggagggagctcta
+ccccgacgtcttctctactacgatgtctactactcaaaggttgtgctgggctcaggaatc
+agtgaagggaaataccacgtttacaaaggcacagggaagaggtacagtgttgtaatctcc
+aacttgcaagaaagtgattctggcatctactactgtgccgtctggga
+>AY644517|TRGV8-4*01|Bos taurus|F|V-REGION|33868..34158|291 nt|1| | | | |291+0=291| | |~VARIABLE
+tcttccaacatggaagaggacaagttgtcagtcatgagggcgactgggtcatctgttgta
+atggattgtgatcttacaggaagctatatccactggtacaaattccaggacggagctgta
+ccccgacgccttctccactacattgtctccaactcaaaggttgtgttggactcaggaatc
+agtgaagggaaataccacgtttacaaaggcacagggaagagctacacgtttgtaatctcc
+aacttgcaagaaagtgattctggcacctactactgtgctgtctgggagaag
+>AY644517|TRGV9-1*01|Bos taurus|F|V-REGION|95537..95836|300 nt|1| | | | |300+0=300| | |~VARIABLE
+tcttccaacatggaaggcgacaagatgtcaatcaccagggcaactgggtcctctgctgta
+atcccgtgtgatcttcctacacaaaacaagcaatatatccactggtacaaattccaggag
+ggaactgtaccccgacgccttctctactatgatgtctactactcaaaggttgtgctggaa
+ccaggaatcagtccagggaaataccatggctatgaagacacagacaagatatatacattt
+gtaatctcaaatcttcaagaaagtgattctggcgtgtaccgctgcgctgtctgggagaag
+>AY644517|TRGV9-2*01|Bos taurus|F|V-REGION|118073..118372|300 nt|1| | | | |300+0=300| | |~VARIABLE
+tcttccaacatggaagacgagaggatgtcaatcaccagggcaactgggtcctctgctgta
+atcccgtgtgatcttcctacacaaaacaagcaatatatccactggtacaaattccaggag
+ggaactgtaccccgacgccttctctactacgatgtctcctactcaaaggttgtgttggaa
+tcaggaatcagtccagggaaataccatggctatgaaggcacagacaagatgtataaattt
+gtaatctcaaatcttcaagaaagtgattctggcgtgtaccgctgcgctgtctgggagaag
+>AY644518|TRGJ1-1*01|Bos taurus|F|J-REGION|102107..102166|60 nt|3| | | | |60+0=60| | |~JOINING
+acagctcaggctggaggaagatatttggagaaggagctaacatcatagtaactcctcctg
+>AY644518|TRGJ1-2*01|Bos taurus|F|J-REGION|105094..105143|50 nt|2| | | | |50+0=50| | |~JOINING
+gaataattacataaaaaacttcaatgttggagcaaaactcattgtcacag
+>AC172685|TRGJ2-1*01|Bos taurus|F|J-REGION|236573..236632|60 nt|3| | | | |60+0=60| | |~JOINING
+acagctcaggctggaggaagatatttggagaaggagctaacatcatagtaactcctcctg
+>AY644518|TRGJ2-2*01|Bos taurus|F|J-REGION|138048..138097|50 nt|2| | | | |50+0=50| | |~JOINING
+gaatagttacttaaaaaacttcaatgttggagcaaaactcattgtcacag
+>AY644517|TRGJ3-1*01|Bos taurus|F|J-REGION|124776..124835|60 nt|3| | | | |60+0=60| | |~JOINING
+atagtgcaggctggaagaagatatttggaaaagcaactgagctcatagtagctcctcctg
+>AY644517|TRGJ4-1*01|Bos taurus|F|J-REGION|155562..155608|47 nt|2| | | | |47+0=47| | |~JOINING
+aaagaagatatttggaaaaggaactaagctcataatagctccccatg
+>AY644517|TRGJ4-2*01|Bos taurus|F|J-REGION|158951..159000|50 nt|2| | | | |50+0=50| | |~JOINING
+taataattacaaaaaaaacttcaatgttggaacaaaacttgttgtcacag
+>NW_937068|TRGJ5-1*01|Bos taurus|F|J-REGION|570..629|60 nt|3| | | | |60+0=60| |rev-compl|~JOINING
+acagttcaacctggatcaaggtatttggtgaaggaactaagctcgtagtaatacctcctg
+>AC172685|TRGJ6-1*01|Bos taurus|F|J-REGION|65112..65161|50 nt|2| | | | |50+0=50| | |~JOINING
+gaatttaaacaacatgatctttggtgaaggaacaaaagttttcgtcctag
+>D90409|TRGC1*01_ABC|Bos taurus|F|EX1+EX2A+EX2B+EX2C+EX3|?|648 nt|?| | | | |648+0=648| |~CONSTANT
+gagagaaacctcgaggcagacacttcccccaagcccactgtttttcttccttcaattgct
+gaaatcaaccatgataatgctggaacatatctttgtctcctggagaaatttttccctgat
+gttattacagtttcttggagagcaaaaaatgacaaaagagctctgccatcccagcaggga
+aataccatgaagaccaaggacacatacatgaagttcagctggctgaccgtgaccgaaaac
+tccatggataaacaacatgtatgtgttgtcaaacacaagaaaaatataggaggaattgat
+caagagattatttttccttcaataaaagaagttgtcacctcacttgtccctactactgag
+cctcctactactaagcctcctactactgagcctcctactactgagcctccaaatgattgt
+ttgaccgatgaaagcaaacttacaggtactggttctaaaaaagcttgtctgaaagatgga
+agtgatactaattctacaaaggcatgtctggaaggtgaaagcagtaccctgcagctgcag
+ctcatgaacacctctgcagcctattacacctacctcttattcctcttcctgagcacagtc
+tactttgttgtcatcatttcctgtgtgtttagaagaacaggcgtcgtc
+>D90410|TRGC1*02_ABC|Bos taurus|F|EX1+EX2A+EX2B+EX2C+EX3|?|648 nt|?| | | | |648+0=648| |~CONSTANT
+gagagaaacctcgaggcagacacttcccccaagcccactgtttttcttccttcaattgct
+gaaatcaaccatgataatgctggaacatatctttgtctcctggagaaatttttccctgat
+gttattacagtttcttggagagcaaaaaatgacaaaagagctctgccatcccagcaggga
+aataccatgaagaccaaggacacatacatgaagttcagctggctgaccgtgaccgaaaac
+tccatggataaacaacatgtatgtgttgtcaaacacaagaaaaatataggaggaattgat
+caagagattatttttccttcaataaaagaagttgtcacctcacttgtccctactactgag
+cctcctactactaagcctcctactactgagcctcctactactgagcctccaaatgattgt
+ttgaccgatgaaagcaaacttacaggtactggttctaaaaaagcttgtctgaaagatgga
+agtgatactaattctacaaaggcatgtctggaaggtgaaagcagtaccctgcagctgcag
+ctcatgaacacctctacagcctattacacctacctcttactcctcttcctgagcacagtc
+tactttgttgtcatcatttcctgtgtgtttagaagaacaggcgtctgc
+>D90413|TRGC1*03_ABC|Bos taurus|F|EX1+EX2A+EX2B+EX2C+EX3|?|648 nt|?| | | | |648+0=648| |~CONSTANT
+gagagaaacctcgaggcagacacttcccccaagcccactgtttttcttccttcaattgct
+gaaatcaaccatgataatgctggaacatatctttgtctcctggagaaatttttccctgat
+gttattacagtttcttggagagcaaaaaatgacaaaagagctctgccatcccagcaggga
+aataccatgaagaccaaggatacctacatgaagttcagctggctgaccatgaccgaaaac
+tctatggataaacaacatgtatgtgttgtcaaacacaagaaaaatataggaggaattgat
+caagagattatttttccttcaataaaagaagttgtcacctcacttgtccctactactgag
+cctcctactactaagcctcctactactgagcctcctactactgagcctccaaatgattgt
+ttgaccgatgaaagcaaacttacaggtactggttctaaaaaagcttgtctgaaagatgga
+agtgatactaattctacaaaggcatgtctggaaggtgaaagcagtaccctgcagctgcag
+ctcatgaacacctctgcagcctattacacctacctcttactcctcttcctgagcacagtc
+tactttgttgtcatcatttcctgtgtgtttagaagaacaggcgtctgc
+>AY644518|TRGC1*04_ABC|Bos taurus|F|EX1+EX2A+EX2B+EX2C+EX3|?|647 nt|?| | | | |647+0=647| |~CONSTANT
+agagaaacctcgaggcagacacttcccccaagcccactgtttttcttccttcaattgctg
+aaatcaaccatgataatgctggaacatatctttgtctcctggagaaatttttccctgatg
+ttattacagtttcttggagagcaaaaaatgacaaaagagctctgccatcccagcagggaa
+ataccatgaagaccaaggacacctacatgaagttcagctggctgaccgtgaccgaaaact
+ctatggataaacaacatgtatgtgttgtcaaacacaagaaaaatataggaggaattgatc
+aagagattatttttccttcaataaaagaagttgtcacctcacttgtccctactactgagc
+ctcctactactaagcctcctactactgagcctcctactactgagcctccaaatgattgtt
+tgaccgatgaaagcaaacttacaggtactggttctaaaaaagcttgtctgaaagatggaa
+gtgatactaattctacaaaggcatgtctggaaggtgaaagcagtaccctgcagctgcagc
+tcatgaacacctctacagcctattacacctacctcttactcctcttcctgagcacagtct
+actttgttgtcatcatttcctgtgtgtttagaagaacaggcgtctgc
+>D90411|TRGC2*01_ABC|Bos taurus|F|EX1+EX2A+EX2B+EX2C+EX3|?|633 nt|?| | | | |633+0=633| |~CONSTANT
+gagagaaacctcgaggcagacacttcccccaagcccactgtttttcttccttcaattgct
+gaaataaaccatgataatgctggaacatatctttgtctcctggagaaatttttccctgat
+gttattacagtttcttggagagcaaaaaatgacaaaagagctctgccatcccagcaggga
+aataccatgaagaccaaggacacatacatgaagttaagctggctgaccgtgaccgaaaac
+tccatggataaacaacatgtatgtgttgtcaaacacaagaaaaatataggaggaattgat
+caagagattatttttccttcaataaaagaagttgtcacctcacttgtccctactactgag
+cctcctactgctgagcctccaaatgattgtttgactgatgaaagcattacagatactggt
+tctaaaaaagcttgcttgaaagatggaagtgatactaattctacaaaggcatgtctggaa
+ggtaaaagcagtaccctgcagctgcagctcatgaacacctctgcagcctattacacctac
+ctcttactcctcctcctgagcacagtctactttgctgtcatcatttcctgtgtgtttagg
+agaacaggcgtctgctgtgacaggaagatctcg
+>D90412|TRGC2*02_ABC|Bos taurus|F|EX1+EX2A+EX2B+EX2C+EX3|?|623 nt|?| | | | |623+0=623| |~CONSTANT
+gagagaaacctcgaggcagacacttcccccaagcccactgtttttcttccttcaattgct
+gaaataaaccatgataatgctggaacatatctttgtctcctggagaaatttttccctgat
+gttattacagtttcttggagagcaaaaaatgacaaaagagctctgccatcccagcaggga
+aataccatgaagaccaaggacacatacatgaagttaagctggctgaccgtgaccgaaaac
+tccatggataaacaacatgtatgtgttgtcaaacacaagaaaatataggaggaattgatc
+aagagattatttttccttcaataaaagaagttgtcacctcacttgtccctactactgagc
+ctcctactgctgagcctccaaatgattgtttgactgatgaaagcattacagatactggtt
+ctaaaaaagcttgtctgaaagatggaagtgatactaattctacaaaggcatgtctggaag
+gtaccctgcagctgcagctcatgaacacctctgcagcctattacacctacctcttactcc
+tcctcctgagcacagtctactttgctgtcatcatttcctgtgtgtttaggagaacaggcg
+tctgctgtgacaggaagatctcg
+>D90415|TRGC2*03_ABC|Bos taurus|F|EX1+EX2A+EX2B+EX2C+EX3|?|633 nt|?| | | | |633+0=633| |~CONSTANT
+gagagaaacctcgaggcagacacttcccccaagcccactgtttttcttccttcaattgct
+gaaatcaaccatgataatgctggaacatatctttgtctcctggagaaatttttccctgat
+gttattacagtttcttggagagcaaaaaatgacaaaagagctctgccatcccagcaggga
+aataccatgaagaccaaggacacatacatgaagttcagctggctgaccgtgaccgaaaac
+tctatggataaacaacatgtatgtgttgtcaaacacaagaaaaatataggaggaattgat
+caagagattatttttccttcaataaaagaagttgtcacctcacttgtccctactactgag
+cctcctactactgagcctccaaatgattgtttgactgatgaaagcattacagatactggt
+tctaaaaaagcttgtctgaaagatggaagtgatactaattctacaaaggcatgtctggaa
+ggtgaaagcagtaccctgcagctgcagctcatgaacacctctgcagcctattacacctac
+ctcttactcctcctcctgagcacagtctactttgctgtcatcatttcctgtgtgtttagg
+agaacaggcgtctgctgtgacaggaagatctcg
+>D90416|TRGC2*04_ABC|Bos taurus|F|EX1+EX2A+EX2B+EX2C+EX3|?|633 nt|?| | | | |633+0=633| |~CONSTANT
+gagagaaacctcgaggcagacacttcccccaagcccactgtttttcttccttcaactgct
+gaaatcaaccatgataatgctggaacatatctttgtctcctggagaaatttttccctgat
+gttattacagtttcttggagagcaaaaaatgacaaaagagctctgccatcccagcaggga
+aataccatgaagaccaaggacacatacatgaagttcagctggctgaccgtgaccgaaaac
+tctatggataaacaacatgtatgtgttgtcaaacacaagaaaaatataggaggaattgat
+caagagattatttttccttcaataaaagaagttgtcacctcacttgtccctactactgag
+cctcctactactgagcctccaaatgattgtttgactgatgaaagcattacagatactggt
+tctaaaaaagcttgtctgaaagatggaagtgatactaattctacaaaggcatgtctggaa
+ggtgaaagcagtaccctgcagctgcagctcatgaacacctctgcagcctattacacctac
+ctcttactcctcctcctgagcacagtctactttgctgtcatcatttcctgtgtgtttagg
+agaacaggcgtctgctgtgacaggaagatctcg
+>AY644518|TRGC2*05_ABC|Bos taurus|F|EX1+EX2A+EX2B+EX2C+EX3|?|632 nt|?| | | | |632+0=632| |~CONSTANT
+agagaaacctcgaggcagacacttcccccaagcccactgtttttcttccttcaattgctg
+aaataaaccatgataatgctggaacatatctttgtctcctggagaaatttttccctgatg
+ttattacagtttcttggagagcaaaaaatgacaaaagagctctgccatcccagcagggaa
+ataccatgaagaccaaggacacatacatgaagttaagctggctgaccgtgaccgaaaact
+ccatggataaacaacatgtatgtgttgtcaaacacaagaaaaatataggaggaattgatc
+aagagattatttttccttcaataaaagaagttgtcacctcacttgtccctactactgagc
+ctcctactgctgagcctccaaatgattgtttgactgatgaaagcattacagatactggtt
+ctaaaaaagcttgtctgaaagatggaagtgatactaattctacaaaggcatgtctggaag
+gtaaaagcagtaccctgcagctgcagctcatgaacacctctgcagcctattacacctacc
+tcttactcctcctcctgagcacagtctactttgctgtcatcatttcctgtgtgtttagga
+gaacaggcgtctgctgtgacaggaagatctcg
+>X63680|TRGC4*01_ABC|Bos taurus|F|EX1+EX2A+EX2B+EX2C+EX3|?|630 nt|?| | | | |630+0=630| |~CONSTANT
+gatagaaaccttgctacagacatttcacccaagcccactatttttcttccttcaattgct
+gaaatcaatcacagtaagactggaacatacctttgtcttctggagaaatttttccctgat
+attattaaggtttattggaaagaaaaggatggcaacaaagctctgccatcccagcaggga
+aataccatgaagactactgacacatacatgaagctcagctggctgaccgtgactgaaaac
+tccatggacaaagaacatatctgtgtcgtacaacacgagagaaatataggaggaattaat
+caagagattctttttccttcaataaatgaagttgtcagctcaattgtccctaccactgag
+tctcccagtgactgtttaaaccatgacagcaaagttaccggtactggttctaaaaaagct
+tgtctgaaagatgaaagtgaagtcactgctgataataattctacaaaagtgtgtctgaaa
+gatgaaagcaataccctgcagctgcagctcatgaacacctctgcctattacacctacctc
+cttctcctcctcaagagtgtggtctactgtatcatcatcacctcctgtgtgtttcggaga
+acaggcatctgctgtgacgggaagaacttg
+>AY644517|TRGC4*02_ABC|Bos taurus|F|EX1+EX2A+EX2B+EX2C+EX3|?|629 nt|?| | | | |629+0=629| |~CONSTANT
+atagaaaccttgctacagacatttcacccaagcccactatttttcttccttcaattgctg
+aaatcaatcacagtaagactggaacatacctttgtcttctggagaaatttttccctgata
+ttattaaggtttactggaaagaaaaggatggcaacaaagctctgccatcccagcagggaa
+ataccatgaagactactgacacatacatgaagctcagctggctgaccgtgactgaaaact
+ccatggacaaagaacatatctgtgtcgtacaacacgagagaaatataggaggaattaatc
+aagagattctttttccttcaataaatgaagttgtcagctcaattgtccctaccactgagt
+ctcccagtgactgtttaaaccatgacagcaaagttaccggtactggttctaaaaaagctt
+gtctgaaagatgaaagtgaagtcactgctgataataattctacaaaagtgtgtctgaaag
+atgaaagcaataccctgcagctgcagctcatgaacacctctgcctattacacctacctcc
+ttctcctcctcaagagtgtggtctactgtatcatcatcacctcctgtgtgtttcggagaa
+caggcatctgctgtgacgggaagaacttg
+>AY644518|TRGC6*01_ABC|Bos taurus|F|EX1+EX2A+EX2B+EX2C+EX3|?|620 nt|?| | | | |620+0=620| |~CONSTANT
+ataaaaaacttcctgcagatacctccccaaaacccacaatttttcttccttcaattaacg
+aagtcaaccatcaacaggctgcaacatatctttgtcttctggaaaaatttttccctgatg
+ttattaaggtttcttggaaagaaaagaatgacaacagagttctgccatcccagcagggaa
+ataccatgaagaccaatgacacatacatgacgttcagctggctgaccgtgacagaaaact
+ccatgaaggaagagcacatgtgtatcgtcaaacatgagaaaaatacaagaggaaaagatc
+aagagattctttttcctgcagtgaatgaagttttcaccccagttgtcactactactgagc
+ctccaaatgattgtttgaaagatggaagtgaagtcactgatactgattttacaaaagctt
+gtgcgagagatgaaagtgaattcgctaattctacaaaagcatgtctgaaagatgaaaaca
+ataccgtgcagctgcagttcacgtacaactctgcttactacacctacctcctcctcctcc
+tcaagagtgccatctactttgtcaccacctcctgctgtgtgtttaggagaacaggtgtct
+gctgtgacgggaagaactcg
+>DQ179594|TRGC6*02_ABC|Bos taurus|F|EX1+EX2A+EX2B+EX2C+EX3|?|558 nt|?| | | | |558+0=558| |~CONSTANT
+gataaaaaacttcctgcagatacctccccaaaacccacaatttttcttccttcaattaac
+gaagtcaaccatcaacaggctgcaacatatctttgtcttctggaaaaatttttccctgat
+gttattaaggtttcttggaaagaaaagaatgacaacagagttctgccatcccagcaggga
+aataccatgaagaccaatgacacatacatgacgttcagctggctgaccgtgacagaaaac
+tccatgaaggaagagcacatgtgtatcgtcaaacatgagaaaaatacaagaggaaaagat
+caagagattctttttcctgcagtgaatgaagttttcaccccagttgtcactactactgag
+cctccaaatgattgtttgaaagatggaagtgaagtcactgatactgatcttacaaaagct
+tgtgcgagagatgaaagtgaattcgctaattctacaaaagcatgtctgaaagatgaaaac
+aataccgtgcagctgcagttcacgtacaactctgcttactacacctacctcctcctcctc
+ctcaagagtaccatctac
+>D90409|TRGC1*01_A|Bos taurus|F|EX1+EX2A+EX3|?|561 nt|?| | | | |561+0=561| |~CONSTANT
+gagagaaacctcgaggcagacacttcccccaagcccactgtttttcttccttcaattgct
+gaaatcaaccatgataatgctggaacatatctttgtctcctggagaaatttttccctgat
+gttattacagtttcttggagagcaaaaaatgacaaaagagctctgccatcccagcaggga
+aataccatgaagaccaaggacacatacatgaagttcagctggctgaccgtgaccgaaaac
+tccatggataaacaacatgtatgtgttgtcaaacacaagaaaaatataggaggaattgat
+caagagattatttttccttcaataaaagaagttgtcacctcacttgtccctactactgag
+cctcctactactaagcctcctactactgagcctcctactactgagcctccaaatgattgt
+ttgaccgatgaaagcagtaccctgcagctgcagctcatgaacacctctgcagcctattac
+acctacctcttattcctcttcctgagcacagtctactttgttgtcatcatttcctgtgtg
+tttagaagaacaggcgtcgtc
+>D90410|TRGC1*02_A|Bos taurus|F|EX1+EX2A+EX3|?|561 nt|?| | | | |561+0=561| |~CONSTANT
+gagagaaacctcgaggcagacacttcccccaagcccactgtttttcttccttcaattgct
+gaaatcaaccatgataatgctggaacatatctttgtctcctggagaaatttttccctgat
+gttattacagtttcttggagagcaaaaaatgacaaaagagctctgccatcccagcaggga
+aataccatgaagaccaaggacacatacatgaagttcagctggctgaccgtgaccgaaaac
+tccatggataaacaacatgtatgtgttgtcaaacacaagaaaaatataggaggaattgat
+caagagattatttttccttcaataaaagaagttgtcacctcacttgtccctactactgag
+cctcctactactaagcctcctactactgagcctcctactactgagcctccaaatgattgt
+ttgaccgatgaaagcagtaccctgcagctgcagctcatgaacacctctacagcctattac
+acctacctcttactcctcttcctgagcacagtctactttgttgtcatcatttcctgtgtg
+tttagaagaacaggcgtctgc
+>D90413|TRGC1*03_A|Bos taurus|F|EX1+EX2A+EX3|?|561 nt|?| | | | |561+0=561| |~CONSTANT
+gagagaaacctcgaggcagacacttcccccaagcccactgtttttcttccttcaattgct
+gaaatcaaccatgataatgctggaacatatctttgtctcctggagaaatttttccctgat
+gttattacagtttcttggagagcaaaaaatgacaaaagagctctgccatcccagcaggga
+aataccatgaagaccaaggatacctacatgaagttcagctggctgaccatgaccgaaaac
+tctatggataaacaacatgtatgtgttgtcaaacacaagaaaaatataggaggaattgat
+caagagattatttttccttcaataaaagaagttgtcacctcacttgtccctactactgag
+cctcctactactaagcctcctactactgagcctcctactactgagcctccaaatgattgt
+ttgaccgatgaaagcagtaccctgcagctgcagctcatgaacacctctgcagcctattac
+acctacctcttactcctcttcctgagcacagtctactttgttgtcatcatttcctgtgtg
+tttagaagaacaggcgtctgc
+>AY644518|TRGC1*04_A|Bos taurus|F|EX1+EX2A+EX3|?|560 nt|?| | | | |560+0=560| |~CONSTANT
+agagaaacctcgaggcagacacttcccccaagcccactgtttttcttccttcaattgctg
+aaatcaaccatgataatgctggaacatatctttgtctcctggagaaatttttccctgatg
+ttattacagtttcttggagagcaaaaaatgacaaaagagctctgccatcccagcagggaa
+ataccatgaagaccaaggacacctacatgaagttcagctggctgaccgtgaccgaaaact
+ctatggataaacaacatgtatgtgttgtcaaacacaagaaaaatataggaggaattgatc
+aagagattatttttccttcaataaaagaagttgtcacctcacttgtccctactactgagc
+ctcctactactaagcctcctactactgagcctcctactactgagcctccaaatgattgtt
+tgaccgatgaaagcagtaccctgcagctgcagctcatgaacacctctacagcctattaca
+cctacctcttactcctcttcctgagcacagtctactttgttgtcatcatttcctgtgtgt
+ttagaagaacaggcgtctgc
+>D90411|TRGC2*01_A|Bos taurus|F|EX1+EX2A+EX3|?|549 nt|?| | | | |549+0=549| |~CONSTANT
+gagagaaacctcgaggcagacacttcccccaagcccactgtttttcttccttcaattgct
+gaaataaaccatgataatgctggaacatatctttgtctcctggagaaatttttccctgat
+gttattacagtttcttggagagcaaaaaatgacaaaagagctctgccatcccagcaggga
+aataccatgaagaccaaggacacatacatgaagttaagctggctgaccgtgaccgaaaac
+tccatggataaacaacatgtatgtgttgtcaaacacaagaaaaatataggaggaattgat
+caagagattatttttccttcaataaaagaagttgtcacctcacttgtccctactactgag
+cctcctactgctgagcctccaaatgattgtttgactgatgaaagcagtaccctgcagctg
+cagctcatgaacacctctgcagcctattacacctacctcttactcctcctcctgagcaca
+gtctactttgctgtcatcatttcctgtgtgtttaggagaacaggcgtctgctgtgacagg
+aagatctcg
+>D90412|TRGC2*02_A|Bos taurus|F|EX1+EX2A+EX3|?|545 nt|?| | | | |545+0=545| |~CONSTANT
+gagagaaacctcgaggcagacacttcccccaagcccactgtttttcttccttcaattgct
+gaaataaaccatgataatgctggaacatatctttgtctcctggagaaatttttccctgat
+gttattacagtttcttggagagcaaaaaatgacaaaagagctctgccatcccagcaggga
+aataccatgaagaccaaggacacatacatgaagttaagctggctgaccgtgaccgaaaac
+tccatggataaacaacatgtatgtgttgtcaaacacaagaaaatataggaggaattgatc
+aagagattatttttccttcaataaaagaagttgtcacctcacttgtccctactactgagc
+ctcctactgctgagcctccaaatgattgtttgactgatgaaagcaccctgcagctgcagc
+tcatgaacacctctgcagcctattacacctacctcttactcctcctcctgagcacagtct
+actttgctgtcatcatttcctgtgtgtttaggagaacaggcgtctgctgtgacaggaaga
+tctcg
+>D90415|TRGC2*03_A|Bos taurus|F|EX1+EX2A+EX3|?|549 nt|?| | | | |549+0=549| |~CONSTANT
+gagagaaacctcgaggcagacacttcccccaagcccactgtttttcttccttcaattgct
+gaaatcaaccatgataatgctggaacatatctttgtctcctggagaaatttttccctgat
+gttattacagtttcttggagagcaaaaaatgacaaaagagctctgccatcccagcaggga
+aataccatgaagaccaaggacacatacatgaagttcagctggctgaccgtgaccgaaaac
+tctatggataaacaacatgtatgtgttgtcaaacacaagaaaaatataggaggaattgat
+caagagattatttttccttcaataaaagaagttgtcacctcacttgtccctactactgag
+cctcctactactgagcctccaaatgattgtttgactgatgaaagcagtaccctgcagctg
+cagctcatgaacacctctgcagcctattacacctacctcttactcctcctcctgagcaca
+gtctactttgctgtcatcatttcctgtgtgtttaggagaacaggcgtctgctgtgacagg
+aagatctcg
+>D90416|TRGC2*04_A|Bos taurus|F|EX1+EX2A+EX3|?|549 nt|?| | | | |549+0=549| |~CONSTANT
+gagagaaacctcgaggcagacacttcccccaagcccactgtttttcttccttcaactgct
+gaaatcaaccatgataatgctggaacatatctttgtctcctggagaaatttttccctgat
+gttattacagtttcttggagagcaaaaaatgacaaaagagctctgccatcccagcaggga
+aataccatgaagaccaaggacacatacatgaagttcagctggctgaccgtgaccgaaaac
+tctatggataaacaacatgtatgtgttgtcaaacacaagaaaaatataggaggaattgat
+caagagattatttttccttcaataaaagaagttgtcacctcacttgtccctactactgag
+cctcctactactgagcctccaaatgattgtttgactgatgaaagcagtaccctgcagctg
+cagctcatgaacacctctgcagcctattacacctacctcttactcctcctcctgagcaca
+gtctactttgctgtcatcatttcctgtgtgtttaggagaacaggcgtctgctgtgacagg
+aagatctcg
+>AY644518|TRGC2*05_A|Bos taurus|F|EX1+EX2A+EX3|?|548 nt|?| | | | |548+0=548| |~CONSTANT
+agagaaacctcgaggcagacacttcccccaagcccactgtttttcttccttcaattgctg
+aaataaaccatgataatgctggaacatatctttgtctcctggagaaatttttccctgatg
+ttattacagtttcttggagagcaaaaaatgacaaaagagctctgccatcccagcagggaa
+ataccatgaagaccaaggacacatacatgaagttaagctggctgaccgtgaccgaaaact
+ccatggataaacaacatgtatgtgttgtcaaacacaagaaaaatataggaggaattgatc
+aagagattatttttccttcaataaaagaagttgtcacctcacttgtccctactactgagc
+ctcctactgctgagcctccaaatgattgtttgactgatgaaagcagtaccctgcagctgc
+agctcatgaacacctctgcagcctattacacctacctcttactcctcctcctgagcacag
+tctactttgctgtcatcatttcctgtgtgtttaggagaacaggcgtctgctgtgacagga
+agatctcg
+>D90414|TRGC3*01_A|Bos taurus|F|EX1+EX2A+EX3|?|528 nt|?| | | | |528+0=528| |~CONSTANT
+gatagagaccttgatatagacatgtcccccaagcccactatgtttcttccttcgattact
+gaaatcaagcgtgagaatactggaacatatctttgtcttctggagaattttttccctcat
+gttattaaggtttattggagagaaaaaagaggcaacagagttttgccatcccagcaggga
+aataccgtgaagactgctgacacatacatgaagttcagctggctgaccgtgtctggaaac
+tccatggataaagaacacatatgtatcgtcaaacatgagaaaaataaaacaggagataat
+caagagattctttttccgccagtgaatgaagttgtcacttcagttgtcactgctactaaa
+cctccaaatgatggtttgaaggataaaaataccctgcagctgcacctcatgaacacctct
+gcctattacacatacctcctcctcctcattacgagcacggtctaccttgtcatcatcacc
+tcctgtgtgttcaggagaacaggcgtctgcggcattcagaagagctcg
+>X63680|TRGC4*01_A|Bos taurus|F|EX1+EX2A+EX3|?|531 nt|?| | | | |531+0=531| |~CONSTANT
+gatagaaaccttgctacagacatttcacccaagcccactatttttcttccttcaattgct
+gaaatcaatcacagtaagactggaacatacctttgtcttctggagaaatttttccctgat
+attattaaggtttattggaaagaaaaggatggcaacaaagctctgccatcccagcaggga
+aataccatgaagactactgacacatacatgaagctcagctggctgaccgtgactgaaaac
+tccatggacaaagaacatatctgtgtcgtacaacacgagagaaatataggaggaattaat
+caagagattctttttccttcaataaatgaagttgtcagctcaattgtccctaccactgag
+tctcccagtgactgtttaaaccatgacagcaataccctgcagctgcagctcatgaacacc
+tctgcctattacacctacctccttctcctcctcaagagtgtggtctactgtatcatcatc
+acctcctgtgtgtttcggagaacaggcatctgctgtgacgggaagaacttg
+>AY644517|TRGC4*02_A|Bos taurus|F|EX1+EX2A+EX3|?|530 nt|?| | | | |530+0=530| |~CONSTANT
+atagaaaccttgctacagacatttcacccaagcccactatttttcttccttcaattgctg
+aaatcaatcacagtaagactggaacatacctttgtcttctggagaaatttttccctgata
+ttattaaggtttactggaaagaaaaggatggcaacaaagctctgccatcccagcagggaa
+ataccatgaagactactgacacatacatgaagctcagctggctgaccgtgactgaaaact
+ccatggacaaagaacatatctgtgtcgtacaacacgagagaaatataggaggaattaatc
+aagagattctttttccttcaataaatgaagttgtcagctcaattgtccctaccactgagt
+ctcccagtgactgtttaaaccatgacagcaataccctgcagctgcagctcatgaacacct
+ctgcctattacacctacctccttctcctcctcaagagtgtggtctactgtatcatcatca
+cctcctgtgtgtttcggagaacaggcatctgctgtgacgggaagaacttg
+>AY735449|TRGC5*01_A|Bos taurus|(F)|EX1+EX2A+EX3|?|507 nt|?| | | | |507+0=507| |~CONSTANT
+gatagaaggcttgatggagacttatttcccaagcccactatattttttccttcagttgag
+gaagtaaaactccacggggctggaacacatctttgccttcttcagaattttttccctgat
+gctattaagatacaatggaaagaaaagaatgtcaatacaattctggaatcttatcaggga
+aatatcatcaagactaatgacacatacatgaaattcagctggctaaccttgactaaaaag
+gcaatggataaagaacatgtatgtatcgtcaaacatgagaataacaaaggaggacgtgat
+caacagattcttttttctccagttaaaaaagaggtcgatacacatgcctgcatgaaaaaa
+gaaagtgataccctgcagctgcagtttgcgaacacctctgcctactatacctacctcctc
+ctcctcctcaagagcatgatctacttctccatcatcgccttctgtgtgttttggagaaca
+ggcatcttcagcgatgggaagattttc
+>AY644517|TRGC5*02_A|Bos taurus|F|EX1+EX2A+EX3|?|391 nt|?| | | | |391+0=391| |~CONSTANT
+tgatgctattaagatacaatggaaagaaaagaatgtcaatacaattctggaatcttatca
+gggaaatatcatcaagactaatgacacatacatgaaattcagctggctaaccttgactaa
+aaaggcaatggataaagaacatgtatgtatcgtcaaacacgagaataacaaaggaggacg
+tgatcaacagattcttttttctccagttaaaaaagaggtcgctacacatgcctgcatgaa
+aaaagaaagtgataccctgcagctgcagtttgcgaacacctctgcctattatacctacct
+cctcctcctcctcaagagcatgatctacttctccatcatcgccttctgtgtgttttggag
+aacaggcatcttcagcgatgggaagattttc
+>DQ179593|TRGC5*03_A|Bos taurus|F|EX1+EX2A+EX3|?|507 nt|?| | | | |507+0=507| |~CONSTANT
+gatagaaggcttgatggagacttatttcccaagcccactatattttttccttcagttgag
+gaagtaaaactccacggggctggaacacatctttgccttcttcagaattttttccctgat
+gctattaagatacaatggaaagaaaagaatgtcaatacaattctggaatcttatcaggga
+aatatcatcaagactaatgacacatacatgaaattcagctggctaaccttgactaaaaag
+gcaatggataaagaacatgtatgtatcgtcaaacacgagaataacaaaggaggacgtgat
+caacagattcttttttctccagttaaaaaagaggtcgctacacatgcctgcatgaaaaaa
+gaaagtgataccctgcagctgcagtttgcgaacacctctgcctattatacctacctcctc
+ctcctcctcaagagcatgatctacttctccatcatcgccttctgtgtgttttggagaaca
+ggcatcttcagcgatgggaagattttc
+>AY644518|TRGC6*01_A|Bos taurus|F|EX1+EX2A+EX3|?|530 nt|?| | | | |530+0=530| |~CONSTANT
+ataaaaaacttcctgcagatacctccccaaaacccacaatttttcttccttcaattaacg
+aagtcaaccatcaacaggctgcaacatatctttgtcttctggaaaaatttttccctgatg
+ttattaaggtttcttggaaagaaaagaatgacaacagagttctgccatcccagcagggaa
+ataccatgaagaccaatgacacatacatgacgttcagctggctgaccgtgacagaaaact
+ccatgaaggaagagcacatgtgtatcgtcaaacatgagaaaaatacaagaggaaaagatc
+aagagattctttttcctgcagtgaatgaagttttcaccccagttgtcactactactgagc
+ctccaaatgattgtttgaaagatggaagtgataccgtgcagctgcagttcacgtacaact
+ctgcttactacacctacctcctcctcctcctcaagagtgccatctactttgtcaccacct
+cctgctgtgtgtttaggagaacaggtgtctgctgtgacgggaagaactcg
+>DQ179594|TRGC6*02_A|Bos taurus|F|EX1+EX2A+EX3|?|468 nt|?| | | | |468+0=468| |~CONSTANT
+gataaaaaacttcctgcagatacctccccaaaacccacaatttttcttccttcaattaac
+gaagtcaaccatcaacaggctgcaacatatctttgtcttctggaaaaatttttccctgat
+gttattaaggtttcttggaaagaaaagaatgacaacagagttctgccatcccagcaggga
+aataccatgaagaccaatgacacatacatgacgttcagctggctgaccgtgacagaaaac
+tccatgaaggaagagcacatgtgtatcgtcaaacatgagaaaaatacaagaggaaaagat
+caagagattctttttcctgcagtgaatgaagttttcaccccagttgtcactactactgag
+cctccaaatgattgtttgaaagatggaagtaataccgtgcagctgcagttcacgtacaac
+tctgcttactacacctacctcctcctcctcctcaagagtaccatctac

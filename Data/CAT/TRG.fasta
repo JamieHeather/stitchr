@@ -1,0 +1,171 @@
+>IMGT000036|TRGV2-1*01|Felis catus_Abyssinian|F|L-PART1+L-PART2|10089..10131+10220..10227|51 nt|1| | | | |51+0=51| | |~LEADER
+atgctgggtcccctcgccttcctgtgcgccctcctgtttcccggtgatgtg
+>IMGT000036|TRGV2-2*01|Felis catus_Abyssinian|F|L-PART1+L-PART2|59013..59055+59151..59158|51 nt|1| | | | |51+0=51| | |~LEADER
+atgctgggtcccctcgccctcctgtgtgccctcctgtttccaggtggcgtg
+>IMGT000036|TRGV2-3*01|Felis catus_Abyssinian|F|L-PART1+L-PART2|99610..99652+99739..99746|51 nt|1| | | | |51+0=51| | |~LEADER
+atgctgggtcccctcgccttcctgtgcgccctcctgtttcccggcagctgg
+>IMGT000036|TRGV2-4*01|Felis catus_Abyssinian|F|L-PART1+L-PART2|254748..254790+254886..254893|51 nt|1| | | | |51+0=51| | |~LEADER
+atgctgggtcccctcgccctcctgtgtgccctcctgtttccaggtggcatg
+>IMGT000036|TRGV5-2*01|Felis catus_Abyssinian|P|L-PART1+L-PART2|177580..177624+177308..177318|56 nt|1| | | | |56+0=56| |rev-compl|~LEADER
+atgtggttcctgtcccggcttgtcctggtggcctcccttggcagcatgcaaatgca
+>IMGT000036|TRGV5-3*01|Felis catus_Abyssinian|F|L-PART1+L-PART2|225393..225438+225124..225134|57 nt|1| | | | |57+0=57| |rev-compl|~LEADER
+atgtggctcctgtcccggctggtcctggtggcctccctttgcagctatacaagtgga
+>IMGT000036|TRGV6-1*01|Felis catus_Abyssinian|P|L-PART1+L-PART2|243996..244038+243913..243921|52 nt|1| | | | |52+0=52| |rev-compl|~LEADER
+atgctgtgtccccttgttctcctgtgcaccttcctgtttccctgtccccttt
+>IMGT000036|TRGV7-1*01|Felis catus_Abyssinian|F|L-PART1+L-PART2|232706..232748+232587..232597|54 nt|1| | | | |54+0=54| |rev-compl|~LEADER
+atgtcactgctggaggccgtcatcttctcatctctctgggcctttggccttggg
+>IMGT000036|TRGV2-1*01|Felis catus_Abyssinian|F|V-REGION|10228..10532|305 nt|1| | | | |305+0=305| | |~VARIABLE
+gcagcgatcagtgtggagcagccagccgtggtggtggcacgtgcaggcagctgggccaca
+ctgccctgcaaagccagcacctcggtcagctacatccactggtaccgccaccaggagggt
+acagcccccaagaggatcctcatgctggatatgtccagctcatatgtgaccaaagatggt
+gtcttgacagcagacaaggtccacgccaagaaaggcaaggatagcacaagctctaacctg
+ttgctgctgaagctggcgaagagcgatgagggagtgtattactgtgctgtttgggaagat
+cagag
+>IMGT000036|TRGV2-2*01|Felis catus_Abyssinian|F|V-REGION|59159..59458|300 nt|1| | | | |300+0=300| | |~VARIABLE
+gcagcgatcagtctgactcagcgggctgtggtggtggagcgcgtgggtggcttggccacc
+ctgtcctgccaagccagcgcctacgtccgctacatccactggtacctccaccaggagggg
+actgcgcccaagaggatcctcatgctggacatgtcaaggttatctgtgcagagatatggg
+ggcttgaaagcggacaaaatcgatgccaagaaaggcaaggaaagcaacagctgtgaactg
+tcagtgaagaagctgcagaagagcgacgagggcgtgtactactgtgctgcctgggaagct
+>IMGT000036|TRGV2-3*01|Felis catus_Abyssinian|F|V-REGION|99747..100046|300 nt|1| | | | |300+0=300| | |~VARIABLE
+gcagcgatcagcctggggcagccctctatggtcgtggcgcaggcaggccgctcagccact
+ctggggtgcaaagccagcaccaaggtcagctacatccactggtaccaccaccaggaaggt
+gcggcccccaagaggctcctcagactggacatgtccggaacgtttgtgcagaaagatggg
+ggcctgaatgaggacaaagtcaatgccaagaggggcaagggtagcaacagctgtgacctg
+tccgtgctgaagctggagaagagcgacgagggcgtgtactactgtgctgcctgggaagct
+>IMGT000036|TRGV2-4*01|Felis catus_Abyssinian|F|V-REGION|254894..255193|300 nt|1| | | | |300+0=300| | |~VARIABLE
+gcagcgatcagtctgactcagcgggctgtggtggtggagcgcgtgggtggcttggccaac
+ctgtcctgccaagccagcgcctccgtcagctacatccactggtacctccaccaggagggg
+actgaccccaagaggatcctcaggctggacatgtcaaggttatctgtggagaggtatggg
+ggcttggaagcggacaaaatcgatgccaagaaaggcaaggaaagcaacagctgtgaactg
+tcagtgaagaagttgcagaagagcgacgagggcgtgtactactgtgctgcctgggaagct
+>IMGT000036|TRGV5-1*01|Felis catus_Abyssinian|P|V-REGION|112403..112707|305 nt|1| | | | |305+0=305| | |~VARIABLE
+gtgtctccctctctctgcccctctcctgctcatgctctgtgtctctctgtctctcaataa
+taaataaaaatgttaaaaaattaaaaaaaaaagacgaatgtatgatatacactagtatcg
+aatgatgtcagaccagcctctaaaacacattctgtgtatttcctcaagtgaaaatgtaca
+ggaacaaggtgttagtgaggaaagatgtgaagccaggaaaggacagagggatttgccagc
+gagcctgaggatacaccgagttaatgaggcaggtgctgggctgtatgactgcacctgctg
+ggatc
+>IMGT000036|TRGV5-2*01|Felis catus_Abyssinian|P|V-REGION|177007..177307|301 nt|1| | | | |301+0=301| |rev-compl|~VARIABLE
+gacattttaataacacgacgcgtaccatccattaccaagaaaaaaggaaacagaattttt
+agtatggcaaataaaaacaggtgtcttaaggaagaatgtaaatatatactcttattgaca
+gaggccagaccagcctctaaaccaaattctatgtatttcttcaaatgcctatgtgaccac
+aaagtgttagtgaagaaaggaaatgaagccaggaaaggacagagggatttgctagggagc
+ctgaggatacacagagttaatgaggcaagtgctgggctgtgtgactgcacctgctgggat
+c
+>IMGT000036|TRGV5-3*01|Felis catus_Abyssinian|F|V-REGION|224817..225123|307 nt|1| | | | |307+0=307| |rev-compl|~VARIABLE
+ggcattttcataacacaattcgtaccatccattaccaagaaaaaaggaaacacagcattt
+ttagaatgccaagtaaaaacgggtgtcttaaagaaaaacgtaaatatacactggtatcga
+cagaggccagaccagcctctaaaacgcattctgtatatttcctcaaatgaaaatgtggtc
+cacgaacaaggtattagtgaggaaaaatatgaagccaggaaacgacagagggatttgcca
+gcgagcctgaggatacacaaaattagtgaggaggatgctggtctgtattactgcgcctgc
+tgggatc
+>IMGT000036|TRGV5-4*01|Felis catus_Abyssinian|P|V-REGION|268362..268668|307 nt|1| | | | |307+0=307| | |~VARIABLE
+gacatttttataacacaagtcataccatctattaccaagaaaaaaggaaacacaacattt
+ttgaatgccaaataaaaatgggtcttaaggaagaatgtataataataatacactggtacc
+aacaaaagccagaccaacctctaaaatgcattgtgtatttcctcaagtgaaaatgtggtc
+cacgaacaaggtgtagtgaggaaaaatatgaagccaggaaacgacagagggatttgccaa
+gcgagcctgaggatacgccgagttaatgaggcaggtgctgggctgtatgactgcacctgc
+tgggatc
+>IMGT000036|TRGV6-1*01|Felis catus_Abyssinian|P|V-REGION|243613..243912|300 nt|1| | | | |300+0=300| |rev-compl|~VARIABLE
+gcagagatcaggctggagcagccagctgtggtcgtggctcgtgagggcagcttggacaca
+cttccgtgcccagctggaaccaaggtcagctacacccactggtaccaccaccaggaggga
+aaggtcccccaaaggcttcactaactggccatgttccattaggatgtgcagtgggaatct
+gtcgagaaagcagacaatgtcacggccacagaggccaaggatggcagcacctgtaccctg
+tcggtgctgaagatgcagaagcatgacaagggcatgtattactgtgctgtctgggaaccg
+>IMGT000036|TRGV7-1*01|Felis catus_Abyssinian|F|V-REGION|232284..232586|303 nt|1| | | | |303+0=303| |rev-compl|~VARIABLE
+caggggaacctggaacaacctgaaatatcaatttccagagcaagggggaagagtgcacac
+gtatcgtgcaagatgtccactgaggtcatcgacagagccatacactggtaccggcagaag
+ccagatcaagagatagaacatctaacactcgtctcaacacagcccgttcgagtttcttta
+ggagggaagagcgacaaacttgaggcaagtaaaaacgctcacacttccactgcaaccttg
+aaaataaatttcttagagcaagaagatgaggccgtgtacttctgtgcctcctggggctgg
+agc
+>IMGT000036|TRGVA*01|Felis catus_Abyssinian|P|V-REGION|115155..115442|288 nt|1| | | | |288+0=288| | |~VARIABLE
+cagagagagaactccagactcagagtctgcaacaaccgaacaccacacagaacagtgcac
+ataggttgcaagctgtctaggggttccttggagaaggccatagtgcactggttccaacaa
+aaaatagagcccctaagatgaatcctatatggctcaatcaagattacaagcaagacaagc
+ccaactcctccttggacacacataagaaggacataaaatcctctacctgataatcaatta
+tgtgttcaaatccaatgaagacacctgctcctatgcccgctaggatct
+>IMGT000036|TRGVB*01|Felis catus_Abyssinian|P|V-REGION|174614..174875|262 nt|1| | | | |262+0=262| |rev-compl|~VARIABLE
+aagatgagaatccctcaggatcaactctccttaatgcaatatcagatattgcacatatgt
+tgcaagctgtctggagcttcccttgagaagatcattgtgcattgctaccccctaaaataa
+ggggagctcctgaaataaatcctatgtggctcagccactattatgtggaagactacgtat
+ttccaacttggacacagacaaaggagtcttctacctgataatcagtaagtcttcaggcct
+gatgaagcctcctgcacaaagg
+>IMGT000036|TRGJ1-1*01|Felis catus_Abyssinian|P|J-REGION|27068..27133|66 nt|3| | | | |66+0=66| | |~JOINING
+ataacatctaaccaggctggatcaagatatctacagaaggaattaggctcatagtaactc
+ctcttg
+>IMGT000036|TRGJ1-2*01|Felis catus_Abyssinian|F|J-REGION|29440..29499|60 nt|3| | | | |60+0=60| | |~JOINING
+attgggacggctggtggggccacaaagtgttcggtcctggcacactgctcagggtcacag
+>IMGT000036|TRGJ2-1*01|Felis catus_Abyssinian|P|J-REGION|70973..71041|69 nt|3| | | | |69+0=69| | |~JOINING
+ataacctctaaccagtgtgatggatcaagatatctgcagaaggaactaggctcatagtaa
+ctcctcccg
+>IMGT000036|TRGJ2-2*01|Felis catus_Abyssinian|F|J-REGION|72798..72856|59 nt|2| | | | |59+0=59| | |~JOINING
+ggttgggtatggctgggcccacaaagtgttcggtcctggcacactgctcagggtcacag
+>IMGT000036|TRGJ2-3*01|Felis catus_Abyssinian|P|J-REGION|72106..72183|78 nt|2| | | | |78+0=78| | |~JOINING
+ccctcttattttaatatcactgttggggaaactgaggcttagagaagttcaggtatttgc
+ctaaattcacatggctag
+>IMGT000036|TRGJ3-1*01|Felis catus_Abyssinian|P|J-REGION|116674..116739|66 nt|3| | | | |66+0=66| | |~JOINING
+ataacctctaaccaggctggatcaagatatctgcagaaggaattaggctcatagtaactc
+ctcctg
+>IMGT000036|TRGJ3-2*01|Felis catus_Abyssinian|F|J-REGION|120051..120109|59 nt|2| | | | |59+0=59| | |~JOINING
+ggctgggtatggctgggcccacaaagtgttcggtcctggcacactgctcagggtcacag
+>IMGT000036|TRGJ4-1*01|Felis catus_Abyssinian|P|J-REGION|173229..173286|58 nt|3| | | | |58+0=58| |rev-compl|~JOINING
+taaccaggctggatcaagacatctgtagaatgaagtaagctcatagtaactcccactg
+>IMGT000036|TRGJ5-1*01|Felis catus_Abyssinian|ORF|J-REGION|221548..221607|60 nt|3| | | | |60+0=60| |rev-compl|~JOINING
+atgaatcaggctggatcaagatatttgcagaaggaactaagctcatagtaactcccccgg
+>IMGT000036|TRGJ5-2*01|Felis catus_Abyssinian|P|J-REGION|219199..219257|59 nt|2| | | | |59+0=59| |rev-compl|~JOINING
+atcggtctggctattgtgaatccaagtgttcgatcctggcacactgctcagggttatag
+>IMGT000036|TRGJ6-1*01|Felis catus_Abyssinian|ORF|J-REGION|271385..271444|60 nt|3| | | | |60+0=60| | |~JOINING
+atgaatcaggctggatcatggtatttgcagaaggaactaaggtcatcgtaactcccccgg
+>IMGT000036|TRGJ6-2*01|Felis catus_Abyssinian|F|J-REGION|274267..274343|77 nt|2| | | | |77+0=77| | |~JOINING
+ggagtggtatgatgggtatggctggtatagctggggcaacaaagtgttcggtcctggcac
+actgctcagggtcacag
+>IMGT000036|TRGC1*01_AB|Felis catus_Abyssinian|F|EX1+EX2A+EX2B+EX3|?|644 nt|?| | | | |644+0=644| |~CONSTANT
+ataaaaatcctgatgaagacattttccccaagcccacgatttttcttccttcagctgatg
+aagtaaaactgcataacactggaacatatctttgtcttcttgaggacttttaccctgacg
+ttatcacgatagattggaaagaaaagaatggcaaaacaattctgaaatcccagcagggtg
+acaccatgaagactaaggacacatacatgaaatacacgtggctgaccgtgcctaaaaagt
+caatggataaagaacacaaatgtaccgtcaaacacgagaataataaaggaggggttaatc
+gagagatactgtttccttcaataaacaaaggtttggcggaggccagaagatccgaagtgg
+acccccagaggcattcagagacaaggcgaaacacaggggtggtcactgtgagccctttga
+gttcactgtcctcctcaccggtttcaagggctgaggagcttgtcactattaactacgcaa
+aagcttctcggaaggatgaaaatgacccccggcagatgcagctcgcgaacacctctgcct
+actacacatacgtcgtcctcgtcgtcaagagcatggtctacaccgtcatcgtcgccatct
+gtctgcttgggggaccagcactctgtgacaacgggaagagttcc
+>IMGT000036|TRGC2*01_AB|Felis catus_Abyssinian|F|EX1+EX2A+EX2B+EX3|?|644 nt|?| | | | |644+0=644| |~CONSTANT
+ataaaaatcctgatgaagacacttcccccaggcccacaatttttcttccttcaattgctg
+aagtaaacctccataaggctggaacatatctttctcttcttgaggattttttccctgatg
+ttatcgagatagattggaaagaacaggatggcaaaacaattctgacgtcccaacagggaa
+acaccatgaagactaaggacacatacatgaaatacacctggctgaccgtgagtgaagagt
+caatgggcaaagaacacaaatgtatcgttaaacacgagaagaataaaagaaggtttgaac
+aagagattctgtttccttcaataaacaaaggtgtggtggaggcaagaggatccgaagtag
+acccacaggggcattcggagacaaggcgaaacacaggggtggtcactgtgagccctttga
+gttcactgtcctcctcaccggtttcaagggctgcggagctcgctgctgttaactacacaa
+aagcttctctgaaagatgaaaatgacccccgacaggtgcagctcgtgaacacctctgcct
+actacacctacctcctccttgtcatcaagagcatggtctacaccatcatcatcgccatct
+gtctgcttgggagatcagcactctgtgacaatgggaagagttcc
+>IMGT000036|TRGC3*01_AB|Felis catus_Abyssinian|F|EX1+EX2A+EX2B+EX3|?|641 nt|?| | | | |641+0=641| |~CONSTANT
+ctaaaagccctgatgaagacacttcccccaagcccacgatttttcttccttcaattgctg
+aaagaaaactccacaaggctggaacgtatctttgtcttcttgaggattttttccctgatg
+ttatcaatatagattggaaagagaaaaatggcagagtaatattgaaatcccagcagggag
+acaccatgaagactgaggacacatacatgaaatacacctggctgaccgtgagagaagact
+caatgggtaaagaacacaaatgtatcgtcaaacaccagaagaataaaggaggggttgatc
+aagagattctttttccttcaataaacacagcagatttggtgacgggatccaaagtgggct
+tccagaaggaatcagagacaagtagaaacacaaggccggtaaccatgagcccttcgagta
+cactgtctacatcaccattttcaagtgccgcagagctcactgctgttaactctacagaag
+cttctgtgaaagacgaaaatgaccccctgcagctgcagctcatgaacacctctgcctact
+acacctacctcctcctcctcgtcaagagcatggtctacaccgtcatcaccgccatctgtc
+tgcttgggagagtggcactctgtgacaatgggaagagttcc
+>IMGT000036|TRGC4*01_AB|Felis catus_Abyssinian|F|EX1+EX2A+EX2B+EX3|?|644 nt|?| | | | |644+0=644| |~CONSTANT
+atgaacgtcctgttgagaacatttccccaaagcctacaatttttcttccttcaattgctg
+aaagaaaactccataagactggaacatatctttgtcttcttgaggattttttccctggtg
+ttatcgagatatattggaaagaaaagaatggcaaaacaattctggaatcccagcagggaa
+acaccatgaaaactaaggacacatatatgaaatacacctggctgaccgtgagtgaagagt
+caatgggtaaagaacacaaatgtgttgtcaaacatgacagtaataaaggaggggtcgatc
+aagagattctttttccttcaatagacaaagatttggtgtcggtgatgggatctgaaatgg
+acttccaggggcaatcagagacaaggagacagccaggggaggtaactgtgagccccttga
+gttcactgtcctcctcaccattttcaagggctgtagatctcactgctattcactctacag
+aagcttctctgaaggatgaaaatgacgccctgcatctgcatctcgtgaacaactctgcct
+actatacctacctcctgctcctcctcaagagcatggtctattctgccattatcactgtca
+atctgcttgggaaacccacactctttggtaatgggaagagttcc

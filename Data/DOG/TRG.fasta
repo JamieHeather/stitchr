@@ -1,0 +1,251 @@
+>IMGT000006|TRGV1-1*01|Canis lupus familiaris_boxer|P|L-PART1+L-PART2|838..877+990..1000|51 nt|1| | | | |51+0=51| | |~LEADER
+atgcccctgctggaagcagtcatcttctcatccctcttgattggccttggg
+>IMGT000006|TRGV2-1*01|Canis lupus familiaris_boxer|F|L-PART1+L-PART2|50160..50202+50299..50306|51 nt|1| | | | |51+0=51| | |~LEADER
+atgctgagttcccttgctgtcctgtgtgtcctcctgtttcccggtggtgca
+>IMGT000006|TRGV2-2*01|Canis lupus familiaris_boxer|F|L-PART1+L-PART2|104679..104721+104818..104825|51 nt|1| | | | |51+0=51| | |~LEADER
+atgctgggtccccttgctgtcctgtgtgccctcctgtttcccggtggtgga
+>IMGT000006|TRGV2-3*01|Canis lupus familiaris_boxer|F|L-PART1+L-PART2|163654..163696+163793..163800|51 nt|1| | | | |51+0=51| | |~LEADER
+atgctgggtccccttgctgtcctgtgtgccctcctgtttcccggtggtgga
+>IMGT000006|TRGV2-4*01|Canis lupus familiaris_boxer|F|L-PART1+L-PART2|219377..219419+219516..219523|51 nt|1| | | | |51+0=51| | |~LEADER
+atgctgagtacccttgctgtcctgtgtgccctcctgtttcccggtggcgga
+>IMGT000006|TRGV3-1*01|Canis lupus familiaris_boxer|P|L-PART1+L-PART2|59310..59352+59462..59472|54 nt|1| | | | |54+0=54| | |~LEADER
+atgccacttctggaagcagtcatcttctcaacccttcgggcttttgcccttggg
+>IMGT000006|TRGV3-2*01|Canis lupus familiaris_boxer|P|L-PART1+L-PART2|113287..113329+113439..113449|54 nt|1| | | | |54+0=54| | |~LEADER
+atgccacttctggaagtagtcatcttctcaaccctctgggcttttggccttggg
+>IMGT000006|TRGV3-3*01|Canis lupus familiaris_boxer|P|L-PART1+L-PART2|171018..171060+171170..171180|54 nt|1| | | | |54+0=54| | |~LEADER
+atgccacttctggaagcagtcatcttctcaaccctctgggcttttggccttggg
+>IMGT000006|TRGV4-1*01|Canis lupus familiaris_boxer|ORF|L-PART1+L-PART2|238847..238889+238978..238985|51 nt|1| | | | |51+0=51| | |~LEADER
+atgatatgtctccttgccttcctgtgcactctcttatttcccggtggtttg
+>IMGT000006|TRGV5-2*01|Canis lupus familiaris_boxer|F|L-PART1+L-PART2|321361..321406+321662..321672|57 nt|1| | | | |57+0=57| | |~LEADER
+atgctgctcctaacacacgttatccttgtgacatccctgtggagctataccaaggca
+>IMGT000006|TRGV6-1*01|Canis lupus familiaris_boxer|P|L-PART1+L-PART2|300780..300822+300906..300913|51 nt|1| | | | |51+0=51| | |~LEADER
+attctgtgtccccttaccatcctatgcactctcttgtttccccgtggccat
+>IMGT000006|TRGV7-1*01|Canis lupus familiaris_boxer|P|L-PART1+L-PART2|379731..379773+379881..379891|54 nt|1| | | | |54+0=54| | |~LEADER
+atactactgctggaagcggtcatcatcttacccctctgggcttttggccttggg
+>IMGT000006|TRGV7-2*01|Canis lupus familiaris_boxer|F|L-PART1+L-PART2|383665..383707+383817..383827|54 nt|1| | | | |54+0=54| | |~LEADER
+atgctactgctggaagtgatcatcatctcatccctctggacttttggccttggg
+>IMGT000006|TRGV7-3*01|Canis lupus familiaris_boxer|F|L-PART1+L-PART2|396238..396280+396390..396400|54 nt|1| | | | |54+0=54| | |~LEADER
+atgccactgctggaagcggtcatcttctcttccctctggacctttggtcttggg
+>IMGT000006|TRGV1-1*01|Canis lupus familiaris_boxer|P|V-REGION|1001..1367|367 nt|1| | | | |367+0=367| | |~VARIABLE
+cgggtgacgttggagcaacctgaattatcaatttccagagaaagagatgagagtgtccac
+ttaccttggaaactgtccactgaggactctaacagtgaagtcatgcagaaaccagtggca
+gaaaccagatcaaggagaggatatctatcattcacctcaataaagcttgcttatgattgc
+agaggtgagaagacaacaaacttagacttcaattttgaaaataaatttcttagaggaaga
+tgagtccatgtactactatacctgccagatttggatctgtagcaccagaattgccaagag
+aagttgcacaagaaccatcctcagatctggacccatgtctttttcaatatggcaaccaga
+aaggcta
+>IMGT000006|TRGV2-1*01|Canis lupus familiaris_boxer|F|V-REGION|50307..50606|300 nt|1| | | | |300+0=300| | |~VARIABLE
+gcggggctcaagctggagcagactcctgtggtcgtggggcgcttgggcaccttggccacc
+ctgccgtgcacagtggatacctcggtgagctacatccactggtacttccacaaggaggat
+acagcccccaagaggctcctctacctagacatgtccaggtcgtatgtgcagagggatata
+ttcgtgaaagcagacaaagtcaacgccaagaaaggcaggaacagttacagctgtaacctg
+ttgttgcagaaactggagaagaatgatgagggcgtgtactactgcgctgcctgggaagcg
+>IMGT000006|TRGV2-2*01|Canis lupus familiaris_boxer|F|V-REGION|104826..105125|300 nt|1| | | | |300+0=300| | |~VARIABLE
+gcagggctcaagcttgagcagactcctgtggtcgtggggcgcttgggcacctcggccacc
+ctgctgtgcacagtggatagctcagtctactacatccactggtacttccacaagaagttt
+gcagcccccaagaggctcctctatctagacatgtccagctcaagtgtgcagagggataca
+tctgtgaaagcacacaaagtcaatgccaagaaaggcaaagacagttacagctgtaacctg
+ttggtgcagaagctggagaagagcgacgaaggcgtgtactactgcgctgcctgggaagag
+>IMGT000006|TRGV2-3*01|Canis lupus familiaris_boxer|F|V-REGION|163801..164100|300 nt|1| | | | |300+0=300| | |~VARIABLE
+gcagggctcaacctggagcagaatcctgtggctgtggagcgcttggacactttggccatc
+ctaaaatgtcaagtggatacctgggtctggtatatcaactggtacttccatcaggagggt
+acagcccccaagtggctcctctacctagacatgtccaccgggaaagtgcagagggatgca
+tttgtgaatgcagacaaagtcagtgcccaaaagggcaaggacagttacagctgcgccttg
+ttggtacagaggctgaggaagagcgacgagggcgtgtactactgtgctgcctgggaaccg
+>IMGT000006|TRGV2-4*01|Canis lupus familiaris_boxer|F|V-REGION|219524..219823|300 nt|1| | | | |300+0=300| | |~VARIABLE
+gcaggactcaagcttgagcagactcctgtggtcgtggtgcacttgggcacctcggccacc
+ctaccgtgcacagtggatagctcagtcaactacatccactggtacttccacagggagggt
+attgcccctaagagactcctttacatacacacatacagctcatctgtgcagagggatgca
+tctgtgaacatgggcaaagtcaatgccaagatggacaagaacaattacagctgtaaactg
+ttggtgcagaagctggagaagagcgacgaaggcgtgtactactgcgctgcctgggaagag
+>IMGT000006|TRGV3-1*01|Canis lupus familiaris_boxer|P|V-REGION|59473..59734|262 nt|1| | | | |262+0=262| | |~VARIABLE
+cagataaagatggaataacctgaaatatcattttctagagcaagagatgagcatgcccac
+gtatcatgcaaggttttctctgaggacattaacaaaggagctgttcactgggaccgacag
+cagatcagggatagaatatctaacatttgtctcaacaaagcttccttatggtcccttaag
+tgggaagaacaacaagcttccacttcaaccttgacaataaatgtgttaaggaaacaagat
+gaggccatatgttactgtgcct
+>IMGT000006|TRGV3-2*01|Canis lupus familiaris_boxer|P|V-REGION|113450..113726|277 nt|1| | | | |277+0=277| | |~VARIABLE
+cggataaagatggaacatctgaaatatcattttctagagcaagagatgagcgtgcccaca
+tatcataaaaggtttcccttaggacattaacaaaggagccattctctggtactgacagat
+accagatcagggataaaatatctaaaattttctcaacaaagcttccttatggtcacttaa
+gtgggaagaaccataagcttccatgacaaccttgacaataaatatcttaaggaaacaaca
+tgaggctgtgaactactgtggctgctggatttgtatc
+>IMGT000006|TRGV3-3*01|Canis lupus familiaris_boxer|P|V-REGION|171181..171452|272 nt|1| | | | |272+0=272| | |~VARIABLE
+cagataaaggtggagcaacctgcaatatcattttctagaacaagagataagtgtgcccat
+gtatcatgcaagatttcccttaggacattaacaaaggagtctttcactggtactgacaga
+aacttgatcagggatagaatatctaacatttgtctcaacaaatcttcccaattaagtgag
+gagaacaacaagcttccacttcaaccttgacaatagatttcttaaggaaacaacatgagg
+ctgtgtactactgtggctgctggatttgtatc
+>IMGT000006|TRGV4-1*01|Canis lupus familiaris_boxer|ORF|V-REGION|238986..239285|300 nt|1| | | | |300+0=300| | |~VARIABLE
+gtggcattcagcctggagcagccatccgtggttgtggtgcgcatggacaccttggccatt
+atgccttgcaaagccagcgccaagatcagccatatccactggtaccatcaccaggagcat
+acggccccccagaggatcctcagactggaagtgtctggatcttctgtgaacaaggattca
+gtcctgaaagcagataaaatcattgccataaaagataaagatgtcaccagctatagtctg
+ttggtgctgaagctgaagaagaacgatgaagctgtgtactactgtgctacctgggaagtg
+>IMGT000006|TRGV5-1*01|Canis lupus familiaris_boxer|P|V-REGION|262823..263127|305 nt|1| | | | |305+0=305| | |~VARIABLE
+gacattttaataacacaactcataccttccattaccaagagtaaaggaaatacagcattt
+ttaaaatgccaaataaaagcaggtgtctacaggaagaatgtataaatatagtggtaccaa
+aagaagccaggccatcttctaaaatgcattctgtacatttttccagtgaaaatatggttc
+ataaacaaggtgatagtgaggaaagatatgaagccagtaatgacagaaggatttgccatc
+aagtctcaggatactctgagttaatgaggcagctgctggactgtattactgtgcctgctg
+ggatg
+>IMGT000006|TRGV5-2*01|Canis lupus familiaris_boxer|F|V-REGION|321673..321979|307 nt|1| | | | |307+0=307| | |~VARIABLE
+gacactttaataacccaactcatgccatccgttatcaagaagcaaggcaacacagcattt
+ttagaatgccaaataaaaacaggtgcctttaagaagaatgtatatatacactggtaccga
+cagaagccagaccagcctctacaacgaattctgtatatttcctcgaatgaaaatgtggtc
+cacgaacaaggtgttagtgaggaaagatatgaagccaggaaatggaagcaggatttgcct
+gcgagtctcaggatacaccgagttaatgaggcagatgctgggctgtattactgtgcctgc
+tgggata
+>IMGT000006|TRGV5-3*01|Canis lupus familiaris_boxer|P|V-REGION|429203..429550|348 nt|1| | | | |348+0=348| | |~VARIABLE
+aacactttaataacacagctcataccatctattaccaagaaacaaggaaacacagaactt
+ttagaatgctgaataaaaacaggtgcctttaagaagtatatatatatatacttctgtagg
+taccaatacagtatatatatactgtattggtacctacagaagtcataccagcctctacaa
+caaactctgtatatatttcctcaaatggaaatgtggtccatgaacaaagtgttagtgagg
+aaagatgatacgaagccaggaaactacagagggatttgccagcaagtctcaggatacacc
+gagttaatgaggcagatgctgggctgtattactgtgcctgctgggatg
+>IMGT000006|TRGV6-1*01|Canis lupus familiaris_boxer|P|V-REGION|300914..301213|300 nt|1| | | | |300+0=300| | |~VARIABLE
+gcggagaccaggctggagcagcctgctgtagtcgtggcacgtgagaaaagctcagcctcc
+ctgctgtgcacagccaatgtcaaggccagctatatccactggtaccgctaccaggaagga
+aaagggctccagaggctcctccacctggccatgttccaatcaaatgtgcagtgggattcg
+gtcctggaagcagacaaagtcaccgccatagagaccaaggatggctacagctgtaccctg
+ttggtgctgaagctggagaagagcgatgagggcatgtactactgtgctgcctggagagca
+>IMGT000006|TRGV7-1*01|Canis lupus familiaris_boxer|P|V-REGION|379892..380192|301 nt|1| | | | |301+0=301| | |~VARIABLE
+caggtgaaattggaacaacctgaaatatcaaattccagagcaagagataagagtgcccac
+atatcatgcaaggtagtcactgaggattttaacaatgaagttatacactggtactgacac
+aaaccagatcaggagatagaatatctaatattggttcaaacaagctctactcaagtttct
+ttagatgtgaggaaaaacaaacttaagtaaaaatgctcctacttccacttcaaccttgaa
+tataaatttcttaaaaaaggaagacaaagccatgtactactgtgcctgctggaataggat
+c
+>IMGT000006|TRGV7-2*01|Canis lupus familiaris_boxer|F|V-REGION|383828..384132|305 nt|1| | | | |305+0=305| | |~VARIABLE
+caggtgaagttagaacaacatgaaatatcagtttccagagcaagagataagagtgcccac
+atatcatgcaaggtagtcactgaggattttaacagtgaagttatacactggtaccgacac
+aaaccagatcaggagatagaacatctaataatggtccaaacaagctctactcaagcttct
+ttagatgggaggaaaaacaaacttgaggcaagtaaaaatgccgttacttccacatcaact
+ttgagtataaatttcttacaagaagaagacgaagccatgtactactgtgcctgctggaaa
+ggatc
+>IMGT000006|TRGV7-3*01|Canis lupus familiaris_boxer|F|V-REGION|396401..396709|309 nt|1| | | | |309+0=309| | |~VARIABLE
+caggtgaggttggaacaacctcaaatatcaatttctggaacaaaatataagagcattaac
+atattatgcaagttgcatgctcaaaactttaacactaaagtgatacactggtaccgacag
+aaaccagagcaggacatagaacatctaacatgggtccaaacaagcgctagcaaagtccca
+tctttagatgggaggaaaaacaaacttgaggcaagtaaaaatgctcttacttccacttca
+actttgaaaataaatttcttacaagaagaagatgaggccatgtactactgttcctgctgg
+agtaggatc
+>IMGT000006|TRGJ1-1*01|Canis lupus familiaris_boxer|P|J-REGION|11246..11311|66 nt|3| | | | |66+0=66| | |~JOINING
+ataacttcctatgatgctggatcaagagattaacagaaggaattaggctcttagtaattc
+ctcctg
+>IMGT000006|TRGJ1-2*01|Canis lupus familiaris_boxer|ORF|J-REGION|13619..13677|59 nt|2| | | | |59+0=59| | |~JOINING
+ggttcagtatggctggagtaccaaagtgtttggtcctggcaaaaagcttagggtcacaa
+>IMGT000006|TRGJ2-1*01|Canis lupus familiaris_boxer|P|J-REGION|68516..68581|66 nt|3| | | | |66+0=66| | |~JOINING
+gtaacatctgaccaggttggatcaagaaatttacagaagttaacaggtttatagtaactc
+ctcatg
+>IMGT000006|TRGJ2-2*01|Canis lupus familiaris_boxer|F|J-REGION|71313..71371|59 nt|2| | | | |59+0=59| | |~JOINING
+ttactggaatagttggagcaacaaagtgtttggtcctggcacaattctcagggttacag
+>IMGT000006|TRGJ3-1*01|Canis lupus familiaris_boxer|P|J-REGION|123476..123541|66 nt|3| | | | |66+0=66| | |~JOINING
+ataacctctaaccgggctggatcaagatatttacagaaggtactaggcttatagtaactc
+ctcctt
+>IMGT000006|TRGJ3-2*01|Canis lupus familiaris_boxer|ORF|J-REGION|125831..125889|59 nt|2| | | | |59+0=59| | |~JOINING
+cagctggtctggctggtacaacaaagtgcttggtcctggcacaattctcagggttacag
+>IMGT000006|TRGJ4-1*01|Canis lupus familiaris_boxer|P|J-REGION|180992..181057|66 nt|3| | | | |66+0=66| | |~JOINING
+ataacctctaaccaggctgggtcaagatatttgcagaaggtactaagcttatagtaactc
+ctcctg
+>IMGT000006|TRGJ4-2*01|Canis lupus familiaris_boxer|F|J-REGION|183242..183300|59 nt|2| | | | |59+0=59| | |~JOINING
+ttcctggaatagttggaggaacaaagtgtttggtcccggcacaacgctcagggttacag
+>IMGT000006|TRGJ5-1*01|Canis lupus familiaris_boxer|ORF|J-REGION|266070..266130|61 nt|1| | | | |61+0=61| | |~JOINING
+aaaactccggctggatcaagattatttgcagaaggaactaatctcatagtaactccccct
+g
+>IMGT000006|TRGJ5-2*01|Canis lupus familiaris_boxer|F|J-REGION|268525..268583|59 nt|2| | | | |59+0=59| | |~JOINING
+gtatttgtatagcaggtacaacaaagtatttggtcctggcacagtgctcagggttacag
+>IMGT000006|TRGJ6-1*01|Canis lupus familiaris_boxer|F|J-REGION|324844..324903|60 nt|3| | | | |60+0=60| | |~JOINING
+ataactcaggctggatcaagatatttggagaaggaactaagctcatagtaacaccctcag
+>IMGT000006|TRGJ6-2*01|Canis lupus familiaris_boxer|ORF|J-REGION|327874..327934|61 nt|1| | | | |61+0=61| | |~JOINING
+agtgggtatggctggaacagcaacaaagtgatgggtcctgacacacagctcagggttaca
+g
+>IMGT000006|TRGJ7-1*01|Canis lupus familiaris_boxer|P|J-REGION|406077..406139|63 nt|3| | | | |63+0=63| | |~JOINING
+tctcttattgcatttcacagacagtgaaactgaggtttggagaaggtcagttatttgcct
+aaa
+>IMGT000006|TRGJ7-2*01|Canis lupus familiaris_boxer|F|J-REGION|407727..407786|60 nt|3| | | | |60+0=60| | |~JOINING
+ggttgtttgactggagcagaatcaaagtgtttggtcctggcacaaagctcatggttacag
+>IMGT000006|TRGJ8-1*01|Canis lupus familiaris_boxer|F|J-REGION|433098..433157|60 nt|3| | | | |60+0=60| | |~JOINING
+ataactcagtctggatcaagatatttggacaaggaactaaggtcatagtaactcctccag
+>IMGT000006|TRGJ8-2*01|Canis lupus familiaris_boxer|P|J-REGION|437858..437915|58 nt|1| | | | |58+0=58| | |~JOINING
+tagtatggctagagcaaaatcaaagcatttggttgtggcacaaagctcagggttacag
+>IMGT000006|TRGC2*01_AB|Canis lupus familiaris_boxer|F|EX1+EX2A+EX2B+EX3|?|641 nt|?| | | | |641+0=641| |~CONSTANT
+ataaaagtcctgaagacatttcccccaagcccacaatttttcttccttcgattgctgaaa
+taaaagcccatcaggttggaacgtatatttgtcttcttgaggatattattcctgatattt
+ttaagatagattggaaagaaaagaacagcaaaacaattctgcaatcccagcagggaaaca
+ccgtgaagactaaggacacatacatgaaattcagctgggtgactgtgactgaaaaatcaa
+tggataaagaacaccaatgcattgtcaaagatgagaggaataaagaaagggttaatcaag
+agattgattttccttcaataaacaaagatttggtggcaaggatggaatccgatatggacc
+ctgcggggcattcagagccaaagcaaaacacagaggtggtaactttgaaccctgccagtt
+caagatctttcaggcctgtccttagcactgtggaatttgctgctattaactctacagaag
+cttccctgcatgatgaaaatgatcccctgcagcttcaactcatgaacacctctgcctact
+acacctacctcctcctcctcctgaagagcctgatgtactccatcatcactgccatctgtc
+tgcttgggagatcagtgttcgatggcaatgggaagagttct
+>IMGT000006|TRGC3*01_AB|Canis lupus familiaris_boxer|F|EX1+EX2A+EX2B+EX3|?|644 nt|?| | | | |644+0=644| |~CONSTANT
+ataaaagtgccaatgaagacacttcccccaagcccacagtttttcttccttcgatttctg
+aaataaaaatccataaggctggaacatatctttgtcttctcgaggatttttttcctgaaa
+ttatcaaggtagattggaaagaaaagaatgaccaaacagttctgcaatcccagcagggaa
+acactatgaagactaaggacacatacatgaaattcagctggctgaccgtgactggagcgt
+ctatggataaagaacacaaatgtattgtcaaccacgagagtgatagaggagggattaatc
+aagagattctttttccttcgataaatgaagatttggtagcgaggatggaatctgatgttg
+actccgaagggcattcagaggcaaagcaaaacacagaggtggtaactgtgagccctctaa
+gttcacgatctttcccacctggcgcaagcactgtggaactcgttgctcttaactccacag
+aagcttccctggatgatgaatatgaccccctgcagctgcagctcatgaacacctctgcct
+actatacctacctcctcctcctcctgaagagtctgacgtactccatcatcatcaccatct
+atctgcttgggagatcagtgctcaatggtaatgggaagagttcc
+>IMGT000006|TRGC4*01_AB|Canis lupus familiaris_boxer|F|EX1+EX2A+EX2B+EX3|?|641 nt|?| | | | |641+0=641| |~CONSTANT
+ataaaagtcctgaagacatttcccccaagcccacaatttttcttccttcaattgctgaaa
+taaaagtccataaggctggaacatatctttgtcatcttgaggaaaatattcctgatgttt
+ttaagatagattggaaagaaaagaacgtcaaaacaattctgcaatcccagcagggaaaca
+ccgtgaagactgaggacacatacatgaaattcagctgggtgatcgtgactgaggaatcat
+tggataaagaacaccaatgcatcgtcaaagatgagaggaataaagaaagggttaatcaag
+agattgattttccttcaataaacaaagatttgttggcaaggatggaatccaatgtggacc
+ccacggggcattcagaggcaaagcaaaacacagaggtggtaactttgaacccttccagtt
+caagatctttcaggcctgtccccagcactgtggaactcactgctattaactctacagaag
+ctttcctggatgatgaaaatcacaccctgcagctgcagctcatgaacacctctgcctact
+acacctacctcctcctcctcctgaagagcctgatgtactccatcatcatcaccatctgtt
+tacttgggagaccagtgcttgatggcaatgggaagagttcc
+>IMGT000006|TRGC2*01_A|Canis lupus familiaris_boxer|F|EX1+EX2A+EX3|?|593 nt|?| | | | |593+0=593| |~CONSTANT
+ataaaagtcctgaagacatttcccccaagcccacaatttttcttccttcgattgctgaaa
+taaaagcccatcaggttggaacgtatatttgtcttcttgaggatattattcctgatattt
+ttaagatagattggaaagaaaagaacagcaaaacaattctgcaatcccagcagggaaaca
+ccgtgaagactaaggacacatacatgaaattcagctgggtgactgtgactgaaaaatcaa
+tggataaagaacaccaatgcattgtcaaagatgagaggaataaagaaagggttaatcaag
+agattgattttccttcaataaacaaagatttggtggcaaggatggaatccgatatggacc
+ctgcggggcattcagagccaaagcaaaacacagaggtggtaactttgaaccctgccagtt
+caagatctttcaggcctgtccttagcactgtggatcccctgcagcttcaactcatgaaca
+cctctgcctactacacctacctcctcctcctcctgaagagcctgatgtactccatcatca
+ctgccatctgtctgcttgggagatcagtgttcgatggcaatgggaagagttct
+>IMGT000006|TRGC3*01_A|Canis lupus familiaris_boxer|F|EX1+EX2A+EX3|?|596 nt|?| | | | |596+0=596| |~CONSTANT
+ataaaagtgccaatgaagacacttcccccaagcccacagtttttcttccttcgatttctg
+aaataaaaatccataaggctggaacatatctttgtcttctcgaggatttttttcctgaaa
+ttatcaaggtagattggaaagaaaagaatgaccaaacagttctgcaatcccagcagggaa
+acactatgaagactaaggacacatacatgaaattcagctggctgaccgtgactggagcgt
+ctatggataaagaacacaaatgtattgtcaaccacgagagtgatagaggagggattaatc
+aagagattctttttccttcgataaatgaagatttggtagcgaggatggaatctgatgttg
+actccgaagggcattcagaggcaaagcaaaacacagaggtggtaactgtgagccctctaa
+gttcacgatctttcccacctggcgcaagcactgtggaccccctgcagctgcagctcatga
+acacctctgcctactatacctacctcctcctcctcctgaagagtctgacgtactccatca
+tcatcaccatctatctgcttgggagatcagtgctcaatggtaatgggaagagttcc
+>IMGT000006|TRGC4*01_A|Canis lupus familiaris_boxer|F|EX1+EX2A+EX3|?|593 nt|?| | | | |593+0=593| |~CONSTANT
+ataaaagtcctgaagacatttcccccaagcccacaatttttcttccttcaattgctgaaa
+taaaagtccataaggctggaacatatctttgtcatcttgaggaaaatattcctgatgttt
+ttaagatagattggaaagaaaagaacgtcaaaacaattctgcaatcccagcagggaaaca
+ccgtgaagactgaggacacatacatgaaattcagctgggtgatcgtgactgaggaatcat
+tggataaagaacaccaatgcatcgtcaaagatgagaggaataaagaaagggttaatcaag
+agattgattttccttcaataaacaaagatttgttggcaaggatggaatccaatgtggacc
+ccacggggcattcagaggcaaagcaaaacacagaggtggtaactttgaacccttccagtt
+caagatctttcaggcctgtccccagcactgtggacaccctgcagctgcagctcatgaaca
+cctctgcctactacacctacctcctcctcctcctgaagagcctgatgtactccatcatca
+tcaccatctgtttacttgggagaccagtgcttgatggcaatgggaagagttcc
+>IMGT000006|TRGC5*01_A|Canis lupus familiaris_boxer|F|EX1+EX2A+EX3|?|593 nt|?| | | | |593+0=593| |~CONSTANT
+ataaaaatcctgatgaagacattccccccaagcccacagtttttcttccttcaattactg
+aaattaaagaccacaacactggaacatatctttgtcttcttgaggattttttccctgatg
+ttatcaagattgactggaaagaaaaagatgataaaacagttctgcaatcccagcagggag
+ataccatgaagactaaggacacatacatgaaattcagctggctgaccgtgactcaagaat
+caatggctaaagatcacaaatgcatggtcaaacatgagaggaataaaggaagggttgacc
+aagagatcgattttccttcaataaacagaattttggtggcagcgattcaatccaatatgg
+actcccagaggcattcagagacaaggaggaagagacaggtggtaactgtgagccctctaa
+gttcacaatctttctcaactgttccaagcactgtggacaaccagcagctgcagctcatga
+acacctctgcctactatatctatatcctcctcctcttcaagagcttgatgtactccatca
+tcatcaccatctgtctgcttgagagaccagcgctcgatggcaataggaagaac
