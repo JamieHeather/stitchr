@@ -28,7 +28,7 @@ pip3 install PySimpleGUI
 
 ## Example usage 
 
-`Stitchr` uses relative paths. Please ensure you are in the Scripts directory to run the script. The only required fields are the minimal components describing a single rearranged  alpha or beta chain: V gene name, J gene name, and CDR3 sequence (either DNA or amino acids). Constant regions must also be specified for all non-human/non-mouse species.
+`Stitchr` uses relative paths. Please ensure you are in the Scripts directory to run the script. The only required fields are the minimal components describing a single rearranged TCR chain: V gene name, J gene name, and CDR3 sequence (either DNA or amino acids). Constant regions must also be specified for all non-human/non-mouse species.
 
 ```bash
 python3 stitchr.py -v [IMGT V gene] -j [IMGT J gene] -cdr3 [CDR3aa]
