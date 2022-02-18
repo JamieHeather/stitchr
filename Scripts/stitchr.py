@@ -15,7 +15,7 @@ import argparse
 import sys
 import warnings
 
-__version__ = '0.9.0'
+__version__ = '0.9.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -391,9 +391,9 @@ if __name__ == '__main__':
     out_str = '|'.join(out_list)
 
     print('----------------------------------------------------------------------------------------------')
-    print(fxn.fastafy('nt' + out_str, stitched))
+    print(fxn.fastafy('nt|' + out_str, stitched))
     # Use the offset to 5' pad the stitched sequence with 'N's to make up for non-codon length 5' added sequences
-    print(fxn.fastafy('aa' + out_str, fxn.translate_nt('N' * offset + stitched)))
+    print(fxn.fastafy('aa|' + out_str, fxn.translate_nt('N' * offset + stitched)))
 
     # If a known/partial amino acid sequence provided, ensure they match up with a quick printed alignment
     if input_args['aa']:
