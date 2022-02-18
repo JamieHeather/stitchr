@@ -1,6 +1,6 @@
 ![](Images/stitchr-logo.png)
 
-# 0.9.0
+# 0.9.1
 
 ### Stitch together TCR coding nucleotide sequences from V/J/CDR3 information
 
@@ -305,7 +305,7 @@ Only the second and fifth fields are important for these additional genes, and a
 
 * Functional leader sequences usually have lengths that are multiples of 3. They don't need to be, but if they're not the V gene will need to account for it to maintain the reading frame.
 * The 3' nucleotide of the J gene is the first nucleotide of the first codon of the constant region.
-* Constant regions in default settings are trimmed by the script to run up to the codon just before the first stop codon. This is not required, and stop codons can be left in if desired, but care must be taken if the intention is to use `thimble` with these genes to make bicistronic expression constructs. It's recommended to leave stop codons off any constant regions added to additional-genes.fasta, and then provide them in `thimble` instead as needed.
+* Constant regions in default settings are trimmed by the script to run up to the codon just before the first stop codon (as occur in EX4UTR exons of TRAC and TRDC). This is not required, and stop codons can be left in if desired, but care must be taken if the intention is to use `thimble` or `gui-stitchr` with these genes to make bicistronic expression constructs. It's recommended to leave stop codons off any constant regions added to additional-genes.fasta, and then provide them in `thimble` instead as needed.
 * Most of the gene sequence and format checks cannot be applied, so extra care must be taken to ensure input genes are valid. For instance, using the `-xg` flag automatically sets the `-sc` flag, which skips the usual constant region frame check (as ```stitchr``` doesn't know what frame is intended, see below).
 * Extra genes added via the additional-genes.fasta file are supplemented to the working dictionaries in ```stitcher``` *after* IMGT gene sequences are read in; any extra genes with the same gene name/allele combination as one already in the IMGT dataset will overwrite the default sequence. If you wish to use both in the same rearrangement or `thimble` run, use novel naming in the input FASTA file - e.g. the example constant regions added have 'm' and 'h' prefixes (denoting their human or mouse origin). 
 
