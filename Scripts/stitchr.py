@@ -12,6 +12,7 @@ Can be used for TCR vector design, and other purposes.
 
 import functions as fxn
 import argparse
+import sys
 import warnings
 
 __version__ = '0.9.0'
