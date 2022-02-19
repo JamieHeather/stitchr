@@ -19,7 +19,7 @@ import sys
 import os
 from time import time
 
-__version__ = '0.5.0'
+__version__ = '0.5.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -232,7 +232,7 @@ if __name__ == '__main__':
 
                             else:
                                 tcr_bits = fxn.autofill_input(tcr_bits, c)
-                                tcr_bits = fxn.tweak_thimble_input(tcr_bits, input_args)
+                                tcr_bits = fxn.tweak_thimble_input(tcr_bits)
 
                                 try:
                                     out_list, stitched, offset = st.stitch(tcr_bits, tcr_dat[c], tcr_functionality[c],
