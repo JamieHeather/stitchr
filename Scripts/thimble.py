@@ -19,7 +19,7 @@ import sys
 import os
 from time import time
 
-__version__ = '0.5.1'
+__version__ = '0.6.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -79,6 +79,19 @@ def locus_to_trx(trx_str):
     return trx_str.replace('TRA', 'TR1').replace('TRB', 'TR2').replace('TRG', 'TR1').replace('TRD', 'TR2')
 
 
+def populate_blanks(chain_dict, necessary_fields):
+    """
+    :param chain_dict: dictionary containing the stitchr fields for a given chain's recombination
+    :param necessary_fields: list of fields that the tcr dictionary requires to pass the downstream steps
+    :return: chain_dict with blank entries for each of the necessary_fields that it was missing
+    """
+    for nf in necessary_fields:
+        if nf not in chain_dict:
+            chain_dict[nf] = ''
+
+    return chain_dict
+
+
 in_headers = {'TRA/TRB': ['TCR_name', 'TRAV', 'TRAJ', 'TRA_CDR3', 'TRBV', 'TRBJ', 'TRB_CDR3',
                           'TRAC', 'TRBC', 'TRA_leader', 'TRB_leader', 'Linker', 'Link_order',
                           'TRA_5_prime_seq', 'TRA_3_prime_seq', 'TRB_5_prime_seq', 'TRB_3_prime_seq'],
@@ -95,7 +108,8 @@ convert_fields = {'TRAV': 'v', 'TRAJ': 'j', 'TRA_CDR3': 'cdr3', 'TRBV': 'v', 'TR
                   'TRG_5_prime_seq': '5_prime_seq', 'TRG_3_prime_seq': '3_prime_seq',
                   'TRD_5_prime_seq': '5_prime_seq', 'TRD_3_prime_seq': '3_prime_seq'}
 
-stitch_list_fields = ['_name', 'V', 'J', 'C', '_CDR3', '_leader', '_5_prime_seq', '_3_prime_seq']
+pre_stitch_list_fields = ['name', 'v', 'j', 'c', 'cdr3', 'l', '5_prime_seq', '3_prime_seq']
+post_stitch_list_fields = ['_name', 'V', 'J', 'C', '_CDR3', '_leader', '_5_prime_seq', '_3_prime_seq']
 
 out_headers = {'TRA/TRB': ['TCR_name', 'TRA_nt', 'TRB_nt', 'TRA_aa', 'TRB_aa',
                            'TRAV', 'TRAJ', 'TRA_CDR3', 'TRBV', 'TRBJ', 'TRB_CDR3',
@@ -219,21 +233,25 @@ if __name__ == '__main__':
 
                         # Convert naming to output formats
                         for field in [x for x in sorted_row_bits if c in x]:
-                            # if sorted_row_bits[field]:
                             if field in convert_fields:
-                                tcr_bits[convert_fields[field]] = sorted_row_bits[field]
+                                if sorted_row_bits[field]:
+                                    tcr_bits[convert_fields[field]] = sorted_row_bits[field]
 
                         # Determine whether there's supposed to be a TCR for this chain
                         if len(tcr_bits) > 1:
 
                             # At the very least we need the relevant TCR info (V/J/CDR3)
-                            if not all(section in tcr_bits for section in ['v', 'j', 'cdr3']):
+                            featured_bits = [x for x in tcr_bits if x in ['v', 'j', 'cdr3']]
+                            if len(featured_bits) == 0:
+                                # If no TCR features present, just skip
+                                continue
+
+                            elif len(featured_bits) in [1, 2]:
                                 warnings.warn("Incomplete TCR information - need V/J/CDR3 as minimum.")
 
                             else:
-                                tcr_bits = fxn.autofill_input(tcr_bits, c)
+                                tcr_bits = fxn.autofill_input(populate_blanks(tcr_bits, pre_stitch_list_fields), c)
                                 tcr_bits = fxn.tweak_thimble_input(tcr_bits)
-
                                 try:
                                     out_list, stitched, offset = st.stitch(tcr_bits, tcr_dat[c], tcr_functionality[c],
                                                                            partial, codons,
@@ -241,7 +259,7 @@ if __name__ == '__main__':
                                                                            preferences[c])
                                     sorted_row_bits[c + '_nt'] = stitched
                                     sorted_row_bits[c + '_aa'] = fxn.translate_nt('N' * offset + stitched)
-                                    sorted_row_bits.update(dict(list(zip([c + x for x in stitch_list_fields],
+                                    sorted_row_bits.update(dict(list(zip([c + x for x in post_stitch_list_fields],
                                                                          out_list))))
 
                                 except Exception as message:
