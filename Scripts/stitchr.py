@@ -15,7 +15,7 @@ import argparse
 import sys
 import warnings
 
-__version__ = '0.9.1'
+__version__ = '0.10.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -76,6 +76,9 @@ def args():
 
     parser.add_argument('-p', '--preferred_alleles_path', required=False, type=str, default='', help="Path to a file of"
                         " preferred alleles to use when no allele specified (instead of *01). Optional.")
+
+    parser.add_argument('-m', '--mode', required=False, type=str, default='both_fa', help="Standard out output mode. "
+                        "Options are 'BOTH_FA' (default), 'AA_FA', 'NT_FA', 'AA', 'NT'.")
 
     parser.add_argument('-cu', '--codon_usage_path', required=False, type=str, default='', help="Path to a file of "
                         "Kazusa-formatted codon usage frequencies. Optional.")
@@ -390,10 +393,25 @@ if __name__ == '__main__':
                                         input_args['j_warning_threshold'], preferred_alleles)
     out_str = '|'.join(out_list)
 
-    print('----------------------------------------------------------------------------------------------')
-    print(fxn.fastafy('nt|' + out_str, stitched))
-    # Use the offset to 5' pad the stitched sequence with 'N's to make up for non-codon length 5' added sequences
-    print(fxn.fastafy('aa|' + out_str, fxn.translate_nt('N' * offset + stitched)))
+    # Output the appropriate strings to stdout
+    if input_args['mode'] not in ['BOTH_FA', 'AA_FA', 'NT_FA', 'AA', 'NT']:
+        raise IOError("Unknown output mode detected: " + input_args['mode'] + ". \n"
+                      "Should be one of 'BOTH_FA' (default), 'AA_FA', 'NT_FA', 'AA', 'NT'.")
+
+    if '_FA' in input_args['mode']:
+        print('----------------------------------------------------------------------------------------------')
+        if input_args['mode'] == 'BOTH_FA' or input_args['mode'] == 'NT_FA':
+            print(fxn.fastafy('nt|' + out_str, stitched))
+
+        if input_args['mode'] == 'BOTH_FA' or input_args['mode'] == 'AA_FA':
+            # Use the offset to 5' pad the stitched sequence with 'N's to make up for non-codon length 5' added seqs
+            print(fxn.fastafy('aa|' + out_str, fxn.translate_nt('N' * offset + stitched)))
+
+    elif input_args['mode'] == 'NT':
+        print(stitched)
+
+    elif input_args['mode'] == 'AA':
+        print(fxn.translate_nt('N' * offset + stitched))
 
     # If a known/partial amino acid sequence provided, ensure they match up with a quick printed alignment
     if input_args['aa']:

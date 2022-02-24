@@ -1,6 +1,6 @@
 ![](Images/stitchr-logo.png)
 
-# 0.9.1
+# 0.10.1
 
 ### Stitch together TCR coding nucleotide sequences from V/J/CDR3 information
 
@@ -99,8 +99,25 @@ In order to best use the seamless option, please ensure that:
 * `-n` - provide a name for the TCR chain, which will be included in the FASTA file header
 * `-3p` - provide a sequence to come immediately after the end of the constant region (e.g. a stop codon)
 * `-5p` - provide a sequence to come immediately before the start of the L1 leader sequence (e.g. a Kozak sequence)
+* `-m` - define an output mode, to define which sequences get printed to the terminal 
 * `-xg` - toggle providing additional/custom genes to be stitched into TCR transcripts in the Data/additional-genes.fasta file
 * `-sc` - toggle skipping the constant region gene check
+
+#### Output modes
+
+`Stitchr` can output the TCR sequences it generates in a number of different formats, which [may help integrate its output into certain pipelines](https://github.com/JamieHeather/stitchr/issues/22). These modes can be specified using the `-m / --mode` flag, using one of the following options:
+
+* `-m BOTH_FA`
+  * Default option
+  * Outputs a horizontal line, followed by the full, formatted, descriptive FASTA sequence of the stitched TCR, both nucleotide and translated amino acid sequence
+* `-m NT_FA`
+  * Outputs a horizontal line and the FASTA nucleotide sequence of the stitched TCR
+* `-m AA_FA`
+  * Outputs a horizontal line and the FASTA translated amino acid sequence of the stitched TCR 
+* `-m NT`
+  * Outputs just the nucleotide sequence of the stitched TCR (no lines, no linebreaks, no FASTA header)
+* `-m AA`
+  * Outputs just the translated amino acid sequence of the stitched TCR (no lines, no linebreaks, no FASTA header)
 
 #### Providing a partial amino acid sequence
 
