@@ -17,7 +17,7 @@ import thimble as th
 import collections as coll
 import warnings
 
-__version__ = '0.4.0'
+__version__ = '0.4.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -98,12 +98,13 @@ def change_receptors(receptor_str):
     return new_receptor
 
 
-def upload_tcr_details(path_to_file, receptor_type):
+def upload_tcr_details(path_to_file, receptor_type, stated_species):
     """
     Read suitably formatted TCRs in template format to the GUI
     :param path_to_file: str detailing the full path to the input file
     :param receptor_type: str detailing the receptor in use, i.e. either 'TRA/TRB' or 'TRG/TRD'
-    :return: str of receptor type again, in case it switches during the course of reading the TCR file in
+    :param stated_species: str of the species on record before the upload, to remain if one not inferred
+    :return: strs of receptor type and species again, in case they switch during the course of reading the TCR file in
     """
 
     # This section uses the Thimble format input file to populate the GUI fields
@@ -119,6 +120,7 @@ def upload_tcr_details(path_to_file, receptor_type):
             inferred_species = species_inference
             window['species_choice'].update(inferred_species)
         else:
+            inferred_species = stated_species
             sg.Popup("Cannot infer species name from file name:\nplease set manually.")
 
         with open(path_to_file, 'r') as in_file:
@@ -361,7 +363,7 @@ while True:
                          'using the first alphabetically.')
                 example_matches.sort()
 
-            receptor, species = upload_tcr_details(examples_path + example_matches[0], receptor)
+            receptor, species = upload_tcr_details(examples_path + example_matches[0], receptor, species)
 
     elif event == 'change_receptor':
 
@@ -391,7 +393,7 @@ while True:
 
     elif event == 'Upload TCR details':
 
-        receptor = upload_tcr_details(values['uploaded_tcr'], receptor)
+        receptor, species = upload_tcr_details(values['uploaded_tcr'], receptor, species)
 
     elif event == 'find_preferred_alleles':
 

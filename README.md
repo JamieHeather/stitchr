@@ -389,7 +389,7 @@ Note that the third example there uses the preferred allele option and specifies
 * `-jt` - length of J gene substring that has to be matched to avoid throwing a warning (decrease to get fewer notices about short J matches), default = 3
 
 # GUI-stitchr 
-### 0.4.0
+### 0.4.1
 
 A graphical interface has been developed for users that are less comfortable at the command line, or who prefer a more immediately interactive session. It can be launched from inside the Scripts directory like so:
 
