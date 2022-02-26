@@ -16,7 +16,7 @@ import textwrap
 import datetime
 import warnings
 
-__version__ = '0.11.0'
+__version__ = '0.12.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -440,21 +440,24 @@ def tidy_c_term(c_term_nt, skip, c_region_motifs, c_gene):
     """
 
     translations = {}  # key = frame (0, 1, or 2)
+    best = -1
+    position = -1
 
     # Try every frame, look for the frame that contains the appropriate sequence
     for f in range(4):
 
-        if f == 3:
-            if skip:
-                # Try to figure out the best translation frame, by picking the one with the longest pre-stop sequence
-                best = -1
-                position = -1
-                for frame in translations:
-                    stop = find_stop(translations[frame])
-                    if stop > position:
-                        best = frame
-                        position = stop
+        translated = translate_nt(c_term_nt[f:])
+        translations[f] = translated
 
+        if skip:
+            # Try to figure out the best translation frame, by picking the one with the longest pre-stop sequence
+            for frame in translations:
+                stop = find_stop(translations[frame])
+                if stop > position:
+                    best = frame
+                    position = stop
+
+            if f == 3:
                 if best == 2:
                     warnings.warn("Note: expected reading frame " + str(best) + " used for translating C terminus. ")
                 else:
@@ -462,15 +465,10 @@ def tidy_c_term(c_term_nt, skip, c_region_motifs, c_gene):
                                   "instead of the expected reading frame 2 - "
                                   "double check your input/output sequences are correct. ")
 
-                return c_term_nt[best:], translated
-
-            else:
-                raise Exception("Error: could not find an in-frame constant region.")
-
-        translated = translate_nt(c_term_nt[f:])
-        translations[f] = translated
+            return c_term_nt[best:], translated
 
         if not skip:
+            # Use the defined constant region motif
             if c_region_motifs['start'][c_gene] in translated:
 
                 # Account for late EX4UTR stop codons
