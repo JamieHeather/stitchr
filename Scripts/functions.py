@@ -16,7 +16,7 @@ import textwrap
 import datetime
 import warnings
 
-__version__ = '0.12.0'
+__version__ = '0.12.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -465,7 +465,7 @@ def tidy_c_term(c_term_nt, skip, c_region_motifs, c_gene):
                                   "instead of the expected reading frame 2 - "
                                   "double check your input/output sequences are correct. ")
 
-            return c_term_nt[best:], translated
+                return c_term_nt[best:], translations[best]
 
         if not skip:
             # Use the defined constant region motif
@@ -558,6 +558,7 @@ def determine_j_interface(cdr3_cterm_aa, c_term_nuc, c_term_amino, gl_nt_j_len, 
 
         # Look for the decreasing chunks of the CDR3 in the theoretical translation of this J gene as germline
         search = [x for x in find_cdr3_c_term(c_term_cdr3_chunk, c_term_amino[:search_len], False)]
+
         if search:
             if len(search) == 1:
                 cdr3_c_end = search[0]
