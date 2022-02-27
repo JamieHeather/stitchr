@@ -16,7 +16,7 @@ import textwrap
 import datetime
 import warnings
 
-__version__ = '0.12.1'
+__version__ = '0.13.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -449,7 +449,8 @@ def tidy_c_term(c_term_nt, skip, c_region_motifs, c_gene):
         translated = translate_nt(c_term_nt[f:])
         translations[f] = translated
 
-        if skip:
+        # If C gene check skips is selected, OR if the constant region isn't listed in the C-region-motifs...
+        if skip or c_gene not in c_region_motifs['start']:
             # Try to figure out the best translation frame, by picking the one with the longest pre-stop sequence
             for frame in translations:
                 stop = find_stop(translations[frame])
@@ -467,7 +468,8 @@ def tidy_c_term(c_term_nt, skip, c_region_motifs, c_gene):
 
                 return c_term_nt[best:], translations[best]
 
-        if not skip:
+        # ... otherwise if C gene check skips not selected, OR if the constant region is listed in the motifs
+        if not skip or c_gene in c_region_motifs['start']:
             # Use the defined constant region motif
             if c_region_motifs['start'][c_gene] in translated:
 

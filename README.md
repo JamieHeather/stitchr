@@ -101,7 +101,7 @@ In order to best use the seamless option, please ensure that:
 * `-5p` - provide a sequence to come immediately before the start of the L1 leader sequence (e.g. a Kozak sequence)
 * `-m` - define an output mode, to define which sequences get printed to the terminal 
 * `-xg` - toggle providing additional/custom genes to be stitched into TCR transcripts in the Data/additional-genes.fasta file
-* `-sc` - toggle skipping the constant region gene check
+* `-sc` - toggle skipping the constant region gene check (for genes not present in the C-region-motifs.tsv file)
 
 #### Output modes
 
@@ -324,13 +324,13 @@ Only the second and fifth fields are important for these additional genes, and a
 * The 3' nucleotide of the J gene is the first nucleotide of the first codon of the constant region.
 * Constant regions in default settings are trimmed by the script to run up to the codon just before the first stop codon (as occur in EX4UTR exons of TRAC and TRDC). This is not required, and stop codons can be left in if desired, but care must be taken if the intention is to use `thimble` or `gui-stitchr` with these genes to make bicistronic expression constructs. It's recommended to leave stop codons off any constant regions added to additional-genes.fasta, and then provide them in `thimble` instead as needed.
 * Most of the gene sequence and format checks cannot be applied, so extra care must be taken to ensure input genes are valid. For instance, using the `-xg` flag automatically sets the `-sc` flag, which skips the usual constant region frame check (as ```stitchr``` doesn't know what frame is intended, see below).
-* Extra genes added via the additional-genes.fasta file are supplemented to the working dictionaries in ```stitcher``` *after* IMGT gene sequences are read in; any extra genes with the same gene name/allele combination as one already in the IMGT dataset will overwrite the default sequence. If you wish to use both in the same rearrangement or `thimble` run, use novel naming in the input FASTA file - e.g. the example constant regions added have 'm' and 'h' prefixes (denoting their human or mouse origin). 
+* Extra genes added via the additional-genes.fasta file are supplemented to the working dictionaries in ```stitcher``` *after* IMGT gene sequences are read in; any extra genes with the same gene name/allele combination as one already in the IMGT dataset will overwrite the default sequence. If you wish to use both in the same rearrangement or `thimble` run, use novel naming in the input FASTA file - e.g. the example constant regions added have 'm' and 'h' prefixes, denoting their human or mouse origin, but any chance to ensure unique names will work. 
 
 #### Skipping constant region checks
 
-For the default loci covered, `stitchr` has a constant region frame-checking function that uses known correctly-translated sequences to infer the right frame (and where appropriate, placement of endogenous stop codons). If you wish to override these checks for some reason (most likely if you're manually creating your own non-standard or engineered constant region sequences) then you can get the `-sc / --skip_c_checks` flag in the command line. Under these circumstances, `stitchr` will instead determine the correct frame of the C terminal domain by finding the one with the longest stretch of amino acids before hitting a stop codon. Note that this is less reliable and slower than using the pre-computed motif files.
+For the default loci covered, `stitchr` has a constant region frame-checking function that uses known correctly-translated sequences to infer the right frame (and where appropriate, placement of endogenous stop codons). If you wish to override these checks for some reason (most likely if you're manually creating your own non-standard or engineered constant region sequences) then you can get the `-sc / --skip_c_checks` flag in the command line. Under these circumstances, `stitchr` will instead determine the correct frame of the C terminal domain by finding the one with the longest stretch of amino acids before hitting a stop codon. Note that this is less reliable and slower than using the pre-computed motif files. This feature will also **only activate if the gene name of the relevant constant region is *not* found in the C-region-motifs.tsv file for that species**. 
 
-Note that using the `-xg` extra genes flag will automatically set the `-sc / --skip_c_checks` on.
+If for some reason users which to skip the C region checks (using the automatically inferred translation frame) for a gene that already is covered in the pre-generated motifs file, they should add a renamed variant of that gene to the `additional-genes.fasta` file, and use the `-xg` extra genes flag. Note that using the `-xg` flag will automatically set the `-sc / --skip_c_checks` on.
 
 #### Stitching immunoglobulins
 
