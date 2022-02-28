@@ -17,7 +17,7 @@ import thimble as th
 import collections as coll
 import warnings
 
-__version__ = '0.4.1'
+__version__ = '0.4.2'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -345,6 +345,10 @@ convert_chains = {'TRA/TRB': {'TR1': 'TRA', 'TR2': 'TRB'},
 
 while True:
     event, values = window.read()
+
+    # Prevent TypeError when closing via GUI 'X' button
+    if event == sg.WINDOW_CLOSED:
+        break
 
     # Determine species
     species = values['species_choice']
