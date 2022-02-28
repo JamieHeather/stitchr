@@ -17,7 +17,7 @@ import thimble as th
 import collections as coll
 import warnings
 
-__version__ = '0.4.2'
+__version__ = '0.4.3'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -195,11 +195,21 @@ def upload_tcr_details(path_to_file, receptor_type, stated_species):
         return receptor_type, inferred_species
 
 
+# Check to see whether we're in scripts - if not we might be in the py2app nested directories
+starting_dir = os.getcwd()
+if starting_dir.split('/')[-1] != 'Scripts':
+    os.chdir('../../../')
+    if os.getcwd().split('/')[-1] != 'Scripts':
+        os.chdir(starting_dir)
+        raise RuntimeError("gui-stitchr needs to be run inside the 'Scripts' directory of the stitchr folder.")
+
+print(starting_dir, os.getcwd())
+
 # Define needed/starting variables
 extra_gene_text = ">TCRgenename*01\nATCG...\n"
 box_width = 70
 sz = (int(box_width * 0.9), 1)
-half_sz = (int(box_width * 0.44), 1)          # For half a column
+half_sz = (int(box_width * 0.44), 1)              # For half a column
 third_sz = (int(box_width / 3 - 1.3), 1)          # For one third of a column
 quart_sz = (int(box_width / 4 - 1.1), 1)          # For one quarter of a column
 out_box_font = ('Courier New', 10)
@@ -589,7 +599,7 @@ while True:
                     if chain + '_fasta' in outputs:
                         out_str += outputs[chain + '_fasta']
 
-                if values['chk_linker']:
+                if values['chk_linker'] and ('TR1_out_str' in outputs and 'TR2_out_str' in outputs):
                     out_str += outputs['linked_fasta']
 
                 out_file = values['Export output']
