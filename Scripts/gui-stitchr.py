@@ -17,7 +17,7 @@ import thimble as th
 import collections as coll
 import warnings
 
-__version__ = '0.4.3'
+__version__ = '0.4.4'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -197,11 +197,12 @@ def upload_tcr_details(path_to_file, receptor_type, stated_species):
 
 # Check to see whether we're in scripts - if not we might be in the py2app nested directories
 starting_dir = os.getcwd()
-if starting_dir.split('/')[-1] != 'Scripts':
+if starting_dir[-7:] != 'Scripts':
     os.chdir('../../../')
-    if os.getcwd().split('/')[-1] != 'Scripts':
+    if os.getcwd()[-7:] != 'Scripts':
         os.chdir(starting_dir)
-        raise RuntimeError("gui-stitchr needs to be run inside the 'Scripts' directory of the stitchr folder.")
+        raise RuntimeError("gui-stitchr needs to be run inside the 'Scripts' directory of the stitchr folder."
+                           "\nDetected directory: " + starting_dir)
 
 print(starting_dir, os.getcwd())
 
