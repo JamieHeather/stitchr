@@ -1,6 +1,6 @@
 ![](Images/stitchr-logo.png)
 
-# 0.10.1
+# 1.0.0
 
 ### Stitch together TCR coding nucleotide sequences from V/J/CDR3 information
 
@@ -13,6 +13,14 @@ Sometimes you need a complete TCR nucleotide or amino acid sequence, but all you
 The script takes the known V/J/CDR3 information, and uses that to pull out the relevant germline TCR nucleotide sequences and stitch them together. Its modular approach can be used for the automated generation of TCR sequences for gene synthesis and functional testing, or for TCR engineering through supplying modified germline sequences.
 
 Out of the box, `stitchr` works on all common jawed vertebrate TCR loci (alpha/beta/gamma/delta), for all species for which there is currently data available in IMGT.
+
+### Citing `stitchr`
+
+The manuscript describing and validating `stitchr` is available here:
+
+[James M Heather, Matthew J Spindler, Marta Herrero Alonso, Yifang Ivana Shui, David G Millar, David S Johnson, Mark Cobbold, Aaron N Hata, `Stitchr`: stitching coding TCR nucleotide sequences from V/J/CDR3 information, *Nucleic Acids Research*, **2022**;, gkac190, https://doi.org/10.1093/nar/gkac190](https://doi.org/10.1093/nar/gkac190).
+
+The corresponding analyses and related datasets are available [here](https://github.com/JamieHeather/stitchr-paper-analysis) (which used v1.0.0 `stitchr` scripts). 
 
 ### Installation and dependencies
 
@@ -50,7 +58,7 @@ Care must be taken to ensure that the correct TCR informaton is input. E.g. ensu
 * You have the correct and full [CDR3 **junction** sequence](http://www.imgt.org/FAQ/#question39), either as amino acid or DNA sequences 
     * I.e. running inclusively from the conserved cysteine to the conserved phenylalanine (or rarely, tryptophan) residues
 * You are using the right alleles for the TCR genes in question if known (i.e. the bit after the asterisk in the gene name)
-    * This is especially important when making mouse TCRs, as different strains have their own alleles for many genes
+    * There are many known non-synonymous polymorphisms (and undoubtedly many more unknown ones) which could be impacting on antigen recognition, surface expression, and other aspects of TCR biology
 * For best results, try to get long read TCR sequence data and process it through V/J/CDR3 annotation software which is capable of a) providing allele-level resolution, and b) can take up-to-date germline reference files.
 
 The script produces a TCR from the information given, trying to provide warnings or errors if it detects an improbable or implausible combination, yet it's possible that the script might produce output that *looks* OK yet which does not reproduce a coding sequence for the intended TCR. 
@@ -227,22 +235,22 @@ This produces even more mismatches! This is an instance where the constant regio
 
 `Stitchr` can stitch any TCR loci for which it has the necessary raw data, appropriately formatted in the `Data` directory. We have provided the data for all of the species for which IMGT currently contains enough TCR data for stitching (i.e. at least one leader, V gene, J gene, and constant region for a given loci). See the table below for a full breakdown of which species/loci are covered:
 
-| **Common Name**        | **Genus species**      | **TRA** | **TRB** | **TRG** | **TRD** |
-|------------------------|------------------------|:-------:|:-------:|:-------:|:-------:|
-| **CAT**                | *Felis catus*           |    ✔    |    ✔    |    ✔    |    ✔    |
-| **COW**                | *Bos taurus*             |    ✔    |    ✔    |    ✔    |    ✔    |
-| **CYNOMOLGUS\_MONKEY** | *Macaca fascicularis*    |         |    ✔    |         |         |
-| **DOG**                | *Canis lupus familiaris* |    ✔    |    ✔    |    ✔    |    ✔    |
-| **DOLPHIN**            | *Tursiops truncatus*     |    ✔    |         |    ✔    |    ✔    |
-| **DROMEDARY**          | *Camelus dromedarius*    |         |    ✔    |    ✔    |         |
-| **FERRET**             | *Mustela putorius furo*  |         |    ✔    |         |         |
-| **HUMAN**              | *Homo sapiens*           |    ✔    |    ✔    |    ✔    |    ✔    |
-| **MOUSE**              | *Mus musculus*           |    ✔    |    ✔    |    ✔    |    ✔    |
-| **NAKED\_MOLE-RAT**    | *Heterocephalus glaber*  |    ✔    |    ✔    |    ✔    |    ✔    |
-| **PIG**                | *Sus scrofa*             |         |    ✔    |         |         |
-| **RABBIT**             | *Oryctolagus cuniculus*  |         |    ✔    |    ✔    |    ✔    |
-| **RHESUS\_MONKEY**     | *Macaca mulatta*         |    ✔    |    ✔    |    ✔    |    ✔    |
-| **SHEEP**              | *Ovis aries*             |    ✔    |    ✔    |         |    ✔    |
+| **Common Name**        | **Genus species**        | **TRA** | **TRB** | **TRG** | **TRD** |                            **Kazusa species ID**                            | 
+|------------------------|--------------------------|:-------:|:-------:|:-------:|:-------:|:---------------------------------------------------------------------------:|
+| **CAT**                | *Felis catus*            |    ✔     |    ✔    |    ✔    |    ✔    |  [9685](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9685)  |
+| **COW**                | *Bos taurus*             |    ✔     |    ✔    |    ✔    |    ✔    |  [9913](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9913)  |
+| **CYNOMOLGUS\_MONKEY** | *Macaca fascicularis*    |         |    ✔    |        |         |  [9541](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9541)  |
+| **DOG**                | *Canis lupus familiaris* |    ✔     |    ✔    |    ✔    |    ✔    |  [9615](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9615)  |
+| **DOLPHIN**            | *Tursiops truncatus*     |    ✔     |        |    ✔    |    ✔    |  [9739](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9739)  |
+| **DROMEDARY**          | *Camelus dromedarius*    |         |    ✔    |    ✔    |         |  [9838](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9838)  |
+| **FERRET**             | *Mustela putorius furo*  |         |    ✔    |        |         |  [9669](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9669)  |
+| **HUMAN**              | *Homo sapiens*           |    ✔     |    ✔    |    ✔    |    ✔    |  [9606](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9606)  |
+| **MOUSE**              | *Mus musculus*           |    ✔     |    ✔    |    ✔    |    ✔    | [10090](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=10090) |
+| **NAKED\_MOLE-RAT**    | *Heterocephalus glaber*  |    ✔     |    ✔    |    ✔    |    ✔    |                                      -                                      |
+| **PIG**                | *Sus scrofa*             |         |    ✔    |        |         |  [9823](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9823)  |
+| **RABBIT**             | *Oryctolagus cuniculus*  |         |    ✔    |    ✔    |    ✔    |  [9986](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9986)  |
+| **RHESUS\_MONKEY**     | *Macaca mulatta*         |    ✔     |    ✔    |    ✔    |    ✔    |  [9544](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9544)  |
+| **SHEEP**              | *Ovis aries*             |    ✔     |    ✔    |        |    ✔    |  [9940](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9940)  |
 
 The species can be specified using the `-s / --species` command line flag when running your `stitchr` command. E.g.\, here's an example using everyone's favourite mouse TCR, OT-I (sequences inferred from [this plasmid on AddGene](https://www.addgene.org/52111/):
 
@@ -286,9 +294,9 @@ This is particularly important for users who wish to stitch gamma chain TCRs wit
 
 Non-templated based are assigned by taking the most common nucleotide triplet for a given amino acid, in a provided codon usage file.
 
-Codon usage files are provided for humans and mice, and can be found in the `Data/kazusa/` directory. Their contents are taken straight from the default Kazusa [human](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9606) (Homo sapiens [gbpri]: 93487) and [mouse](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=10090) (Mus musculus [gbrod]: 53036) entries. Alternative files can be provided, but must be in the same format (e.g. those provided by [HIVE](https://hive.biochemistry.gwu.edu/dna.cgi?cmd=refseq_processor&id=569942)), and named according to the common species name used for the rest of the data. U/T can be used interchangeably, as all U bases will be replaced with T anyway.
+Codon usage files are provided for all species for which data is available on the the [Kazusa website](https://www.kazusa.or.jp/), and can be found in the `Data/kazusa/` directory. Alternative files can be provided, but must be in the same format (e.g. those provided by [HIVE](https://hive.biochemistry.gwu.edu/dna.cgi?cmd=refseq_processor&id=569942)), and named according to the common species name used for the rest of the data and placed in that directory if not specified using the `-cu / --codon_usage` flag. U/T can be used interchangeably, as all U bases will be replaced with T anyway.
 
-If no species-specific codon usage file is found the script will default to use the human file.
+If no species-specific codon usage file is found the script will default to using the human file.
 
 #### Preferred allele files
 
@@ -348,7 +356,7 @@ python3 stitchr.py -v IGLV1-47*01 -j IGLJ3*02 -cdr3 CAAWDDSLSGWVF -c IGLC2*01 -s
 However for the reasons stated above we recommend using caution when applying `stitchr` to these loci: long read sequencing (both into the V and the C) and liberal use of the 'seamless' setting is recommended.
 
 # Thimble 
-### 0.5.0
+### 1.0.0
 
 ### Run `stitchr` high-throughput on multiple and paired TCRs
 
@@ -406,7 +414,7 @@ Note that the third example there uses the preferred allele option and specifies
 * `-jt` - length of J gene substring that has to be matched to avoid throwing a warning (decrease to get fewer notices about short J matches), default = 3
 
 # GUI-stitchr 
-### 0.4.1
+### 1.0.0
 
 A graphical interface has been developed for users that are less comfortable at the command line, or who prefer a more immediately interactive session. It can be launched from inside the Scripts directory like so:
 

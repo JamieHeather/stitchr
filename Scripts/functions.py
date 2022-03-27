@@ -16,11 +16,11 @@ import textwrap
 import datetime
 import warnings
 
-__version__ = '0.13.0'
+__version__ = '1.0.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
-sys.tracebacklimit = 0  # uncomment when debugging
+# sys.tracebacklimit = 0  # uncomment when debugging
 data_dir = os.path.normpath('../Data/')
 
 

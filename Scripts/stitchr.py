@@ -15,11 +15,11 @@ import argparse
 import sys
 import warnings
 
-__version__ = '0.10.1'
+__version__ = '1.0.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
-sys.tracebacklimit = 0  # uncomment when debugging
+# sys.tracebacklimit = 0  # uncomment when debugging
 
 
 def args():

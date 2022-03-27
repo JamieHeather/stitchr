@@ -19,11 +19,11 @@ import sys
 import os
 from time import time
 
-__version__ = '0.6.1'
+__version__ = '1.0.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
-sys.tracebacklimit = 0  # uncomment when debugging
+# sys.tracebacklimit = 0  # uncomment when debugging
 
 
 def args():

@@ -17,7 +17,7 @@ import thimble as th
 import collections as coll
 import warnings
 
-__version__ = '0.4.4'
+__version__ = '1.0.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
