@@ -1,6 +1,6 @@
 ![](Images/stitchr-logo.png)
 
-# 1.0.0
+# 1.0.1
 
 ### Stitch together TCR coding nucleotide sequences from V/J/CDR3 information
 
@@ -67,7 +67,7 @@ If you request an allele for which there isn't complete sequence data, the scrip
 
 For human and mouse TCRs, the script will use the TRBC gene located in the same cluster as the J gene (i.e. TRBJ1-1 through TRBJ1-6 will get TRBC1, while TRBJ2-1 through TRBJ2-7 will get TRBC2). This can be overriden (see optional arguments). Unfortunately we are not experts in TCR loci architecture of all species, so we haven't hard-wired any other constant region assumptions, so for all other species you'll need to explicitly state which constant region you want used.
 
-By default `stitchr` does not include stop codons at the end of the coding sequence; if desired, this must be specified using the 3' flag (`-3p`), i.e. `-3p TAA`, `-3p TAG`, or `-3p TGA`. Similarly, no sequence is included before that of the IMGT-recorded L1 leader sequence. If desired, this can be added using the 5' flag (`-5p`), e.g. to add the pre-start codon section of an optimal Kozak sequence: `-5p GCCGCCACC`. 
+By default `stitchr` does not include stop codons at the end of the coding sequence; if desired, this must be specified using the 3' flag (`-3p`), i.e. `-3p TAA`, `-3p TAG`, or `-3p TGA`. Similarly, no sequence is included before that of the IMGT-recorded L1 leader sequence. If desired, this can be added using the 5' flag (`-5p`), e.g. to add the pre-start codon section of an optimal Kozak sequence: `-5p GCCGCCACC`.  Note that translated sequence in the output is the *whole* stitched sequence, including any added 5'/3' sequences: addition of 5' sequences may cause the introduction of underscores ('_') to appear in the translated output, representing incomplete codons that could not be translated. Also note that the translated sequence of an individual chain may differ from the corresponding section of a linked heterodimer for this reason, depending on the length/frame of the 5' rearrangement.
 
 `Stitchr` can be run in a higher-throughput mode, using a tab-separated input file - see the instructions for [**`thimble`**](#Thimble) below.
 
@@ -354,6 +354,8 @@ python3 stitchr.py -v IGLV1-47*01 -j IGLJ3*02 -cdr3 CAAWDDSLSGWVF -c IGLC2*01 -s
 ```
 
 However for the reasons stated above we recommend using caution when applying `stitchr` to these loci: long read sequencing (both into the V and the C) and liberal use of the 'seamless' setting is recommended.
+
+Note that the default form of the IGH constant regions supplied when using just the gene+allele is the secreted form: (where available) the membrane bound form is produced by appending '_M'. E.g. use `IGHM*01` for the secreted form, and `IGHM*01_M` for the membranous.
 
 # Thimble 
 ### 1.0.0

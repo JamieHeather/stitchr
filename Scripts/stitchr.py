@@ -15,7 +15,7 @@ import argparse
 import sys
 import warnings
 
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -102,7 +102,8 @@ def stitch(specific_args, tcr_info, functionality, partial_info, codon_dict, j_w
     :param codon_dict: dictionary of which codons to use for which amino acids
     :param j_warning_threshold: int threshold value, if a J substring length match is shorter it will throw a warning
     :param preferences: nested dict of preferred alleles, like the tcr_info dict but one level shallower
-    :return: list of details of the TCR as constructed, plus the stitched together nucleotide sequence
+    :return: list of details of the TCR as constructed,
+             plus the stitched together nucleotide sequence (str) and translation offset (int, 0/1/2)
     """
 
     # Find each of the appropriate sequences
@@ -154,8 +155,8 @@ def stitch(specific_args, tcr_info, functionality, partial_info, codon_dict, j_w
                     allele = in_allele
 
             else:
-                warnings.warn("Cannot find sequence for requested allele, " + gene + "*" + in_allele +
-                              " for the " + fxn.regions[r].lower() + " sequence in the input FASTA data. ")
+                warnings.warn("Cannot find the sequence of the requested allele, " + gene + "*" + in_allele +
+                              ", for the " + fxn.regions[r].lower() + " sequence in the input FASTA data. ")
 
         # If no allele supplied (or is supplied but invalid) then use 1) a preferred allele or 2) the prototypical *01
         if not allele:
@@ -353,8 +354,12 @@ def stitch(specific_args, tcr_info, functionality, partial_info, codon_dict, j_w
     # If optional 5'/3' sequences are specified, add them to the relevant place
     if specific_args['5_prime_seq']:
         stitched_nt = specific_args['5_prime_seq'] + stitched_nt
+
         # Translation offset allows simple translation of output NT without having to figure out the frame
         transl_offset = 3 - (len(specific_args['5_prime_seq']) % 3)
+        if transl_offset == 3:
+            transl_offset = 0
+
     else:
         transl_offset = 0
 

@@ -16,7 +16,7 @@ import textwrap
 import datetime
 import warnings
 
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -165,7 +165,7 @@ def sort_input(cmd_line_args):
             if not dna_check(cmd_line_args[end + '_prime_seq']):
                 raise IOError("Provided " + end + "\' sequence contains non-DNA characters.")
 
-            if len(end + '_prime_seq') % 3 != 0:
+            if len(cmd_line_args[end + '_prime_seq']) % 3 != 0:
                 warnings.warn(
                     "Warning: length of " + end + "\' sequence provided is not divisible by 3. "
                                                   "Ensure sequence is padded properly if needed to be in frame.")
@@ -574,13 +574,13 @@ def determine_j_interface(cdr3_cterm_aa, c_term_nuc, c_term_amino, gl_nt_j_len, 
                                   "which is an extremely unlikely TCR. ")
 
                 if c <= j_warning_threshold:
-                    warnings.warn("Note: while a J match has been found, it was only the string \"" +
-                                  c_term_cdr3_chunk + "\". ")
+                    warnings.warn("Note: while a C-terminal CDR3:J germline match has been found, it was only the "
+                                  "string \"" + c_term_cdr3_chunk + "\". ")
 
             # If no single match found using the non-strict conserved J motif pattern (G..|..G), use the strict GXG
             elif len(search) > 1 and len(c_term_cdr3_chunk) == 1:
-                warnings.warn("Note: while a J match has been found, it was only the string \"" +
-                              c_term_cdr3_chunk + "\", which occurs in two positions. ")
+                warnings.warn("Note: while a C-terminal CDR3:J germline match has been found, it was only the string "
+                              "\"" + c_term_cdr3_chunk + "\", which occurs in two positions. ")
 
                 search2 = [x for x in find_cdr3_c_term(c_term_cdr3_chunk, c_term_amino[:search_len], True)]
 
@@ -799,7 +799,7 @@ def translate_nt(nt_seq):
             try:
                 aa_seq += codons[codon]
             except:
-                raise IOError("Cannot translate codon: " + codon)
+                raise IOError("Cannot translate codon: " + codon + ". ")
 
     return aa_seq
 
@@ -875,7 +875,13 @@ codons = {'AAA': 'K', 'AAC': 'N', 'AAG': 'K', 'AAT': 'N',
           'TAA': '*', 'TAC': 'Y', 'TAG': '*', 'TAT': 'Y',
           'TCA': 'S', 'TCC': 'S', 'TCG': 'S', 'TCT': 'S',
           'TGA': '*', 'TGC': 'C', 'TGG': 'W', 'TGT': 'C',
-          'TTA': 'L', 'TTC': 'F', 'TTG': 'L', 'TTT': 'F'}
+          'TTA': 'L', 'TTC': 'F', 'TTG': 'L', 'TTT': 'F',
+          # Plus N-padded codons, to account for cases where someone stitched with a len(5' extension) % 3 != 0
+          'NNA': '_', 'NNC': '_', 'NNG': '_', 'NNT': '_',
+          'NAA': '_', 'NAC': '_', 'NAT': '_', 'NAG': '_',
+          'NCA': '_', 'NCC': '_', 'NCT': '_', 'NCG': '_',
+          'NTA': '_', 'NTC': '_', 'NTT': '_', 'NTG': '_',
+          'NGA': '_', 'NGC': '_', 'NGT': '_', 'NGG': '_'}
 
 regions = {'l': 'LEADER',
            'v': 'VARIABLE',
