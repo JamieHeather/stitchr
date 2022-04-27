@@ -17,7 +17,7 @@ import thimble as th
 import collections as coll
 import warnings
 
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -193,6 +193,19 @@ def upload_tcr_details(path_to_file, receptor_type, stated_species):
                 line_count += 1
 
         return receptor_type, inferred_species
+
+
+def tidy_values(reference_chain, set_values):
+    """
+    Make sure the input values for a given chain are plausible
+    :param reference_chain: string denoting the current chain
+    :param set_values: the dict of values passed to the stitching function
+    """
+    for field in ['V', 'J', '_CDR3', '_leader', 'C']:
+        if set_values[reference_chain + field]:
+            set_values[reference_chain + field] = set_values[reference_chain + field].upper()
+
+    return set_values
 
 
 # Check to see whether we're in scripts - if not we might be in the py2app nested directories
@@ -469,10 +482,12 @@ while True:
                 warnings.simplefilter("always")
 
                 if values[ref_chain + 'V'] and values[ref_chain + 'J'] and values[ref_chain + '_CDR3']:
-    
+
+                    values = tidy_values(ref_chain, values)
+
                     try:
                         tcr_dat, functionality, partial = fxn.get_imgt_data(chain, st.gene_types, species)
-    
+
                         # If additional genes provided, just add them to all possible gene segment types
                         if values['additional_genes'] != extra_gene_text + '\n':
                             for extra_gene in outputs['additional_fastas']:
