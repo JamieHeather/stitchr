@@ -237,20 +237,20 @@ This produces even more mismatches! This is an instance where the constant regio
 
 | **Common Name**        | **Genus species**        | **TRA** | **TRB** | **TRG** | **TRD** |                            **Kazusa species ID**                            | 
 |------------------------|--------------------------|:-------:|:-------:|:-------:|:-------:|:---------------------------------------------------------------------------:|
-| **CAT**                | *Felis catus*            |    ✔     |    ✔    |    ✔    |    ✔    |  [9685](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9685)  |
-| **COW**                | *Bos taurus*             |    ✔     |    ✔    |    ✔    |    ✔    |  [9913](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9913)  |
-| **CYNOMOLGUS\_MONKEY** | *Macaca fascicularis*    |         |    ✔    |        |         |  [9541](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9541)  |
-| **DOG**                | *Canis lupus familiaris* |    ✔     |    ✔    |    ✔    |    ✔    |  [9615](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9615)  |
-| **DOLPHIN**            | *Tursiops truncatus*     |    ✔     |        |    ✔    |    ✔    |  [9739](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9739)  |
+| **CAT**                | *Felis catus*            |    ✔    |    ✔    |    ✔    |    ✔    |  [9685](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9685)  |
+| **COW**                | *Bos taurus*             |    ✔    |    ✔    |    ✔    |    ✔    |  [9913](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9913)  |
+| **CYNOMOLGUS\_MONKEY** | *Macaca fascicularis*    |         |    ✔    |         |         |  [9541](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9541)  |
+| **DOG**                | *Canis lupus familiaris* |    ✔    |    ✔    |    ✔    |    ✔    |  [9615](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9615)  |
+| **DOLPHIN**            | *Tursiops truncatus*     |    ✔    |         |    ✔    |    ✔    |  [9739](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9739)  |
 | **DROMEDARY**          | *Camelus dromedarius*    |         |    ✔    |    ✔    |         |  [9838](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9838)  |
-| **FERRET**             | *Mustela putorius furo*  |         |    ✔    |        |         |  [9669](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9669)  |
-| **HUMAN**              | *Homo sapiens*           |    ✔     |    ✔    |    ✔    |    ✔    |  [9606](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9606)  |
-| **MOUSE**              | *Mus musculus*           |    ✔     |    ✔    |    ✔    |    ✔    | [10090](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=10090) |
-| **NAKED\_MOLE-RAT**    | *Heterocephalus glaber*  |    ✔     |    ✔    |    ✔    |    ✔    |                                      -                                      |
-| **PIG**                | *Sus scrofa*             |         |    ✔    |        |         |  [9823](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9823)  |
+| **FERRET**             | *Mustela putorius furo*  |         |    ✔    |         |         |  [9669](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9669)  |
+| **HUMAN**              | *Homo sapiens*           |    ✔    |    ✔    |    ✔    |    ✔    |  [9606](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9606)  |
+| **MOUSE**              | *Mus musculus*           |    ✔    |    ✔    |    ✔    |    ✔    | [10090](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=10090) |
+| **NAKED\_MOLE-RAT**    | *Heterocephalus glaber*  |    ✔    |    ✔    |    ✔    |    ✔    |                                      -                                      |
+| **PIG**                | *Sus scrofa*             |         |    ✔    |         |         |  [9823](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9823)  |
 | **RABBIT**             | *Oryctolagus cuniculus*  |         |    ✔    |    ✔    |    ✔    |  [9986](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9986)  |
-| **RHESUS\_MONKEY**     | *Macaca mulatta*         |    ✔     |    ✔    |    ✔    |    ✔    |  [9544](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9544)  |
-| **SHEEP**              | *Ovis aries*             |    ✔     |    ✔    |        |    ✔    |  [9940](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9940)  |
+| **RHESUS\_MONKEY**     | *Macaca mulatta*         |    ✔    |    ✔    |    ✔    |    ✔    |  [9544](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9544)  |
+| **SHEEP**              | *Ovis aries*             |    ✔    |    ✔    |         |    ✔    |  [9940](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9940)  |
 
 The species can be specified using the `-s / --species` command line flag when running your `stitchr` command. E.g.\, here's an example using everyone's favourite mouse TCR, OT-I (sequences inferred from [this plasmid on AddGene](https://www.addgene.org/52111/):
 
@@ -416,7 +416,7 @@ Note that the third example there uses the preferred allele option and specifies
 * `-jt` - length of J gene substring that has to be matched to avoid throwing a warning (decrease to get fewer notices about short J matches), default = 3
 
 # GUI-stitchr 
-### 1.0.0
+### 1.2.0
 
 A graphical interface has been developed for users that are less comfortable at the command line, or who prefer a more immediately interactive session. It can be launched from inside the Scripts directory like so:
 
@@ -437,7 +437,7 @@ As with `thimble`, users can only make TCRs for one species/TCR type (a/b or g/d
 3. Options to upload TCRs for stitching. '**Find TCR input file**' on left loads a file browser window to locate a TCR input file as specified in the input_template.tsv format, which is then uploaded and used to populate the fields after clicking '**Upload TCR details**' on the right.
 4. '**Species**'. Allows selection of a species from the dropdown. Options are automatically inferred from contents of the `Data/` directory.
 5. **Change to TRx/TRy**. Clicking toggles between stitching alpha/beta and gamma/delta chain TCRs. 
-6. '**Additional genes**'. If you wish to add additional genes in the TCRs which are not featured in the pre-programmed germline data for this species, they can be added here (as per using the `-xg` flag in `stitchr/thimble`) in FASTA format. Note that [unlike when provided genes via the additional-genes.fasta file](#providing-additional-gene-sequences), sequences should be provided with a simple FASTA header identifier, just with a short TCR name (and ideally with an allele number, *\*XX*). FASTA names must also not be the name of an existing gene. As the TCR gene names are included in the output, it's recommended that a name that will not accidentally be mistaken as another/currently described germline gene is used.
+6. '**Additional genes**'. If you wish to add additional genes in the TCRs which are not featured in the pre-programmed germline data for this species, they can be added here (as per using the `-xg` flag in `stitchr/thimble`) in FASTA format. Note that [unlike when provided genes via the additional-genes.fasta file](#providing-additional-gene-sequences), sequences should be provided with a simple FASTA header identifier, just with a short TCR name (and ideally with an allele number, *\*XX*). FASTA names must also not be the name of an existing gene. As the TCR gene names are included in the output, it's recommended that a name that will not accidentally be mistaken as another/currently described germline gene is used. Also note that gene names will be converted to uppercase during processing, so avoid duplicate names differing only be upper/lower case characters.
 7. '**Preferred allele file**'. Clicking this allows users to specify a tsv of preferred alleles to be used. Note that the same file will be used for both chains, and will be indicated in the button text. Specified allele file will remain until the form is reset.
 8. Linking options. Ticking the '**Link TRA/TRB**' checkbox (top left) enables linking of stitched TRA/TRB or TRG/TRD chains, using the linker dropdown box (top right) to select a sequence to join the two. Options in this dropdown are drawn from the Data/linkers.tsv file, or users can select 'Custom', which will make a text box appear. Note that no sanity checks (e.g. DNA validity or reading frame) are made for linker/linked sequences, so users should be sure of what linker sequences they choose to use. The '**Link order**' dropdown (bottom right) specifies the order that output chains will appear in (e.g. BA = beta-alpha, GD = gamma-delta).
 9. '**Seamless stitching**'. Ticking this checkbox activates the seamless stitching mode (the equivalent of using `-sl` in regular `stitchr`). Junction sequences should be provided at nucleotides with padding nucleotides (ideally >20) on either side of the conserved junction-defining residues.

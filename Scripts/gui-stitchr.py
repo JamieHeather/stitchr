@@ -17,7 +17,7 @@ import thimble as th
 import collections as coll
 import warnings
 
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -83,7 +83,7 @@ def change_receptors(receptor_str):
     for window_field in fields_to_change:
 
         if window[window_field].Type == 'text':
-            current_text = window[window_field].get()
+            current_text = window[window_field].DisplayText
         elif window[window_field].Type == 'button':
             current_text = window[window_field].get_text()
 
@@ -290,7 +290,7 @@ col1 = [
     [sg.MLine(default_text='', size=(int(box_width / 2), 5), key='linked_log', font=out_box_font)],
 ]
 
-# Alpha column
+# Alpha/gamma column
 col2 = [
 
     [sg.Text('Alpha chain TCR', font=(fnt, 16), key='TR1_title_text')],
@@ -303,12 +303,12 @@ col2 = [
 
     [sg.Text('TRA name', key='TR1_name_text')], [sg.InputText('', key='TR1_name', size=sz)],
 
-    [sg.Text('TRA leader\t\t\t TRAC', key='TR1_lc_title_text')],
+    [sg.Text('TRA leader', size=half_sz, key='TR1_l_title_text'), sg.Text('TRAC', key='TR1_c_title_text')],
 
     [sg.InputText('', key='TR1_leader', size=half_sz),
      sg.InputText('', key='TR1C', size=half_sz)],
 
-    [sg.Text('5\' sequence\t\t\t 3\' sequence')],
+    [sg.Text('5\' sequence', size=half_sz), sg.Text('3\' sequence')],
     [sg.InputText('', key='TR1_5_prime_seq', size=half_sz),
      sg.InputText('', key='TR1_3_prime_seq', size=half_sz)],
 
@@ -320,7 +320,7 @@ col2 = [
 
 ]
 
-# Beta column
+# Beta/delta column
 col3 = [
 
     [sg.Text('Beta chain TCR', font=(fnt, 16), key='TR2_title_text')],
@@ -333,12 +333,12 @@ col3 = [
 
     [sg.Text('TRB name', key='TR2_name_text')], [sg.InputText('', key='TR2_name', size=sz)],
 
-    [sg.Text('TRB leader\t\t\t TRBC', key='TR2_lc_title_text')],
+    [sg.Text('TRB leader', size=half_sz, key='TR2_l_title_text'), sg.Text('TRBC', key='TR2_c_title_text')],
 
     [sg.InputText('', key='TR2_leader', size=half_sz),
      sg.InputText('', key='TR2C', size=half_sz)],
 
-    [sg.Text('5\' sequence\t\t\t 3\' sequence')],
+    [sg.Text('5\' sequence', size=half_sz), sg.Text('3\' sequence')],
 
     [sg.InputText('', key='TR2_5_prime_seq', size=half_sz),
      sg.InputText('', key='TR2_3_prime_seq', size=half_sz)],
@@ -456,6 +456,9 @@ while True:
             # Check they all have allele numbers to match the expected gene name format
             outputs['additional_fastas'] = []
             for extra_gene in outputs['additional_fastas_raw']:
+
+                extra_gene = ([x.upper() for x in extra_gene])
+
                 if '*' in extra_gene[0]:
                     outputs['additional_fastas'].append(extra_gene)
                 else:
