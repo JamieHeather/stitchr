@@ -1,6 +1,6 @@
 ![](Images/stitchr-logo.png)
 
-# 1.0.1
+# 1.0.2
 
 ### Stitch together TCR coding nucleotide sequences from V/J/CDR3 information
 
@@ -63,7 +63,7 @@ Care must be taken to ensure that the correct TCR informaton is input. E.g. ensu
 
 The script produces a TCR from the information given, trying to provide warnings or errors if it detects an improbable or implausible combination, yet it's possible that the script might produce output that *looks* OK yet which does not reproduce a coding sequence for the intended TCR. 
 
-If you request an allele for which there isn't complete sequence data, the script will attempt to default to the prototypical allele (*01) of that gene, or a preferred default allele if the `-p` flag is set (see below). If it cannot find sequence for that then it will throw an error. Similarly it will attempt to use the correct leader seqeunces (L-PART1+L-PART2) for the specified allele, but if it can't find one it'll default back to the prototype's. Note that IMGT-provided gene sequences which are 'partial' at either end of their sequence are discounted entirely, as full length sequences are needed. If the script is needed to stitch TCRs that make use of genes that are partial at their recombination-distal ends then you can modify the FASTA header for these entries in the Data directory. 
+If you request an allele for which there isn't complete sequence data, the script will attempt to default to the prototypical allele (*01) of that gene, or a preferred default allele if the `-p` flag is set (see below). Similarly it will attempt to use the correct leader seqeunces (L-PART1+L-PART2) for the specified allele, but if it can't find one it'll default back to the prototype's. In both cases, if it cannot find sequence for that allele then it will attempt to use an alternative allele for which data exists in the reference. Note that IMGT-provided gene sequences which are 'partial' at either end of their sequence are discounted entirely, as full length sequences are needed. If the script is needed to stitch TCRs that make use of genes that are partial at their recombination-distal ends then you can modify the FASTA header for these entries in the Data directory. 
 
 For human and mouse TCRs, the script will use the TRBC gene located in the same cluster as the J gene (i.e. TRBJ1-1 through TRBJ1-6 will get TRBC1, while TRBJ2-1 through TRBJ2-7 will get TRBC2). This can be overriden (see optional arguments). Unfortunately we are not experts in TCR loci architecture of all species, so we haven't hard-wired any other constant region assumptions, so for all other species you'll need to explicitly state which constant region you want used.
 
