@@ -15,7 +15,7 @@ import argparse
 import sys
 import warnings
 
-__version__ = '1.0.1'
+__version__ = '1.0.2'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -177,9 +177,18 @@ def stitch(specific_args, tcr_info, functionality, partial_info, codon_dict, j_w
                 warnings.warn("Defaulting to *01 for the " + fxn.regions[r].lower() + " region, "
                               "in the absence of a preferred allele file being specified. ")
 
-            # Filag up a warning if indeed *01 has defaulted on when there are other alleles available for that gene
+            # Check how feasible the defaulted allele is
             if allele == '01':
-                if len(tcr_info[fxn.regions[r]][gene]) > 1:
+                # First check this allele actually exists - if not pick one from what's available
+                if not tcr_info[fxn.regions[r]][gene][allele]:
+                    new_allele = [x for x in tcr_info[fxn.regions[r]][gene] if tcr_info[fxn.regions[r]][gene][x]][0]
+                    warnings.warn("No sequence found for " + gene + "*" + allele + " for the " + fxn.regions[r] +
+                                  " region. " + gene + "*" + new_allele + " is being used instead - please double "
+                                  "check either the intended allele or that this is a suitable replacement. ")
+                    allele = new_allele
+
+                # If the prototypical allele does exist, flag a warning if there are other options available
+                elif len(tcr_info[fxn.regions[r]][gene]) > 1:
                     # Just check that at least one of those other alleles is not partial
                     for other_allele in tcr_info[fxn.regions[r]][gene]:
                         if other_allele != '01':
