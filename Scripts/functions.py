@@ -16,7 +16,7 @@ import textwrap
 import datetime
 import warnings
 
-__version__ = '1.0.1'
+__version__ = '1.1.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -598,6 +598,28 @@ def determine_j_interface(cdr3_cterm_aa, c_term_nuc, c_term_amino, gl_nt_j_len, 
     raise ValueError("Unable to locate C terminus of CDR3 in J gene correctly. Please ensure sequence plausibility. ")
 
 
+def get_codon_frequencies(path_to_freq_file):
+    """
+    :param path_to_freq_file: Path to file containing Kazusa-formatted codon usage
+    :return: nested counter containing the raw codon frequencies
+    """
+
+    codon_usage = coll.defaultdict(nest_counter)
+    with open(path_to_freq_file) as in_file:
+        for line in in_file:
+            cleaned = [x for x in re.sub(r'\(.+?\)', '', line.rstrip()).upper().replace('U', 'T').split(' ') if x]
+            if len(cleaned) % 2 != 0:
+                raise ValueError("Error in codon usage file - unexpected format.")
+            if len(cleaned) == 0:
+                continue
+            for pair in [x for x in range(len(cleaned)) if x % 2 == 0]:
+                codon = cleaned[pair]
+                val = cleaned[pair + 1]
+                codon_usage[translate_nt(codon)][codon] = float(val)
+
+    return codon_usage
+
+
 def get_optimal_codons(specified_cu_file, species):
     """
     :param specified_cu_file: Path to file containing Kazusa-formatted codon usage (if specified)
@@ -615,19 +637,7 @@ def get_optimal_codons(specified_cu_file, species):
                       + ". Defaulting to the human table file.")
         path_to_cu_file = os.path.join(data_dir, 'kazusa', 'HUMAN.txt')
 
-    codon_usage = coll.defaultdict(nest_counter)
-    with open(path_to_cu_file) as in_file:
-        for line in in_file:
-            cleaned = [x for x in re.sub(r'\(.+?\)', '', line.rstrip()).upper().replace('U', 'T').split(' ') if x]
-            if len(cleaned) % 2 != 0:
-                raise ValueError("Error in codon usage file - unexpected format.")
-            if len(cleaned) == 0:
-                continue
-            for pair in [x for x in range(len(cleaned)) if x % 2 == 0]:
-                codon = cleaned[pair]
-                val = cleaned[pair + 1]
-                codon_usage[translate_nt(codon)][codon] = float(val)
-
+    codon_usage = get_codon_frequencies(path_to_cu_file)
     if len(codon_usage) < 20:
         warnings.warn("Warning: incomplete codon usage file input - back translation may fail! ")
 
