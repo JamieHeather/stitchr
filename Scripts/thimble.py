@@ -19,11 +19,11 @@ import sys
 import os
 from time import time
 
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
-# sys.tracebacklimit = 0  # uncomment when debugging
+sys.tracebacklimit = 0  # uncomment when debugging
 
 
 def args():
@@ -212,123 +212,188 @@ if __name__ == '__main__':
 
             else:
                 # Generate a dict per line ...
-                sorted_row_bits = {x: '' for x in out_headers[receptor]}
+                line_sorted_row_bits = {x: '' for x in out_headers[receptor]}
+                entry_line_warnings = []
 
                 if len(bits) != len(in_headers[receptor]):  # Pad entries from tsvs where whitespace on right is missing
                     bits += [''] * (len(in_headers[receptor]) - len(bits))
 
+                # Allow for users to specify multiple options per line, to allow the quick stitching of related TCRs
+                multiple_options = []
                 for i in range(len(in_headers[receptor])):
-                    sorted_row_bits[in_headers[receptor][i]] = bits[i]
+                    line_sorted_row_bits[in_headers[receptor][i]] = bits[i]
+                    if ',' in bits[i] or '%' in bits[i]:
+                        multiple_options.append(i)
 
-                # ... along with chain-specific dicts which are then folded into
-                for c in [r1, r2]:
+                tcr_lines = [line_sorted_row_bits]
+                if multiple_options:
+                    # Iterate over all possible combinations for multiply defined options
+                    for multi_var in multiple_options:
+                        updated_lines = []
+                        var_name = in_headers[receptor][multi_var]
+                        region = fxn.regions[var_name[3:].replace('_', '')[0].lower()]
 
-                    with warnings.catch_warnings(record=True) as chain_warnings:
+                        # A manually entered list
+                        if ',' in bits[multi_var]:
+                            var_options = bits[multi_var].split(',')
+
+                        # If not a list, it should be a wild card, but only for specified fields
+                        elif var_name[3:] not in ['V', 'J', 'C', '_leader']:
+                            entry_line_warnings.append("% wild cards only allowed in V/J/C/leader fields. ")
+                            break
+
+                        # Wild card just all alleles for a certain gene
+                        elif '*%' in bits[multi_var]:
+                            gene = bits[multi_var].split('*')[0]
+                            if gene in tcr_dat[var_name[:3]][region]:
+                                var_options = [gene + '*' + x for x in tcr_dat[var_name[:3]][region][gene].keys()]
+                            else:
+                                entry_line_warnings.append("Specified multiple entry option gene '" + gene + "' is not "
+                                                           "found in the " + region + " region data. ")
+                                break
+
+                        # Or wild card all genes/allele combinations for a given region (AKA throw it all at the wall)
+                        elif bits[multi_var] == '%':
+                            var_options = []
+                            for g in tcr_dat[var_name[:3]][region]:
+                                for a in tcr_dat[var_name[:3]][region][g]:
+                                    var_options.append(g + '*' + a)
+
+                        else:
+                            entry_line_warnings.append("Unexpected multi-option field entry detected: " +
+                                                       bits[multi_var] + '. ')
+                            break 
+                            
+                        # Then loop through those options filling out all specified combinations to stitch
+                        for vo in var_options:
+                            for out_line in tcr_lines:
+                                updated_lines.append(dict(out_line))
+                                updated_lines[-1][var_name] = vo
+                                updated_lines[-1]['TCR_name'] = updated_lines[-1]['TCR_name'] + '-' + \
+                                                                str(var_options.index(vo))
+                        tcr_lines = updated_lines
+
+                if entry_line_warnings:
+                    tcr_lines[0]['Warnings/Errors'] = ''.join(entry_line_warnings)
+                    out_data.append('\t'.join([tcr_lines[0][x] for x in out_headers[receptor]]))
+                    continue
+
+                for sorted_row_bits in tcr_lines:
+
+                    # ... along with chain-specific dicts which are then folded into
+                    for c in [r1, r2]:
+
+                        with warnings.catch_warnings(record=True) as chain_warnings:
+                            warnings.simplefilter("always")
+
+                            tcr_bits = {'skip_c_checks': input_args['skip_c_checks'], 'species': species}
+                            if 'seamless' in input_args:
+                                if input_args['seamless']:
+                                    tcr_bits['seamless'] = True
+
+                            # Convert naming to output formats
+                            for field in [x for x in sorted_row_bits if c in x]:
+                                if field in convert_fields:
+                                    if sorted_row_bits[field]:
+                                        tcr_bits[convert_fields[field]] = sorted_row_bits[field]
+
+                            # Determine whether there's supposed to be a TCR for this chain
+                            if len(tcr_bits) > 1:
+
+                                # At the very least we need the relevant TCR info (V/J/CDR3)
+                                featured_bits = [x for x in tcr_bits if x in ['v', 'j', 'cdr3']]
+                                if len(featured_bits) == 0:
+                                    # If no TCR features present, just skip
+                                    continue
+
+                                elif len(featured_bits) in [1, 2]:
+                                    warnings.warn("Incomplete TCR information - need V/J/CDR3 as minimum.")
+
+                                else:
+                                    tcr_bits = fxn.autofill_input(populate_blanks(tcr_bits, pre_stitch_list_fields), c)
+                                    tcr_bits = fxn.tweak_thimble_input(tcr_bits)
+                                    try:
+                                        out_list, stitched, offset = st.stitch(tcr_bits, tcr_dat[c],
+                                                                               tcr_functionality[c],
+                                                                               partial, codons,
+                                                                               input_args['j_warning_threshold'],
+                                                                               preferences[c])
+                                        sorted_row_bits[c + '_nt'] = stitched
+                                        sorted_row_bits[c + '_aa'] = fxn.translate_nt('N' * offset + stitched)
+                                        sorted_row_bits.update(dict(list(zip([c + x for x in post_stitch_list_fields],
+                                                                             out_list))))
+
+                                    except Exception as message:
+                                        sorted_row_bits['Warnings/Errors'] += '(' + c + ') ' + str(message)
+                                        sorted_row_bits['Warnings/Errors'] += 'Cannot stitch a sequence for ' + c + '. '
+
+                            # Store all chain related warning messages too, in same field, ignoring irrelevant errors
+                            sorted_row_bits['Warnings/Errors'] += ' '.join(
+                                ['(' + c + ') ' + str(chain_warnings[x].message) for x in range(len(chain_warnings))
+                                 if 'DeprecationWarning' not in str(chain_warnings[x].category)])
+
+                    with warnings.catch_warnings(record=True) as link_warnings:
                         warnings.simplefilter("always")
 
-                        tcr_bits = {'skip_c_checks': input_args['skip_c_checks'], 'species': species}
-                        if 'seamless' in input_args:
-                            if input_args['seamless']:
-                                tcr_bits['seamless'] = True
+                        # If sequences are to be linked, determine the appropriate linker sequence and join together
+                        if sorted_row_bits['Linker']:
 
-                        # Convert naming to output formats
-                        for field in [x for x in sorted_row_bits if c in x]:
-                            if field in convert_fields:
-                                if sorted_row_bits[field]:
-                                    tcr_bits[convert_fields[field]] = sorted_row_bits[field]
+                            if sorted_row_bits['Link_order']:
+                                sorted_row_bits['Link_order'] = sorted_row_bits['Link_order'].upper()
 
-                        # Determine whether there's supposed to be a TCR for this chain
-                        if len(tcr_bits) > 1:
-
-                            # At the very least we need the relevant TCR info (V/J/CDR3)
-                            featured_bits = [x for x in tcr_bits if x in ['v', 'j', 'cdr3']]
-                            if len(featured_bits) == 0:
-                                # If no TCR features present, just skip
-                                continue
-
-                            elif len(featured_bits) in [1, 2]:
-                                warnings.warn("Incomplete TCR information - need V/J/CDR3 as minimum.")
+                                # Only allow valid orders
+                                if sorted_row_bits['Link_order'] not in [r2[2]+r1[2], r1[2]+r2[2]]:
+                                    warnings.warn("Error: given link order not valid (not " + r1[2]+r2[2] + " or " +
+                                                  r2[2]+r1[2] + ") - defaulting to " + r2[2]+r1[2] + ".")
+                                    sorted_row_bits['Link_order'] = r2[2]+r1[2]
 
                             else:
-                                tcr_bits = fxn.autofill_input(populate_blanks(tcr_bits, pre_stitch_list_fields), c)
-                                tcr_bits = fxn.tweak_thimble_input(tcr_bits)
-                                try:
-                                    out_list, stitched, offset = st.stitch(tcr_bits, tcr_dat[c], tcr_functionality[c],
-                                                                           partial, codons,
-                                                                           input_args['j_warning_threshold'],
-                                                                           preferences[c])
-                                    sorted_row_bits[c + '_nt'] = stitched
-                                    sorted_row_bits[c + '_aa'] = fxn.translate_nt('N' * offset + stitched)
-                                    sorted_row_bits.update(dict(list(zip([c + x for x in post_stitch_list_fields],
-                                                                         out_list))))
-
-                                except Exception as message:
-                                    sorted_row_bits['Warnings/Errors'] += '(' + c + ') ' + str(message)
-                                    sorted_row_bits['Warnings/Errors'] += 'Cannot stitch a sequence for ' + c + '. '
-
-                        # Store all chain related warning messages too, in same field, ignoring irrelevant errors
-                        sorted_row_bits['Warnings/Errors'] += ' '.join(
-                            ['(' + c + ') ' + str(chain_warnings[x].message) for x in range(len(chain_warnings))
-                             if 'DeprecationWarning' not in str(chain_warnings[x].category)])
-
-                with warnings.catch_warnings(record=True) as link_warnings:
-                    warnings.simplefilter("always")
-
-                    # If sequences are to be linked, determine the appropriate linker sequence and join together
-                    if sorted_row_bits['Linker']:
-
-                        if sorted_row_bits['Link_order']:
-                            sorted_row_bits['Link_order'] = sorted_row_bits['Link_order'].upper()
-
-                            # Only allow valid orders
-                            if sorted_row_bits['Link_order'] not in [r2[2]+r1[2], r1[2]+r2[2]]:
-                                warnings.warn("Error: given link order not valid (not " + r1[2]+r2[2] + " or"
-                                              " " + r2[2]+r1[2] + ") - defaulting to " + r2[2]+r1[2] + ".")
+                                # Default option is B
                                 sorted_row_bits['Link_order'] = r2[2]+r1[2]
 
+                            tr1, tr2 = sorted_row_bits['Link_order'][0], sorted_row_bits['Link_order'][1]
+
+                            if sorted_row_bits[r1 + '_nt'] and sorted_row_bits[r2 + '_nt']:
+                                try:
+                                    linker_seq = fxn.get_linker_seq(sorted_row_bits['Linker'], linker_dict)
+
+                                    linked = sorted_row_bits['TR' + tr1 + '_nt'] + linker_seq + \
+                                             sorted_row_bits['TR' + tr2 + '_nt']
+                                    sorted_row_bits['Linked_nt'] = linked
+                                    sorted_row_bits['Linked_aa'] = fxn.translate_nt('N' * offset + linked)
+
+                                    # Add warnings if sequences applied at maybe the wrong ends of things
+                                    if (sorted_row_bits[r1 + '_5_prime_seq']
+                                        and sorted_row_bits['Link_order'] == r2[2]+r1[2]) or \
+                                            (sorted_row_bits[r2 + '_5_prime_seq']
+                                             and sorted_row_bits['Link_order'] == r1[2]+r2[2]):
+                                        warnings.warn("Warning: " + sorted_row_bits['Link_order'] + " order specified, "
+                                                      "but 3' chain has an additional 5' sequence provided. ")
+
+                                    if (sorted_row_bits[r1 + '_3_prime_seq']
+                                        and sorted_row_bits['Link_order'] == r1[2]+r2[2]) or \
+                                            (sorted_row_bits[r2 + '_3_prime_seq']
+                                             and sorted_row_bits['Link_order'] == r2[2]+r1[2]):
+                                        warnings.warn("Warning: " + sorted_row_bits['Link_order'] + " order specified, "
+                                                      "but 5' chain has an additional 3' sequence provided. ")
+
+                                # Store any error messages
+                                except Exception as message:
+                                    sorted_row_bits['Warnings/Errors'] += str(message)
+
+                            else:
+                                warnings.warn("Error: need both a " + r1 + " and " + r2 + " to link. ")
+
+                        # And add any warnings/errors derived from the linkage
+                        if sorted_row_bits['Warnings/Errors'] or link_warnings:
+                            sorted_row_bits['Warnings/Errors'] += ' '.join(
+                                ['(Link) ' + str(link_warnings[x].message) for x in range(len(link_warnings))
+                                 if 'DeprecationWarning' not in str(link_warnings[x].category)])
                         else:
-                            # Default option is B
-                            sorted_row_bits['Link_order'] = r2[2]+r1[2]
+                            sorted_row_bits['Warnings/Errors'] = "[None]"
 
-                        tr1, tr2 = sorted_row_bits['Link_order'][0], sorted_row_bits['Link_order'][1]
-
-                        if sorted_row_bits[r1 + '_nt'] and sorted_row_bits[r2 + '_nt']:
-                            try:
-                                linker_seq = fxn.get_linker_seq(sorted_row_bits['Linker'], linker_dict)
-
-                                linked = sorted_row_bits['TR' + tr1 + '_nt'] + linker_seq + \
-                                         sorted_row_bits['TR' + tr2 + '_nt']
-                                sorted_row_bits['Linked_nt'] = linked
-                                sorted_row_bits['Linked_aa'] = fxn.translate_nt('N' * offset + linked)
-
-                                # Add warnings if sequences applied at maybe the wrong ends of things
-                                if (sorted_row_bits[r1 + '_5_prime_seq'] and ord == r2[2]+r1[2]) or \
-                                        (sorted_row_bits[r2 + '_5_prime_seq'] and ord == r1[2]+r2[2]):
-                                    warnings.warn("Warning: " + ord + " order specified, but "
-                                                  "3' chain has an additional 5' sequence provided. ")
-
-                                if (sorted_row_bits[r1 + '_3_prime_seq'] and ord == r1[2]+r2[2]) or \
-                                        (sorted_row_bits[r2 + '_3_prime_seq'] and ord == r2[2]+r1[2]):
-                                    warnings.warn("Warning: " + ord + " order specified, but "
-                                                  "5' chain has an additional 3' sequence provided. ")
-
-                            # Store any error messages
-                            except Exception as message:
-                                sorted_row_bits['Warnings/Errors'] += str(message)
-
-                        else:
-                            warnings.warn("Error: need both a TR" + r1 + " and TR" + r2 + " to link. ")
-
-                    # And add any warnings/errors derived from the linkage
-                    if sorted_row_bits['Warnings/Errors']:
-                        sorted_row_bits['Warnings/Errors'] += ' '.join(
-                            ['(Link) ' + str(link_warnings[x].message) for x in range(len(link_warnings))
-                             if 'DeprecationWarning' not in str(link_warnings[x].category)])
-                    else:
-                        sorted_row_bits['Warnings/Errors'] = "[None]"
-
-                # Store output as one long string, for a single write-out once input file is finished
-                out_data.append('\t'.join([sorted_row_bits[x] for x in out_headers[receptor]]))
+                    # Store output as one long string, for a single write-out once input file is finished
+                    out_data.append('\t'.join([sorted_row_bits[x] for x in out_headers[receptor]]))
 
             line_count += 1
 

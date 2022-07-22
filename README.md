@@ -358,7 +358,7 @@ However for the reasons stated above we recommend using caution when applying `s
 Note that the default form of the IGH constant regions supplied when using just the gene+allele is the secreted form: (where available) the membrane bound form is produced by appending '_M'. E.g. use `IGHM*01` for the secreted form, and `IGHM*01_M` for the membranous.
 
 # Thimble 
-### 1.0.0
+### 1.1.0
 
 ### Run `stitchr` high-throughput on multiple and paired TCRs
 
@@ -404,6 +404,18 @@ python3 thimble.py -in ../Templates/GUI-Examples/mouse_TRA-TRB.tsv -s MOUSE -o t
 ```
 
 Note that the third example there uses the preferred allele option and specifies the Balb/c allele file, making the output alpha chain use `TRAV14-1*02` instead of `TRAV14-1*01`.
+
+#### Stitch multiple TCRs per line with list and wildcard fields
+
+Some applications may require stitching multiple variants of a particular rearrangement. When fields are specified with multiple options, a new line will be generated for each specified option, or one for each combination of options if more than one field with multiple fields are specified. Thimble allows you to specify multiple options for a particular field in several ways:
+
+* For almost every field, multiple options can be provided by separating options with commas.
+  * E.g. `TRAV1-1*01,TRAV1-2*01,TRAV1-2*02` for TRAV or `CAVLDSNYQLIW,CAVLMSNYQLIW` for TRA_CDR3.
+* For every field that relates to a specific germline TCR region (L/V/J/C), every allele for a given gene can be specified by using the `%` wildcard in place of an allele number.
+  * E.g. using default IMGT-GENE/DB, `TRBV19*%` will stitch the rearrangement using each of `TRBV19*01`, `TRBV19*02`, and `TRBV19*03` 
+* For the same fields, users can opt to systemically try every available gene and allele for a region by *only* entering `%` in that field.
+  * E.g. placing `%` in the TRBJ field will stitch that rearrangement in combination with every different beta J gene.
+  * Note that this option is expected to generate a large number of warning messages, as not all genes are likely or able to take part in certain rearrangements.
 
 ### Optional arguments
 
