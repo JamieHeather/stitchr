@@ -366,7 +366,7 @@ Instead of running `stitchr` on rearrangements one by one, you can fill out the 
 
 Note that there are two kinds templates, one for alpha/beta TCRs, and another for gamma/delta TCRs, with the only difference being the gene names in the header fields. Users can only use `thimble` to stitch TCRs of one type per operation, and thus cannot mix a/b and g/d TCRs in the same input files. 
 
-You can tell `thimble` what flavour of you're making directly, using the `-r / --receptor` field followed by a single or double digit string (case-insensitive), e.g.:
+You can tell `thimble` what flavour of TCR you're making directly, using the `-r / --receptor` field followed by a single or double digit string (case-insensitive), e.g.:
 
 ```bash
 # Alpha/beta TCRs
