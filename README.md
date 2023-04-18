@@ -1,6 +1,6 @@
-![](Images/stitchr-logo.png)
+![](images/stitchr-logo.png)
 
-# 1.0.2
+# 1.1.0
 
 ### Stitch together TCR coding nucleotide sequences from V/J/CDR3 information
 
@@ -14,36 +14,39 @@ The script takes the known V/J/CDR3 information, and uses that to pull out the r
 
 Out of the box, `stitchr` works on all common jawed vertebrate TCR loci (alpha/beta/gamma/delta), for all species for which there is currently data available in IMGT.
 
-### Citing `stitchr`
-
-The manuscript describing and validating `stitchr` is available here:
-
-[James M Heather, Matthew J Spindler, Marta Herrero Alonso, Yifang Ivana Shui, David G Millar, David S Johnson, Mark Cobbold, Aaron N Hata, `Stitchr`: stitching coding TCR nucleotide sequences from V/J/CDR3 information, *Nucleic Acids Research*, **2022**;, gkac190, https://doi.org/10.1093/nar/gkac190](https://doi.org/10.1093/nar/gkac190).
-
-The corresponding analyses and related datasets are available [here](https://github.com/JamieHeather/stitchr-paper-analysis) (which used v1.0.0 `stitchr` scripts). 
-
 ### Installation and dependencies
 
-`Stitchr` is designed to be run on Python 3, and has primarily been tested on Python 3.7.7 and 3.8.3. 
+`stitchr` runs on Python3, and can be installed via `pip`:
 
-Simply clone the repo to a desired location, navigate to the Scripts directory, then you can run the script via the command line as detailed below.
+`pip install stitchr`
 
-The only non-standard Python module used is `PySimpleGUI`, which is only required for users that wish to use the [**graphical user interface version (`gui-stitchr`)**](#gui-stitchr). This can be installed via `pip`, e.g.:
+In order to automatically download the necessary data for stitching, [`IMGTgeneDL`](https://github.com/JamieHeather/IMGTgeneDL) is also required:
 
-```bash
-pip3 install PySimpleGUI
-```
+`pip install IMGTgeneDL`
+
+After installing `stitchr` via `pip`, `IMGTgeneDL` can be used via the `stitchrdl` command to download suitably formatted data sets to the required directory like so:
+
+`stitchrdl -s human`
+
+See the [species section below](#species-covered) to see the species for which data can be downloaded in this manner.
+
+There are also some optional functions that require additional dependencies:
+* The `-aa` alignment function of `stitchr` requires Biopython 
+  * `pip install Bio`
+* The graphical user interface version [(`gui-stitchr`)](#gui-stitchr) requires `PySimpleGUI`
+  * `pip install PySimpleGUI`
+  * This also might require the [installation of Tkinter](https://tkdocs.com/tutorial/install.html)
 
 ## Example usage 
 
-`Stitchr` uses relative paths. Please ensure you are in the Scripts directory to run the script. The only required fields are the minimal components describing a single rearranged TCR chain: V gene name, J gene name, and CDR3 sequence (either DNA or amino acids). Constant regions must also be specified for all non-human/non-mouse species.
+The only required fields are the minimal components describing a single rearranged TCR chain: V gene name, J gene name, and CDR3 sequence (either DNA or amino acids). Constant regions must also be specified for all non-human/non-mouse species.
 
 ```bash
-python3 stitchr.py -v [IMGT V gene] -j [IMGT J gene] -cdr3 [CDR3aa]
+stitchr -v [IMGT V gene] -j [IMGT J gene] -cdr3 [CDR3aa]
 
-python3 stitchr.py -v TRBV7-3*01 -j TRBJ1-1*01 -cdr3 CASSYLQAQYTEAFF
+stitchr -v TRBV7-3*01 -j TRBJ1-1*01 -cdr3 CASSYLQAQYTEAFF
 
-python3 stitchr.py -v TRAV1-2 -j TRAJ33 -cdr3 TGTGCTGTGCTGGATAGCAACTATCAGTTAATCTGG
+stitchr -v TRAV1-2 -j TRAJ33 -cdr3 TGTGCTGTGCTGGATAGCAACTATCAGTTAATCTGG
 ```
 
 ### Usage notes
@@ -63,7 +66,7 @@ Care must be taken to ensure that the correct TCR informaton is input. E.g. ensu
 
 The script produces a TCR from the information given, trying to provide warnings or errors if it detects an improbable or implausible combination, yet it's possible that the script might produce output that *looks* OK yet which does not reproduce a coding sequence for the intended TCR. 
 
-If you request an allele for which there isn't complete sequence data, the script will attempt to default to the prototypical allele (*01) of that gene, or a preferred default allele if the `-p` flag is set (see below). Similarly it will attempt to use the correct leader seqeunces (L-PART1+L-PART2) for the specified allele, but if it can't find one it'll default back to the prototype's. In both cases, if it cannot find sequence for that allele then it will attempt to use an alternative allele for which data exists in the reference (see [this comment for more details](https://github.com/JamieHeather/stitchr/issues/25#issuecomment-1146626463)). Note that IMGT-provided gene sequences which are 'partial' at either end of their sequence are discounted entirely, as full length sequences are needed. If the script is needed to stitch TCRs that make use of genes that are partial at their recombination-distal ends then you can modify the FASTA header for these entries in the Data directory. 
+If you request an allele for which there isn't complete sequence data, the script will attempt to default to the prototypical allele (*01) of that gene, or a preferred default allele if the `-p` flag is set (see below). Similarly it will attempt to use the correct leader seqeunces (L-PART1+L-PART2) for the specified allele, but if it can't find one it'll default back to the prototype's. In both cases, if it cannot find sequence for that allele then it will attempt to use an alternative allele for which data exists in the reference (see [this comment for more details](https://github.com/JamieHeather/stitchr/issues/25#issuecomment-1146626463)). Note that IMGT-provided gene sequences which are 'partial' at either end of their sequence are discounted entirely, as full length sequences are needed. If the script is needed to stitch TCRs that make use of genes that are partial at their recombination-distal ends then you can modify the FASTA header for these entries in the installed Data directory. 
 
 For human and mouse TCRs, the script will use the TRBC gene located in the same cluster as the J gene (i.e. TRBJ1-1 through TRBJ1-6 will get TRBC1, while TRBJ2-1 through TRBJ2-7 will get TRBC2). This can be overriden (see optional arguments). Unfortunately we are not experts in TCR loci architecture of all species, so we haven't hard-wired any other constant region assumptions, so for all other species you'll need to explicitly state which constant region you want used.
 
@@ -77,13 +80,14 @@ If users care about accurately replicating the exact nucleotide sequence of spec
 
 E.g. instead of these first two options:
 ```bash
-python3 stitchr.py -v TRBV7-6 -j TRBJ1-4 -cdr3 CASSSGQGLGEKLFF
-python3 stitchr.py -v TRBV7-6 -j TRBJ1-4 -cdr3 TGTGCCAGCAGTTCCGGACAGGGCTTGGGAGAAAAACTGTTTTTT
+stitchr -v TRBV7-6 -j TRBJ1-4 -cdr3 CASSSGQGLGEKLFF
+stitchr -v TRBV7-6 -j TRBJ1-4 -cdr3 TGTGCCAGCAGTTCCGGACAGGGCTTGGGAGAAAAACTGTTTTTT
 ```
 
 ... you would run (NB non-CDR3 nucleotides shown in lower case for display purposes):
+
 ```bash
-python3 stitchr.py -sl -v TRBV7-6 -j TRBJ1-4 -cdr3 catgtatcgcTGTGCCAGCAGTTCCGGACAGGGCTTGGGAGAAAAACTGTTTTTTggcagtggaa
+stitchr -sl -v TRBV7-6 -j TRBJ1-4 -cdr3 catgtatcgcTGTGCCAGCAGTTCCGGACAGGGCTTGGGAGAAAAACTGTTTTTTggcagtggaa
 ```
 
 In this example aligning the results shows that the second serine in the CDR3 was actually encoded by 'AGT' in the rearrangement: the 'AGC' codon present in the germline gene must have been deleted and this alternative 'S' codon added or completed by Tdt. Thus while all options should produce the same amino acid sequence, the seamless option allows for truer generation of the sequence as was present in the clonotype. Note that the seamless option adds significantly to the time it takes to run `stitchr` (which only really matters when running it on high-throughput datasets using `thimble`).
@@ -150,7 +154,7 @@ TRBV7-6 / TRBJ1-4 / CASSLAPGTTNEKLFF
 Then we can run the code like this:
 
 ```bash
-python3 stitchr.py -v TRBV7-6 -j TRBJ1-4 -cdr3 CASSLAPGTTNEKLFF -n C25 -aa MGAGVSQSPRYKVTKRGQDVALRCDPISGHVSLYWYRQALGQGPEFLTYFNYEAQQDKSGLPNDRFSAERPEGSISTLTIQRTEQRDSAMYRCASSLAPGTTNEKLFFGSGTQLSVLEDLNKVFPPEVAVFEPSEAEISHTQKATLVCLATGFYPDHVELSWWVNGKEVHSGVCTDPQPLKEQPALNDSRYALSSRLRVSATFWQNPRNHFRCQVQFYGLSENDEWTQDRAKPVTQIVSAEAWGRAD
+stitchr -v TRBV7-6 -j TRBJ1-4 -cdr3 CASSLAPGTTNEKLFF -n C25 -aa MGAGVSQSPRYKVTKRGQDVALRCDPISGHVSLYWYRQALGQGPEFLTYFNYEAQQDKSGLPNDRFSAERPEGSISTLTIQRTEQRDSAMYRCASSLAPGTTNEKLFFGSGTQLSVLEDLNKVFPPEVAVFEPSEAEISHTQKATLVCLATGFYPDHVELSWWVNGKEVHSGVCTDPQPLKEQPALNDSRYALSSRLRVSATFWQNPRNHFRCQVQFYGLSENDEWTQDRAKPVTQIVSAEAWGRAD
 
 # Produces the following output
 
@@ -188,7 +192,7 @@ VSALVLMAMVKRKDF
 We can see that there's a few mismatches in the latter half of the stitched sequence, so perhaps this crystal actually used the other TRBC gene. We can swap that in:
 
 ```bash
-python3 stitchr.py -v TRBV7-6 -j TRBJ1-4 -cdr3 CASSLAPGTTNEKLFF -n C25 -c TRBC2 -aa MGAGVSQSPRYKVTKRGQDVALRCDPISGHVSLYWYRQALGQGPEFLTYFNYEAQQDKSGLPNDRFSAERPEGSISTLTIQRTEQRDSAMYRCASSLAPGTTNEKLFFGSGTQLSVLEDLNKVFPPEVAVFEPSEAEISHTQKATLVCLATGFYPDHVELSWWVNGKEVHSGVCTDPQPLKEQPALNDSRYALSSRLRVSATFWQNPRNHFRCQVQFYGLSENDEWTQDRAKPVTQIVSAEAWGRAD
+stitchr -v TRBV7-6 -j TRBJ1-4 -cdr3 CASSLAPGTTNEKLFF -n C25 -c TRBC2 -aa MGAGVSQSPRYKVTKRGQDVALRCDPISGHVSLYWYRQALGQGPEFLTYFNYEAQQDKSGLPNDRFSAERPEGSISTLTIQRTEQRDSAMYRCASSLAPGTTNEKLFFGSGTQLSVLEDLNKVFPPEVAVFEPSEAEISHTQKATLVCLATGFYPDHVELSWWVNGKEVHSGVCTDPQPLKEQPALNDSRYALSSRLRVSATFWQNPRNHFRCQVQFYGLSENDEWTQDRAKPVTQIVSAEAWGRAD
 
 # Produces:
 
@@ -233,7 +237,7 @@ This produces even more mismatches! This is an instance where the constant regio
 
 ### Species covered
 
-`Stitchr` can stitch any TCR loci for which it has the necessary raw data, appropriately formatted in the `Data` directory. We have provided the data for all of the species for which IMGT currently contains enough TCR data for stitching (i.e. at least one leader, V gene, J gene, and constant region for a given loci). See the table below for a full breakdown of which species/loci are covered:
+`Stitchr` can stitch any TCR loci for which it has the necessary raw data, appropriately formatted in the `Data` directory (which can be located by running `stitchr -dd` or `stitchr --data_dir`). IMGT currently contains enough TCR data for stitching (i.e. at least one leader, V gene, J gene, and constant region for a given loci) for the following species/loci:
 
 | **Common Name**        | **Genus species**        | **TRA** | **TRB** | **TRG** | **TRD** |                            **Kazusa species ID**                            | 
 |------------------------|--------------------------|:-------:|:-------:|:-------:|:-------:|:---------------------------------------------------------------------------:|
@@ -252,24 +256,24 @@ This produces even more mismatches! This is an instance where the constant regio
 | **RHESUS\_MONKEY**     | *Macaca mulatta*         |    ✔    |    ✔    |    ✔    |    ✔    |  [9544](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9544)  |
 | **SHEEP**              | *Ovis aries*             |    ✔    |    ✔    |         |    ✔    |  [9940](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9940)  |
 
-The species can be specified using the `-s / --species` command line flag when running your `stitchr` command. E.g.\, here's an example using everyone's favourite mouse TCR, OT-I (sequences inferred from [this plasmid on AddGene](https://www.addgene.org/52111/):
+The species can be specified using the `-s / --species` command line flag when running your `stitchr` command (default = 'human'). E.g.\, here's an example using everyone's favourite mouse TCR, OT-I (sequences inferred from [this plasmid on AddGene](https://www.addgene.org/52111/):
 
 ```bash
-python3 stitchr.py -s mouse -v TRBV12-1 -j TRBJ2-7 -cdr3 CASSRANYEQYF
-python3 stitchr.py -s mouse -v TRAV14D-1 -j TRAJ33 -cdr3 CAASDNYQLIW 
+stitchr -s mouse -v TRBV12-1 -j TRBJ2-7 -cdr3 CASSRANYEQYF
+stitchr -s mouse -v TRAV14D-1 -j TRAJ33 -cdr3 CAASDNYQLIW 
 ```
 
 It must be noted that many of the less well studied species have poorer gene annotations and germline variation covered by IMGT, so TCRs produced using these datasets should be treated with more caution than say for humans. E.g. different mouse strains will have different alleles (and different numbers of gene family members), so accuracy of stitched TCRs will depend both on the quality of both germline gene information and TCR clonotyping.
 
 ### Generating new IMGT input files
 
-You may wish to update your raw TCR data files after an IMGT update, as sequences can be added (or even changed), or as more species become available. Assuming IMGT maintains its current noming conventions and webhosting scheme, these tasks can be undertaken automatically using the [IMGTgeneDL script](https://github.com/JamieHeather/IMGTgeneDL) (details in its own repo). 
+You may wish to update your raw TCR data files after an IMGT update, as sequences can be added (or even changed), or as more species become available. Assuming IMGT maintains its current noming conventions and webhosting scheme, these tasks can be undertaken automatically using the `stitchrdl` command, which is a wrapper for the [IMGTgeneDL script](https://github.com/JamieHeather/IMGTgeneDL) (details in its own repo). 
 
 Users should note that when this is run, it creates a `data-production-date.tsv` file in the directory of that species, which contains the IMGT release number and date of downloaded sequences, which should be included in any published reporting of the TCR sequences used. We also recommend that you update the germline TCR data for `stitchr` at the same time you update the database used in whatever TCR gene annotation software you use, to ensure that there's no discrepancy in allele nomenclature between the two.
 
 ### Stitchr data formatting
 
-Each species you wish to stitch TCRs for must have its own folder in the `Data/` directory, named after whatever flag you wish you use when giving `stitchr` information through the `-s / --species` flag. (Note that `stitchr` will assume every folder in `Data/` that isn't named 'kazusa' is a potential TCR germline folder, so it's advised to not put any other folders there.)
+Each species you wish to stitch TCRs for must have its own folder in the installed `Data/` directory, named after whatever flag you wish you use when giving `stitchr` information through the `-s / --species` flag. Note that `stitchr` will assume every folder in `Data/` that isn't named 'kazusa' or 'GUI-Examples' is a potential TCR germline folder, so it's advised to not put any other folders there. It is recommended to use `stitchrdl` to generate and update these folders where possible.
 
 Inside that folder there should be various files:
 * `data-production-date.tsv`
@@ -312,7 +316,7 @@ There are occasions when this is not the biologically appropriate allele to choo
 
 This feature is particularly of use when generating large numbers of stitched sequences from a particular individual or strain where non-prototypical alleles are known. Note that if you are specifying a different allele for a variable gene that has variants in its leader sequence as well, make sure you add entries for both VARIABLE and LEADER alleles.
 
-A template and two example common mouse strain files are included in the `Templates/Preferred-Alleles/` directory. These examples are for the common mouse strains C56/Bl6 and Balb/c, and were produced by using the subspecies/strain field of the IMGT headers. Note that even then users should take care, as some genes have multiple alleles associated with them, despite being from inbred mice -- e.g. TRAV9D-2 has two alleles associated with it for Balb/c (01 and 03). I've tried to pick the ones that are more likely to be functional (F > ORF > P, e.g. choosing `TRBV24*03` over 02 for Balb/c, or `TRAV9D-4*04` over 02 for C57/BL6), or are from better inferred data (e.g. taking one with functionality 'F' over '(F)').
+A template and two example common mouse strain files are included in the `templates/preferred-alleles/` directory. These examples are for the common mouse strains C56/Bl6 and Balb/c, and were produced by using the subspecies/strain field of the IMGT headers. Note that even then users should take care, as some genes have multiple alleles associated with them, despite being from inbred mice -- e.g. TRAV9D-2 has two alleles associated with it for Balb/c (01 and 03). I've tried to pick the ones that are more likely to be functional (F > ORF > P, e.g. choosing `TRBV24*03` over 02 for Balb/c, or `TRAV9D-4*04` over 02 for C57/BL6), or are from better inferred data (e.g. taking one with functionality 'F' over '(F)').
 
 #### Providing additional gene sequences
 
@@ -345,12 +349,12 @@ If for some reason users which to skip the C region checks (using the automatica
 BCR and antibodies are of course produced in a similar manner to TCRs, and thus the conceptual framework applies equally to those sequences. However, the existence of somatic hypermutation, far greater structural- and allelic-polymorphism, and more complicated constant region biology in the IG loci makes `stitchr` more difficult to apply. We have provided suitably formatted human IG reference data to illustrate how `stitchr` *can* be applied to these loci, e.g.:
 
 ```bash
-python3 stitchr.py -v IGHV3-30-3*01 -j IGHJ4*02 -cdr3 CARLSPAGGFFDYW -c IGHM*01 -s HUMAN -n JQ304252
-python3 stitchr.py -v IGHV4-61*01 -j IGHJ3*02 -cdr3 CARITGDRGAFDIW -c IGHD*01 -s HUMAN -n AF262208
-python3 stitchr.py -v IGHV1-69*01 -j IGHJ3*02 -cdr3 CAREVVPTFRENAFDIW -c IGHG1*01 -s HUMAN -n MW177368
-python3 stitchr.py -v IGHV4-59*01 -j IGHJ5*02 -cdr3 CARGISWFDPW -c IGHE*01 -s HUMAN -n DQ005305
-python3 stitchr.py -v IGKV3-20*01 -j IGKJ5*01 -cdr3 CQQYGTSRPITF -c IGKC*01 -s HUMAN -n BC032451
-python3 stitchr.py -v IGLV1-47*01 -j IGLJ3*02 -cdr3 CAAWDDSLSGWVF -c IGLC2*01 -s HUMAN -l IGLV1-47*02 -n AB064224
+stitchr -v IGHV3-30-3*01 -j IGHJ4*02 -cdr3 CARLSPAGGFFDYW -c IGHM*01 -s HUMAN -n JQ304252
+stitchr -v IGHV4-61*01 -j IGHJ3*02 -cdr3 CARITGDRGAFDIW -c IGHD*01 -s HUMAN -n AF262208
+stitchr -v IGHV1-69*01 -j IGHJ3*02 -cdr3 CAREVVPTFRENAFDIW -c IGHG1*01 -s HUMAN -n MW177368
+stitchr -v IGHV4-59*01 -j IGHJ5*02 -cdr3 CARGISWFDPW -c IGHE*01 -s HUMAN -n DQ005305
+stitchr -v IGKV3-20*01 -j IGKJ5*01 -cdr3 CQQYGTSRPITF -c IGKC*01 -s HUMAN -n BC032451
+stitchr -v IGLV1-47*01 -j IGLJ3*02 -cdr3 CAAWDDSLSGWVF -c IGLC2*01 -s HUMAN -l IGLV1-47*02 -n AB064224
 ```
 
 However for the reasons stated above we recommend using caution when applying `stitchr` to these loci: long read sequencing (both into the V and the C) and liberal use of the 'seamless' setting is recommended.
@@ -362,7 +366,7 @@ Note that the default form of the IGH constant regions supplied when using just 
 
 ### Run `stitchr` high-throughput on multiple and paired TCRs
 
-Instead of running `stitchr` on rearrangements one by one, you can fill out the necessary details into a tab separated file (.tsv) and submit it to `thimble`. The format of the input data can be found in the empty and example templates located in the `Templates/` directory. 
+Instead of running `stitchr` on rearrangements one by one, you can fill out the necessary details into a tab separated file (.tsv) and submit it to `thimble`. The format of the input data can be found in the empty and example templates located in the `templates/` directory. 
 
 Note that there are two kinds templates, one for alpha/beta TCRs, and another for gamma/delta TCRs, with the only difference being the gene names in the header fields. Users can only use `thimble` to stitch TCRs of one type per operation, and thus cannot mix a/b and g/d TCRs in the same input files. 
 
@@ -370,13 +374,13 @@ You can tell `thimble` what flavour of TCR you're making directly, using the `-r
 
 ```bash
 # Alpha/beta TCRs
-python3 thimble.py -in somefile.tsv -r a
-python3 thimble.py -in somefile.tsv -r AB
-python3 thimble.py -in somefile.tsv -r b
+thimble -in somefile.tsv -r a
+thimble -in somefile.tsv -r AB
+thimble -in somefile.tsv -r b
 # Gamma/delta TCRs
-python3 thimble.py -in somefile.tsv -r g
-python3 thimble.py -in somefile.tsv -r GD
-python3 thimble.py -in somefile.tsv -r dg
+thimble -in somefile.tsv -r g
+thimble -in somefile.tsv -r GD
+thimble -in somefile.tsv -r dg
 ```
 
 Alternatively if you don't use the `-r` flag, `thimble` will automatically infer the TCR loci from the header line of the input file. While the 'TRA-TRB' and 'TRG-TRD' labels are not explicitly used by `thimble`, they are used by the `gui-stitchr` script described below, and help make it clearer what's in which files.
@@ -393,14 +397,12 @@ Any warnings and errors generated on a per-TCR basis are recorded in the final o
 
 ## Example usage 
 
-Like with `stitchr` itself, `thimble` is designed to be run from inside the Scripts directory.
-
 ```bash
-python3 thimble.py -in [input tsv] -o [output tsv] 
+thimble -in [input tsv] -o [output tsv] 
 
-python3 thimble.py -in ../Templates/thimble_input_example_TRA-TRB.tsv -o testing 
+thimble -in ../Templates/thimble_input_example_TRA-TRB.tsv -o testing 
 
-python3 thimble.py -in ../Templates/GUI-Examples/mouse_TRA-TRB.tsv -s MOUSE -o testing -p ../Templates/Preferred-Alleles/mouse_balb-c_example.tsv
+thimble -in ../Templates/GUI-Examples/mouse_TRA-TRB.tsv -s MOUSE -o testing -p ../Templates/Preferred-Alleles/mouse_balb-c_example.tsv
 ```
 
 Note that the third example there uses the preferred allele option and specifies the Balb/c allele file, making the output alpha chain use `TRAV14-1*02` instead of `TRAV14-1*01`.
@@ -430,24 +432,24 @@ Some applications may require stitching multiple variants of a particular rearra
 # GUI-stitchr 
 ### 1.2.0
 
-A graphical interface has been developed for users that are less comfortable at the command line, or who prefer a more immediately interactive session. It can be launched from inside the Scripts directory like so:
+A graphical interface has been developed for users that are less comfortable at the command line, or who prefer a more immediately interactive session.
 
 ```bash
-python3 gui-stitchr.py
+gui_stitchr
 ```
 
 This will launch the PySimpleGUI-powered interface that replicates the core functionality of `stitchr`, with some of the additional capabilities of `thimble` - specifically the ability to generate bicistronic paired TCR sequences. 
 
-The fields and buttons of the interface are shown in the two following images, where the upper image shows the options at launch, and the second image shows a completed stitched TCR with the link option selected. Note that as with regular `stitchr`, `gui-stitchr` requires a V, J, and CDR3 junction sequence as a minimum to produce a sequence for either chain. Furthermore, as with `thimble`, it can only link chains for a single TCR if both independent chains are successfully stitchable.
+The fields and buttons of the interface are shown in the following image. Note that as with regular `stitchr`, `gui-stitchr` requires a V, J, and CDR3 junction sequence as a minimum to produce a sequence for either chain. Furthermore, as with `thimble`, it can only link chains for a single TCR if both independent chains are successfully stitchable.
 
 `Gui-stitchr` can use the same tab-delimited input template as `thimble`, but it only takes one TCR at a time. Any rows after the second in the template input file will be ignored. An example paired human TCR file is included for reference (Templates/gui_input_example.tsv). We **strongly** recommend adding TCR information via the upload function rather than typing it in, in order to increase repeatability and minimise the chances of accidental errors occurring. 
 
-As with `thimble`, users can only make TCRs for one species/TCR type (a/b or g/d) at a time, navigating between the options by either selecting a different species from the drop down, or cycling back and forth between the loci. We have a variety of example TCRs for different species/loci combinations (located in the `Templates/GUI-Examples/` directory), which can be easily accessed in the GUI by clicking the 'Example Data' button. If users are uploading a TCR input file, including species and receptor type ("TRA-TRB" or "TRG-TRD") in the file name will allow the GUI automatically fill in those details.
+As with `thimble`, users can only make TCRs for one species/TCR type (a/b or g/d) at a time, navigating between the options by either selecting a different species from the drop down, or cycling back and forth between the loci. We have a variety of example TCRs for different species/loci combinations, which can be easily accessed in the GUI by clicking the 'Example Data' button. If users are uploading a TCR input file, including species and receptor type ("TRA-TRB" or "TRG-TRD") in the file name will allow the GUI automatically fill in those details.
 
-1. '**Example data**'. Autofills the menu with valid example parameters, if available for this species/chain combination. Read in from files in `Templates/GUI-Examples/`.
+1. '**Example data**'. Autofills the menu with valid example parameters, if available for this species/chain combination. Read in from files in `src/Data/GUI-Examples/`.
 2. '**Reset form**'. Clears the form.
 3. Options to upload TCRs for stitching. '**Find TCR input file**' on left loads a file browser window to locate a TCR input file as specified in the input_template.tsv format, which is then uploaded and used to populate the fields after clicking '**Upload TCR details**' on the right.
-4. '**Species**'. Allows selection of a species from the dropdown. Options are automatically inferred from contents of the `Data/` directory.
+4. '**Species**'. Allows selection of a species from the dropdown. Options are automatically inferred from contents of the installed `Data/` directory.
 5. **Change to TRx/TRy**. Clicking toggles between stitching alpha/beta and gamma/delta chain TCRs. 
 6. '**Additional genes**'. If you wish to add additional genes in the TCRs which are not featured in the pre-programmed germline data for this species, they can be added here (as per using the `-xg` flag in `stitchr/thimble`) in FASTA format. Note that [unlike when provided genes via the additional-genes.fasta file](#providing-additional-gene-sequences), sequences should be provided with a simple FASTA header identifier, just with a short TCR name (and ideally with an allele number, *\*XX*). FASTA names must also not be the name of an existing gene. As the TCR gene names are included in the output, it's recommended that a name that will not accidentally be mistaken as another/currently described germline gene is used. Also note that gene names will be converted to uppercase during processing, so avoid duplicate names differing only be upper/lower case characters.
 7. '**Preferred allele file**'. Clicking this allows users to specify a tsv of preferred alleles to be used. Note that the same file will be used for both chains, and will be indicated in the button text. Specified allele file will remain until the form is reset.
@@ -472,8 +474,18 @@ As with `thimble`, users can only make TCRs for one species/TCR type (a/b or g/d
 24. '**Linked out**'. If the checkbox at (7) is ticked and both the TRA and TRB chains are successfully stitched, this box outputs the combined linked sequences, connected by the sequence in (8) in the order specified in (9).
 25. '**Linked log**'. Text box into which linkage-related run comments will be output.
 
-![](Images/gui-stitchr.png)
+![](images/gui-stitchr.png)
 
+
+### Citing `stitchr`
+
+The manuscript describing and validating `stitchr` is available here:
+
+[James M Heather, Matthew J Spindler, Marta Herrero Alonso, Yifang Ivana Shui, David G Millar, David S Johnson, Mark Cobbold, Aaron N Hata, `Stitchr`: stitching coding TCR nucleotide sequences from V/J/CDR3 information, *Nucleic Acids Research*, **2022**;, gkac190, https://doi.org/10.1093/nar/gkac190](https://doi.org/10.1093/nar/gkac190).
+
+This can be printed in the command line by running `stitchr --cite`.
+
+The corresponding analyses and related datasets are available [here](https://github.com/JamieHeather/stitchr-paper-analysis) (which used v1.0.0 `stitchr` scripts). 
 
 
 
