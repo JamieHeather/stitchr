@@ -70,12 +70,12 @@ thimble<span class="w"> </span>-in<span class="w"> </span>thimble_input_example_
 <ul class="simple">
 <li><p>For almost every field, multiple options can be provided by separating options with commas.</p>
 <ul>
-<li><p>E.g. <code class="docutils literal notranslate"><span class="pre">TRAV1-1\*01,TRAV1-2\*01,TRAV1-2\*02</span></code> for TRAV or``CAVLDSNYQLIW,CAVLMSNYQLIW`` for TRA_CDR3.</p></li>
+<li><p>E.g. <code class="docutils literal notranslate"><span class="pre">TRAV1-1\*01,TRAV1-2\*01,TRAV1-2\*02</span></code> for TRAV or <code class="docutils literal notranslate"><span class="pre">CAVLDSNYQLIW,CAVLMSNYQLIW</span></code> for TRA_CDR3.</p></li>
 </ul>
 </li>
 <li><p>For every field that relates to a specific germline TCR region (L/V/J/C), every allele for a given gene can be specified by using the <code class="docutils literal notranslate"><span class="pre">%</span></code> wildcard in place of an allele number.</p>
 <ul>
-<li><p>E.g. using default IMGT-GENE/DB, <code class="docutils literal notranslate"><span class="pre">TRBV19*%</span></code> will stitch the rearrangement using each of <code class="docutils literal notranslate"><span class="pre">TRBV19\*01</span></code>, <code class="docutils literal notranslate"><span class="pre">TRBV19\*02</span></code>, and <code class="docutils literal notranslate"><span class="pre">TRBV19\*03</span></code></p></li>
+<li><p>E.g. using default IMGT-GENE/DB, <code class="docutils literal notranslate"><span class="pre">TRBV19\*%</span></code> will stitch the rearrangement using each of <code class="docutils literal notranslate"><span class="pre">TRBV19\*01</span></code>, <code class="docutils literal notranslate"><span class="pre">TRBV19\*02</span></code>, and <code class="docutils literal notranslate"><span class="pre">TRBV19\*03</span></code></p></li>
 </ul>
 </li>
 <li><p>For the same fields, users can opt to systemically try every available gene and allele for a region by <em>only</em> entering <code class="docutils literal notranslate"><span class="pre">%</span></code> in that field.</p>

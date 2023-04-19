@@ -16,6 +16,6 @@ These can then be used like so:
    stitchr -v IGKV3-20*01 -j IGKJ5*01 -cdr3 CQQYGTSRPITF -c IGKC*01 -s HUMAN-IG -n BC032451
    stitchr -v IGLV1-47*01 -j IGLJ3*02 -cdr3 CAAWDDSLSGWVF -c IGLC2*01 -s HUMAN-IG -l IGLV1-47*02 -n AB064224
 
-However for the reasons stated above we recommend using caution when applying ``stitchr`` to these loci: long read sequencing (both into the V and the C) and liberal use of the ‘seamless’ setting is recommended.
+However for the reasons stated above we recommend using caution when applying ``stitchr`` to these loci: long read sequencing (both into the V and the C) and liberal use of the 'seamless' setting is recommended.
 
-Note that the default form of the IGH constant regions supplied when using just the gene+allele is the secreted form: (where available) the membrane bound form is produced by appending ’_M’. E.g. use ``IGHM*01`` for the secreted form, and ``IGHM*01_M`` for the membranous.
+Note that the default form of the IGH constant regions supplied when using just the gene+allele is the secreted form: (where available) the membrane bound form is produced by appending '_M'. E.g. use ``IGHM*01`` for the secreted form, and ``IGHM*01_M`` for the membranous.

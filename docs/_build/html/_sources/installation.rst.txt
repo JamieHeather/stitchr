@@ -22,9 +22,9 @@ There are also some optional functions that require additional dependencies:
 
 * The ``-aa`` alignment function of ``stitchr`` requires Biopython
 
-    * ``pip install Bio`` \* The graphical user interface version
+    * ``pip install Bio``
 
-* :ref:`gui-label` requires ``PySimpleGUI``
+* The graphical user interface version :ref:`gui-label` requires ``PySimpleGUI``
 
     * ``pip install PySimpleGUI``
     * This also might require the `installation of Tkinter <https://tkdocs.com/tutorial/install.html>`_

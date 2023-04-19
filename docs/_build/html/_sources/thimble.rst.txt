@@ -10,7 +10,7 @@ Instead of running ``stitchr`` on rearrangements one by one, you can fill out th
 
 Note that there are two kinds templates, one for alpha/beta TCRs, and another for gamma/delta TCRs, with the only difference being the gene names in the header fields. Users can only use ``thimble`` to stitch TCRs of one type per operation, and thus cannot mix a/b and g/d TCRs in the same input files.
 
-You can tell ``thimble`` what flavour of TCR you’re making directly, using the ``-r / --receptor`` field followed by a single or double digit string (case-insensitive), e.g.:
+You can tell ``thimble`` what flavour of TCR you're making directly, using the ``-r / --receptor`` field followed by a single or double digit string (case-insensitive), e.g.:
 
 .. code:: bash
 
@@ -23,16 +23,16 @@ You can tell ``thimble`` what flavour of TCR you’re making directly, using the
    thimble -in somefile.tsv -r GD
    thimble -in somefile.tsv -r dg
 
-Alternatively if you don’t use the ``-r`` flag, ``thimble`` will automatically infer the TCR loci from the header line of the input file. While the ‘TRA-TRB’ and ‘TRG-TRD’ labels are not explicitly used by
-``thimble``, they are used by the ``gui-stitchr`` script described below, and help make it clearer what’s in which files.
+Alternatively if you don't use the ``-r`` flag, ``thimble`` will automatically infer the TCR loci from the header line of the input file. While the 'TRA-TRB' and 'TRG-TRD' labels are not explicitly used by
+``thimble``, they are used by the ``gui-stitchr`` script described below, and help make it clearer what's in which files.
 
 The species can be explicitly set via the ``-s / --species`` flag, or by including the common name in the input file somewhere. Note that using either the receptor or species flag explicitly will take precedence over any details inferred from input file.
 
 All of the recombination-specific fields that can ordinarily be specified at the command line in ``stitchr`` can be applied per row using ``thimble``, with the exception of species (which must be kept the same for all TCRs in a given ``thimble`` run).
 
-Note that the input to ``thimble`` can also be used to generate rearrangements for both chains of a given TCR (a/b or g/d) on one row, with additional options to link those sequences together (e.g. for gene synthesis). A number of x2A potential linkers are provided in the Data/linkers.tsv file. If custom linkers are desired, you can either edit that linkers file or just enter the nucleotide sequence of the desired linker into the Linker column of the input tsv. ``thimble`` will allow linkers that disrupt the frame (i.e. have a length not divisible by 3) but will throw a warning, so use carefully. 5’ and 3’ sequences can be added to both ends of either chain in a heterodimer, again allowing but throwing a warning if a custom sequence could potentiallydisrupt the frame.
+Note that the input to ``thimble`` can also be used to generate rearrangements for both chains of a given TCR (a/b or g/d) on one row, with additional options to link those sequences together (e.g. for gene synthesis). A number of x2A potential linkers are provided in the Data/linkers.tsv file. If custom linkers are desired, you can either edit that linkers file or just enter the nucleotide sequence of the desired linker into the Linker column of the input tsv. ``thimble`` will allow linkers that disrupt the frame (i.e. have a length not divisible by 3) but will throw a warning, so use carefully. 5' and 3' sequences can be added to both ends of either chain in a heterodimer, again allowing but throwing a warning if a custom sequence could potentiallydisrupt the frame.
 
-By default, ``thimble`` produces linked TCRs in the order 5’ - beta chain - linker - alpha chain - 3’, as `this has been shown to increase the surface presentation of ectopic TCRs <https://doi.org/10.1038/mtna.2012.52>`_. However this can still be specified with the ‘Link_order’ column in the input template file, using ‘AB’ or ‘BA’ to refer to ‘alpha-beta’ or ‘beta-alpha’ orders respectively. Link order is ignored if no linker is provided. The same holds true for gamma-deltas (defaulting to DG over GD).
+By default, ``thimble`` produces linked TCRs in the order 5' - beta chain - linker - alpha chain - 3', as `this has been shown to increase the surface presentation of ectopic TCRs <https://doi.org/10.1038/mtna.2012.52>`_. However this can still be specified with the 'Link_order' column in the input template file, using 'AB' or 'BA' to refer to 'alpha-beta' or 'beta-alpha' orders respectively. Link order is ignored if no linker is provided. The same holds true for gamma-deltas (defaulting to DG over GD).
 
 Any warnings and errors generated on a per-TCR basis are recorded in the final output file; it is recommended that users check this information, to ensure they understand the potential limitations of a specific sequence.
 
@@ -56,11 +56,11 @@ Some applications may require stitching multiple variants of a particular rearra
 
 -  For almost every field, multiple options can be provided by separating options with commas.
 
-   -  E.g. ``TRAV1-1\*01,TRAV1-2\*01,TRAV1-2\*02`` for TRAV or``CAVLDSNYQLIW,CAVLMSNYQLIW`` for TRA_CDR3.
+   -  E.g. ``TRAV1-1\*01,TRAV1-2\*01,TRAV1-2\*02`` for TRAV or ``CAVLDSNYQLIW,CAVLMSNYQLIW`` for TRA_CDR3.
 
 -  For every field that relates to a specific germline TCR region (L/V/J/C), every allele for a given gene can be specified by using the ``%`` wildcard in place of an allele number.
 
-   -  E.g. using default IMGT-GENE/DB, ``TRBV19*%`` will stitch the rearrangement using each of ``TRBV19\*01``, ``TRBV19\*02``, and ``TRBV19\*03``
+   -  E.g. using default IMGT-GENE/DB, ``TRBV19\*%`` will stitch the rearrangement using each of ``TRBV19\*01``, ``TRBV19\*02``, and ``TRBV19\*03``
 
 -  For the same fields, users can opt to systemically try every available gene and allele for a region by *only* entering ``%`` in that field.
 
