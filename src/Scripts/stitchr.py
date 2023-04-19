@@ -12,15 +12,16 @@ Can be used for TCR vector design, and other purposes.
 
 from . import functions as fxn
 import argparse
+import sys
 import warnings
 
 
-__version__ = '1.1.0'
+__version__ = '1.1.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
-#sys.tracebacklimit = 0  # comment when debugging # TODO
-
+sys.tracebacklimit = 0  # comment when debugging
+warnings.formatwarning = fxn.custom_formatwarning
 
 def args():
     """
@@ -88,6 +89,9 @@ def args():
 
     parser.add_argument('-sc', '--skip_c_checks', action='store_true', required=False, default=False,
                         help="Optional flag to skip usual constant region gene checks.")
+
+    parser.add_argument('-sw', '--suppress_warnings', action='store_true', required=False, default=False,
+                        help="Optional flag to suppress warnings.")
 
     parser.add_argument('--version', action='version', version=__version__, help="Print current stitchr version.")
 
@@ -399,6 +403,9 @@ def main():
     input_args, chain = fxn.sort_input(vars(args()))
     codons = fxn.get_optimal_codons(input_args['codon_usage_path'], input_args['species'])
     imgt_dat, tcr_functionality, partial = fxn.get_imgt_data(chain, gene_types, input_args['species'])
+
+    if input_args['suppress_warnings']:
+        warnings.filterwarnings('ignore')
 
     if input_args['extra_genes']:
         imgt_dat, tcr_functionality = fxn.get_additional_genes(imgt_dat, tcr_functionality)

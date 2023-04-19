@@ -16,13 +16,14 @@ from . import stitchr as st
 import warnings
 import argparse
 import os
+import sys
 from time import time
 
-__version__ = '1.2.0'
+__version__ = '1.2.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
-#sys.tracebacklimit = 0  # comment when debugging # TODO
+sys.tracebacklimit = 0  # comment when debugging
 
 
 def args():

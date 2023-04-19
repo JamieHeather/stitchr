@@ -18,7 +18,7 @@ import collections as coll
 import warnings
 
 
-__version__ = '1.3.0'
+__version__ = '1.3.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -212,7 +212,7 @@ def tidy_values(reference_chain, set_values):
 def main():
 
     # Define needed/starting variables
-    extra_gene_text = ">TCRgenename*01\nATCG...\n"
+    extra_gene_text = ">TCRgenename*01\nATG\n"
     box_width = 70
     sz = (int(box_width * 0.9), 1)
     half_sz = (int(box_width * 0.44), 1)  # For half a column

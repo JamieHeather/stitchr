@@ -22,18 +22,26 @@ if sys.version_info < (3, 9):
 else:
     import importlib.resources as importlib_resources       # importlib.resources
 
-__version__ = '1.2.0'
+__version__ = '1.2.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
-#sys.tracebacklimit = 0  # comment when debugging # TODO
+sys.tracebacklimit = 0  # comment when debugging
+
 
 data_files = importlib_resources.files("Data")
 additional_genes_file = str(data_files / 'additional-genes.fasta')
 linkers_file = str(data_files / 'linkers.tsv')
 data_dir = additional_genes_file[:additional_genes_file.rfind('/') + 1]
-
 gui_examples_dir = data_dir + 'GUI-Examples/'
+
+
+def custom_formatwarning(warning_msg, *args, **kwargs):
+    """
+    Function to make warnings.warn output just the warning text, not the underlying code
+    See https://stackoverflow.com/questions/2187269/print-only-the-message-on-warnings
+    """
+    return str(warning_msg) + '\n'
 
 
 def read_fa(ff):
