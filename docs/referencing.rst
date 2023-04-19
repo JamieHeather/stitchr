@@ -1,11 +1,4 @@
 
-Links
-~~~~~
-
-* `stitchr on GitHub <https://github.com/JamieHeather/stitchr>`_
-
-* `stitchr on PyPI <https://pypi.org/project/stitchr/>`_
-
 Citing ``stitchr``
 ~~~~~~~~~~~~~~~~~~
 

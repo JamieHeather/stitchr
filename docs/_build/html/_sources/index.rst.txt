@@ -30,9 +30,9 @@ The script takes the known V/J/CDR3 information, and uses that to pull out the r
 
 Out of the box, ``stitchr`` works on all common jawed vertebrate TCR loci (alpha/beta/gamma/delta), for all species for which there is currently data available in IMGT.
 
-Indices and tables
-==================
+Links
+~~~~~
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+* `stitchr on GitHub <https://github.com/JamieHeather/stitchr>`_
+
+* `stitchr on PyPI <https://pypi.org/project/stitchr/>`_
