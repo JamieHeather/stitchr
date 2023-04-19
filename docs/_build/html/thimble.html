@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thimble &mdash; stitchr  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="GUI-stitchr" href="guistitchr.html" />
+    <link rel="prev" title="stitchr input data" href="inputdata.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            stitchr
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using <code class="docutils literal notranslate"><span class="pre">stitchr</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="inputdata.html"><code class="docutils literal notranslate"><span class="pre">stitchr</span></code> input data</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Thimble</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#run-stitchr-high-throughput-on-multiple-and-paired-tcrs">Run <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> high-throughput on multiple and paired TCRs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#example-usage">Example usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#stitch-multiple-tcrs-per-line-with-list-and-wildcard-fields">Stitch multiple TCRs per line with list and wildcard fields</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#optional-arguments">Optional arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="guistitchr.html">GUI-stitchr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="immunoglobulins.html">Stitching immunoglobulins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="referencing.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="referencing.html#citing-stitchr">Citing <code class="docutils literal notranslate"><span class="pre">stitchr</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="referencing.html#licensing-information">Licensing information</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">stitchr</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Thimble</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/thimble.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="thimble">
+<span id="thimble-label"></span><h1>Thimble<a class="headerlink" href="#thimble" title="Permalink to this heading"></a></h1>
+<section id="run-stitchr-high-throughput-on-multiple-and-paired-tcrs">
+<h2>Run <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> high-throughput on multiple and paired TCRs<a class="headerlink" href="#run-stitchr-high-throughput-on-multiple-and-paired-tcrs" title="Permalink to this heading"></a></h2>
+<p>Instead of running <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> on rearrangements one by one, you can fill out the necessary details into a tab separated file (.tsv) and submit it to <code class="docutils literal notranslate"><span class="pre">thimble</span></code>. The format of the input data can be found in the empty and example templates located in the <code class="docutils literal notranslate"><span class="pre">templates/</span></code> directory.</p>
+<p>Note that there are two kinds templates, one for alpha/beta TCRs, and another for gamma/delta TCRs, with the only difference being the gene names in the header fields. Users can only use <code class="docutils literal notranslate"><span class="pre">thimble</span></code> to stitch TCRs of one type per operation, and thus cannot mix a/b and g/d TCRs in the same input files.</p>
+<p>You can tell <code class="docutils literal notranslate"><span class="pre">thimble</span></code> what flavour of TCR you’re making directly, using the <code class="docutils literal notranslate"><span class="pre">-r</span> <span class="pre">/</span> <span class="pre">--receptor</span></code> field followed by a single or double digit string (case-insensitive), e.g.:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Alpha/beta TCRs</span>
+thimble<span class="w"> </span>-in<span class="w"> </span>somefile.tsv<span class="w"> </span>-r<span class="w"> </span>a
+thimble<span class="w"> </span>-in<span class="w"> </span>somefile.tsv<span class="w"> </span>-r<span class="w"> </span>AB
+thimble<span class="w"> </span>-in<span class="w"> </span>somefile.tsv<span class="w"> </span>-r<span class="w"> </span>b
+<span class="c1"># Gamma/delta TCRs</span>
+thimble<span class="w"> </span>-in<span class="w"> </span>somefile.tsv<span class="w"> </span>-r<span class="w"> </span>g
+thimble<span class="w"> </span>-in<span class="w"> </span>somefile.tsv<span class="w"> </span>-r<span class="w"> </span>GD
+thimble<span class="w"> </span>-in<span class="w"> </span>somefile.tsv<span class="w"> </span>-r<span class="w"> </span>dg
+</pre></div>
+</div>
+<p>Alternatively if you don’t use the <code class="docutils literal notranslate"><span class="pre">-r</span></code> flag, <code class="docutils literal notranslate"><span class="pre">thimble</span></code> will automatically infer the TCR loci from the header line of the input file. While the ‘TRA-TRB’ and ‘TRG-TRD’ labels are not explicitly used by
+<code class="docutils literal notranslate"><span class="pre">thimble</span></code>, they are used by the <code class="docutils literal notranslate"><span class="pre">gui-stitchr</span></code> script described below, and help make it clearer what’s in which files.</p>
+<p>The species can be explicitly set via the <code class="docutils literal notranslate"><span class="pre">-s</span> <span class="pre">/</span> <span class="pre">--species</span></code> flag, or by including the common name in the input file somewhere. Note that using either the receptor or species flag explicitly will take precedence over any details inferred from input file.</p>
+<p>All of the recombination-specific fields that can ordinarily be specified at the command line in <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> can be applied per row using <code class="docutils literal notranslate"><span class="pre">thimble</span></code>, with the exception of species (which must be kept the same for all TCRs in a given <code class="docutils literal notranslate"><span class="pre">thimble</span></code> run).</p>
+<p>Note that the input to <code class="docutils literal notranslate"><span class="pre">thimble</span></code> can also be used to generate rearrangements for both chains of a given TCR (a/b or g/d) on one row, with additional options to link those sequences together (e.g. for gene synthesis). A number of x2A potential linkers are provided in the Data/linkers.tsv file. If custom linkers are desired, you can either edit that linkers file or just enter the nucleotide sequence of the desired linker into the Linker column of the input tsv. <code class="docutils literal notranslate"><span class="pre">thimble</span></code> will allow linkers that disrupt the frame (i.e. have a length not divisible by 3) but will throw a warning, so use carefully. 5’ and 3’ sequences can be added to both ends of either chain in a heterodimer, again allowing but throwing a warning if a custom sequence could potentiallydisrupt the frame.</p>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">thimble</span></code> produces linked TCRs in the order 5’ - beta chain - linker - alpha chain - 3’, as <a class="reference external" href="https://doi.org/10.1038/mtna.2012.52">this has been shown to increase the surface presentation of ectopic TCRs</a>. However this can still be specified with the ‘Link_order’ column in the input template file, using ‘AB’ or ‘BA’ to refer to ‘alpha-beta’ or ‘beta-alpha’ orders respectively. Link order is ignored if no linker is provided. The same holds true for gamma-deltas (defaulting to DG over GD).</p>
+<p>Any warnings and errors generated on a per-TCR basis are recorded in the final output file; it is recommended that users check this information, to ensure they understand the potential limitations of a specific sequence.</p>
+<section id="example-usage">
+<span id="example-usage-1"></span><h3>Example usage<a class="headerlink" href="#example-usage" title="Permalink to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>thimble<span class="w"> </span>-in<span class="w"> </span><span class="o">[</span>input<span class="w"> </span>tsv<span class="o">]</span><span class="w"> </span>-o<span class="w"> </span><span class="o">[</span>output<span class="w"> </span>tsv<span class="o">]</span>
+
+thimble<span class="w"> </span>-in<span class="w"> </span>thimble_input_example_TRA-TRB.tsv<span class="w"> </span>-o<span class="w"> </span>testing
+</pre></div>
+</div>
+<p>The test input example is available in the <code class="docutils literal notranslate"><span class="pre">templates/</span></code> directory of the Github repo.</p>
+<section id="stitch-multiple-tcrs-per-line-with-list-and-wildcard-fields">
+<h4>Stitch multiple TCRs per line with list and wildcard fields<a class="headerlink" href="#stitch-multiple-tcrs-per-line-with-list-and-wildcard-fields" title="Permalink to this heading"></a></h4>
+<p>Some applications may require stitching multiple variants of a particular rearrangement. When fields are specified with multiple options, a new line will be generated for each specified option, or one for each combination of options if more than one field with multiple fields are specified. Thimble allows you to specify multiple options for a particular field in several ways:</p>
+<ul class="simple">
+<li><p>For almost every field, multiple options can be provided by separating options with commas.</p>
+<ul>
+<li><p>E.g. <code class="docutils literal notranslate"><span class="pre">TRAV1-1\*01,TRAV1-2\*01,TRAV1-2\*02</span></code> for TRAV or``CAVLDSNYQLIW,CAVLMSNYQLIW`` for TRA_CDR3.</p></li>
+</ul>
+</li>
+<li><p>For every field that relates to a specific germline TCR region (L/V/J/C), every allele for a given gene can be specified by using the <code class="docutils literal notranslate"><span class="pre">%</span></code> wildcard in place of an allele number.</p>
+<ul>
+<li><p>E.g. using default IMGT-GENE/DB, <code class="docutils literal notranslate"><span class="pre">TRBV19*%</span></code> will stitch the rearrangement using each of <code class="docutils literal notranslate"><span class="pre">TRBV19\*01</span></code>, <code class="docutils literal notranslate"><span class="pre">TRBV19\*02</span></code>, and <code class="docutils literal notranslate"><span class="pre">TRBV19\*03</span></code></p></li>
+</ul>
+</li>
+<li><p>For the same fields, users can opt to systemically try every available gene and allele for a region by <em>only</em> entering <code class="docutils literal notranslate"><span class="pre">%</span></code> in that field.</p>
+<ul>
+<li><p>E.g. placing <code class="docutils literal notranslate"><span class="pre">%</span></code> in the TRBJ field will stitch that rearrangement in combination with every different beta J gene.</p></li>
+<li><p>Note that this option is expected to generate a large number of warning messages, as not all genes are likely or able to take part in certain rearrangements.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+</section>
+<section id="optional-arguments">
+<h2>Optional arguments<a class="headerlink" href="#optional-arguments" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-h</span></code> - see a help menu, containing all the command line options</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-s</span></code> - specify a species, as with <code class="docutils literal notranslate"><span class="pre">stitchr</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-cu</span></code> - use an alternative codon usage file, from which to generate the sequences for the non-templated residues (see below)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-p</span></code> - specify a path containing gene allele preferences (see below)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-r</span></code> - specify the kind of TCR, i.e. a/b or g/d</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-xg</span></code> - toggle providing additional/custom genes to be stitched into TCR transcripts in the Data/additiona-genes.fasta file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-jt</span></code> - length of J gene substring that has to be matched to avoid throwing a warning (decrease to get fewer notices about short J matches), default = 3</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="inputdata.html" class="btn btn-neutral float-left" title="stitchr input data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="guistitchr.html" class="btn btn-neutral float-right" title="GUI-stitchr" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Jamie Heather.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

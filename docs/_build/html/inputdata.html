@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>stitchr input data &mdash; stitchr  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Thimble" href="thimble.html" />
+    <link rel="prev" title="Using stitchr" href="usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            stitchr
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using <code class="docutils literal notranslate"><span class="pre">stitchr</span></code></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">stitchr</span></code> input data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#species-covered">Species covered</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#generating-new-imgt-input-files">Generating new IMGT input files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stitchr-data-formatting">Stitchr data formatting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#codon-usage-files">Codon usage files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#preferred-allele-files">Preferred allele files</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#providing-additional-gene-sequences">Providing additional gene sequences</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#skipping-constant-region-checks">Skipping constant region checks</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="thimble.html">Thimble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guistitchr.html">GUI-stitchr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="immunoglobulins.html">Stitching immunoglobulins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="referencing.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="referencing.html#citing-stitchr">Citing <code class="docutils literal notranslate"><span class="pre">stitchr</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="referencing.html#licensing-information">Licensing information</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">stitchr</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">stitchr</span></code> input data</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/inputdata.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="stitchr-input-data">
+<h1><code class="docutils literal notranslate"><span class="pre">stitchr</span></code> input data<a class="headerlink" href="#stitchr-input-data" title="Permalink to this heading"></a></h1>
+<section id="species-covered">
+<span id="species-covered-label"></span><h2>Species covered<a class="headerlink" href="#species-covered" title="Permalink to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">stitchr</span></code> can stitch any TCR loci for which it has the necessary raw data, appropriately formatted in the <code class="docutils literal notranslate"><span class="pre">Data</span></code> directory (which can be located by running <code class="docutils literal notranslate"><span class="pre">stitchr</span> <span class="pre">-dd</span></code> or <code class="docutils literal notranslate"><span class="pre">stitchr</span> <span class="pre">--data_dir</span></code>). IMGT currently contains enough TCR data for stitching (i.e. at least one leader, V gene, J gene, and constant region for a given loci) for the following species/loci:</p>
+<table class="docutils align-default" id="id14">
+<caption><span class="caption-text">stitchr species/loci table</span><a class="headerlink" href="#id14" title="Permalink to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Common Name</p></th>
+<th class="head"><p>Genus species</p></th>
+<th class="head"><p>TRA</p></th>
+<th class="head"><p>TRB</p></th>
+<th class="head"><p>TRG</p></th>
+<th class="head"><p>TRD</p></th>
+<th class="head"><p>Kazusa species ID</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>CAT</strong></p></td>
+<td><p><em>Felis catus</em></p></td>
+<td><p>✔</p></td>
+<td><p>✔</p></td>
+<td><p>✔</p></td>
+<td><p>✔</p></td>
+<td><p><a class="reference external" href="https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9685">9685</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>COW</strong></p></td>
+<td><p><em>Bos taurus</em></p></td>
+<td><p>✔</p></td>
+<td><p>✔</p></td>
+<td><p>✔</p></td>
+<td><p>✔</p></td>
+<td><p><a class="reference external" href="https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9913">9913</a></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>CYNOMOLGUS_MONKEY</strong></p></td>
+<td><p><em>Macaca fascicularis</em></p></td>
+<td></td>
+<td><p>✔</p></td>
+<td></td>
+<td></td>
+<td><p><a class="reference external" href="https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9541">9541</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>DOG</strong></p></td>
+<td><p><em>Canis lupus familiaris</em></p></td>
+<td><p>✔</p></td>
+<td><p>✔</p></td>
+<td><p>✔</p></td>
+<td><p>✔</p></td>
+<td><p><a class="reference external" href="https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9615">9615</a></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>DOLPHIN</strong></p></td>
+<td><p><em>Tursiops truncatus</em></p></td>
+<td><p>✔</p></td>
+<td></td>
+<td><p>✔</p></td>
+<td><p>✔</p></td>
+<td><p><a class="reference external" href="https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9739">9739</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>DROMEDARY</strong></p></td>
+<td><p><em>Camelus dromedarius</em></p></td>
+<td></td>
+<td><p>✔</p></td>
+<td><p>✔</p></td>
+<td></td>
+<td><p><a class="reference external" href="https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9838">9838</a></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FERRET</strong></p></td>
+<td><p><em>Mustela putorius furo</em></p></td>
+<td></td>
+<td><p>✔</p></td>
+<td></td>
+<td></td>
+<td><p><a class="reference external" href="https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9669">9669</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>HUMAN</strong></p></td>
+<td><p><em>Homo sapiens</em></p></td>
+<td><p>✔</p></td>
+<td><p>✔</p></td>
+<td><p>✔</p></td>
+<td><p>✔</p></td>
+<td><p><a class="reference external" href="https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9606">9606</a></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>MOUSE</strong></p></td>
+<td><p><em>Mus musculus</em></p></td>
+<td><p>✔</p></td>
+<td><p>✔</p></td>
+<td><p>✔</p></td>
+<td><p>✔</p></td>
+<td><p><a class="reference external" href="https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=10090">10090</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>NAKED_MOLE-RAT</strong></p></td>
+<td><p><em>Heterocephalus glaber</em></p></td>
+<td><p>✔</p></td>
+<td><p>✔</p></td>
+<td><p>✔</p></td>
+<td><p>✔</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>PIG</strong></p></td>
+<td><p><em>Sus scrofa</em></p></td>
+<td></td>
+<td><p>✔</p></td>
+<td></td>
+<td></td>
+<td><p><a class="reference external" href="https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9823">9823</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>RABBIT</strong></p></td>
+<td><p><em>Oryctolagus cuniculus</em></p></td>
+<td></td>
+<td><p>✔</p></td>
+<td><p>✔</p></td>
+<td><p>✔</p></td>
+<td><p><a class="reference external" href="https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9986">9986</a></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>RHESUS_MONKEY</strong></p></td>
+<td><p><em>Macaca mulatta</em></p></td>
+<td><p>✔</p></td>
+<td><p>✔</p></td>
+<td><p>✔</p></td>
+<td><p>✔</p></td>
+<td><p><a class="reference external" href="https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9544">9544</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>SHEEP</strong></p></td>
+<td><p><em>Ovis aries</em></p></td>
+<td><p>✔</p></td>
+<td><p>✔</p></td>
+<td></td>
+<td><p>✔</p></td>
+<td><p><a class="reference external" href="https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=9940">9940</a></p></td>
+</tr>
+</tbody>
+</table>
+<p>The species can be specified using the <code class="docutils literal notranslate"><span class="pre">-s</span> <span class="pre">/</span> <span class="pre">--species</span></code> command line flag when running your <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> command (default = ‘human’). E.g., here’s an example using everyone’s favourite mouse TCR, OT-I (sequences inferred from <a class="reference external" href="https://www.addgene.org/52111/">this plasmid on AddGene</a>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>stitchr<span class="w"> </span>-s<span class="w"> </span>mouse<span class="w"> </span>-v<span class="w"> </span>TRBV12-1<span class="w"> </span>-j<span class="w"> </span>TRBJ2-7<span class="w"> </span>-cdr3<span class="w"> </span>CASSRANYEQYF
+stitchr<span class="w"> </span>-s<span class="w"> </span>mouse<span class="w"> </span>-v<span class="w"> </span>TRAV14D-1<span class="w"> </span>-j<span class="w"> </span>TRAJ33<span class="w"> </span>-cdr3<span class="w"> </span>CAASDNYQLIW
+</pre></div>
+</div>
+<p>It must be noted that many of the less well studied species have poorer gene annotations and germline variation covered by IMGT, so TCRs produced using these datasets should be treated with more caution than say for humans. E.g. different mouse strains will have different alleles (and different numbers of gene family members), so accuracy of stitched TCRs will depend both on the quality of both germline gene information and TCR clonotyping.</p>
+</section>
+<section id="generating-new-imgt-input-files">
+<h2>Generating new IMGT input files<a class="headerlink" href="#generating-new-imgt-input-files" title="Permalink to this heading"></a></h2>
+<p>You may wish to update your raw TCR data files after an IMGT update, as sequences can be added (or even changed), or as more species become available. Assuming IMGT maintains its current noming conventions and webhosting scheme, these tasks can be undertaken automatically using the <code class="docutils literal notranslate"><span class="pre">stitchrdl</span></code> command, which is a wrapper for the <a class="reference external" href="https://github.com/JamieHeather/IMGTgeneDL">IMGTgeneDL script</a> (details in its own repo).</p>
+<p>Users should note that when this is run, it creates a <code class="docutils literal notranslate"><span class="pre">data-production-date.tsv</span></code> file in the directory of that species, which contains the IMGT release number and date of downloaded sequences,
+which should be included in any published reporting of the TCR sequences used. We also recommend that you update the germline TCR data for <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> at the same time you update the database used in whatever TCR gene annotation software you use, to ensure that there’s no discrepancy in allele nomenclature between the two.</p>
+</section>
+<section id="stitchr-data-formatting">
+<span id="data-formatting-label"></span><h2>Stitchr data formatting<a class="headerlink" href="#stitchr-data-formatting" title="Permalink to this heading"></a></h2>
+<p>Each species you wish to stitch TCRs for must have its own folder in the installed <code class="docutils literal notranslate"><span class="pre">Data/</span></code> directory, named after whatever flag you wish you use when giving <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> information through the <code class="docutils literal notranslate"><span class="pre">-s</span> <span class="pre">/</span> <span class="pre">--species</span></code> flag. Note that <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> will assume every folder in <code class="docutils literal notranslate"><span class="pre">Data/</span></code> that isn’t named ‘kazusa’ or ‘GUI-Examples’ is a potential TCR germline folder, so it’s advised to not put any other folders there. It is recommended to use <code class="docutils literal notranslate"><span class="pre">stitchrdl</span></code> to generate and update these folders
+where possible.</p>
+<p>Inside that folder there should be various files:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">data-production-date.tsv</span></code></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Contains information about the IMGT and script versions used to generate this data</p></li>
+<li><p>Technically not used by <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> as it runs, but contains important information for recording or relaying the products of <code class="docutils literal notranslate"><span class="pre">stitchr</span></code></p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">imgt-data.fasta</span></code></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Contains all of the FASTA reads that were successfully downloaded for this species</p></li>
+<li><p>Again, this file isn’t used during stitching but it’s a useful reference to have</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">J-region-motifs.tsv</span></code></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Contains automatically inferred CDR3 junction ending motifs and residues (using the process established in <a class="reference external" href="https://github.com/JamieHeather/autoDCR">the autoDCR TCR assignation tool</a>), for use in finding the ends of junctions in <code class="docutils literal notranslate"><span class="pre">stitchr</span></code></p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">C-region-motifs.tsv</span></code></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Contains automatically inferred in-frame constant region peptide sequences, for use in finding the correct frame of stitched sequences</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TR[A/B/G/D].fasta</span></code></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>FASTA files of the individual loci’s genes</p></li>
+<li><p>FASTA headers require a flag specifying what type of gene they are at the very end, after a tilde (~) character, being one of LEADER/VARIABLE/JOINING/CONSTANT</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p>Note that the method used to automatically download TCR data (<a class="reference external" href="https://github.com/JamieHeather/IMGTgeneDL">IMGTgeneDL</a>) seems to struggle for constant regions in certain species, when trying to download the fully spliced sequences. As such, the script will instead download each of the individual exons and splice them together.</p>
+<p>This is particularly important for users who wish to stitch gamma chain TCRs with constant regions which may have multiple possible exon configurations. Any constant region which uses non-conserved or duplicated exons has an additional suffix to the allele field, in which the non-standard exon labels are appended after an underscore. E.g. the human <code class="docutils literal notranslate"><span class="pre">TRGC2*05</span></code> gene has the arrangement EX1+EX2<strong>T</strong>+EX2<strong>R</strong>+EX2+EX3 (instead of the usual EX1+EX2+EX3), so it is labelled <code class="docutils literal notranslate"><span class="pre">TRGC2*05_TR</span></code>. This allows users to have multiple isoforms of the same allele with different sequences.</p>
+<section id="codon-usage-files">
+<span id="codon-files-label"></span><h3>Codon usage files<a class="headerlink" href="#codon-usage-files" title="Permalink to this heading"></a></h3>
+<p>Non-templated based are assigned by taking the most common nucleotide triplet for a given amino acid, in a provided codon usage file.</p>
+<p>Codon usage files are provided for all species for which data is available on the the <a class="reference external" href="https://www.kazusa.or.jp/">Kazusa website</a>, and can be found in the <code class="docutils literal notranslate"><span class="pre">Data/kazusa/</span></code> directory. Alternative files can be provided, but must be in the same format (e.g. those provided by <a class="reference external" href="https://hive.biochemistry.gwu.edu/dna.cgi?cmd=refseq_processor&amp;id=569942">HIVE</a>), and named according to the common species name used for the rest of the data and placed in that directory if not specified using the <code class="docutils literal notranslate"><span class="pre">-cu</span> <span class="pre">/</span> <span class="pre">--codon_usage</span></code> flag. U/T can be used interchangeably, as all U bases will be replaced with T anyway.</p>
+<p>If no species-specific codon usage file is found the script will default to using the human file.</p>
+</section>
+<section id="preferred-allele-files">
+<span id="preferred-allele-label"></span><h3>Preferred allele files<a class="headerlink" href="#preferred-allele-files" title="Permalink to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">stitchr</span></code> requires an exact allele to know which sequence to pull out of the database. By default, it always prioritises using the exact allele specified, but if the user just gives a gene identifier without an allele specified (e.g. TRAV1-1) then <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> will use the prototypical ‘01’ allele (e.g. TRAV1-1*01), as this is the only allele which every IMGT-provided gene should theoretically have. It will similarly default to *01 if explicitly given an allele which it can’t find in the
+input data.</p>
+<p>There are occasions when this is not the biologically appropriate allele to choose. While users can of course specify the allele explicitly when providing the gene, they may alternatively wish to make use of the <code class="docutils literal notranslate"><span class="pre">-p</span> <span class="pre">/</span> <span class="pre">--preferred_alleles_path</span></code> command line option, which allows them to point to a tab-delimited file detailing specific alleles which should be used. Here users can specify four fields:</p>
+<ul class="simple">
+<li><p><strong>Gene</strong>: the IMGT gene name</p></li>
+<li><p><strong>Allele</strong>: the preferred allele (i.e. the text after the ‘*’ in a complete name)</p></li>
+<li><p><strong>Region</strong>: one of LEADER/VARIABLE/JOINING/CONSTANT, which tells <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> explicitly what kind of sequence it is</p></li>
+<li><p><strong>Loci</strong>: specify which locus or loci this preferred allele covers using three digit codes, comma-delimiting if &gt;1 (e.g. “TRB” or “TRA,TRD”)</p></li>
+<li><p><strong>Source</strong>: this field is not used by <code class="docutils literal notranslate"><span class="pre">stitchr</span></code>, but can be useful for keeping track of the origin of/reason for including each preferred allele</p></li>
+</ul>
+<p>This feature is particularly of use when generating large numbers of stitched sequences from a particular individual or strain where non-prototypical alleles are known. Note that if you are specifying adifferent allele for a variable gene that has variants in its leader sequence as well, make sure you add entries for both VARIABLE and LEADER alleles.</p>
+<p>A template and two example common mouse strain files are included in the <code class="docutils literal notranslate"><span class="pre">templates/preferred-alleles/</span></code> directory. These examples are for the common mouse strains C56/Bl6 and Balb/c, and were produced by using the subspecies/strain field of the IMGT headers. Note that even then users should take care, as some genes have multiple alleles associated with them, despite being from inbred mice – e.g. TRAV9D-2 has two alleles associated with it for Balb/c (01 and 03). I’ve tried to pick the ones that are more likely to be functional (F &gt; ORF &gt; P, e.g. choosing <code class="docutils literal notranslate"><span class="pre">TRBV24*03</span></code> over 02 for Balb/c, or <code class="docutils literal notranslate"><span class="pre">TRAV9D-4*04</span></code> over 02 for C57/BL6), or are from better inferred data (e.g. taking one with functionality ‘F’ over ‘(F)’).</p>
+<section id="providing-additional-gene-sequences">
+<h4>Providing additional gene sequences<a class="headerlink" href="#providing-additional-gene-sequences" title="Permalink to this heading"></a></h4>
+<p>Sometimes you may wish to generate TCRs using additional gene sequences which won’t be provided by IMGT (at least in the context of a given species). This can be used to introduce sequences from other loci/species, and modified or otherwise non-naturally occurring gene combinations.</p>
+<p>Genes to be included can be added to the Data/additional-genes.fasta file, and then when <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> or <code class="docutils literal notranslate"><span class="pre">thimble</span></code> is run these sequences will be read in by use of the <code class="docutils literal notranslate"><span class="pre">-xg</span></code> flag. As constant region gene switching is a common modification used in TCR expression and engineering studies, human alpha/beta/gamma/delta and mouse alpha/beta constant regions have been preloaded into this file. Genes added to thisfasta must have a FASTA header in the format:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="n">accession</span><span class="o">/</span><span class="n">ID</span><span class="o">|</span><span class="n">gene</span><span class="o">*</span><span class="n">allele</span><span class="o">|</span><span class="n">species</span><span class="o">|</span><span class="n">functionality</span><span class="o">|</span><span class="n">sequence</span> <span class="nb">type</span>
+<span class="n">e</span><span class="o">.</span><span class="n">g</span><span class="o">.</span>
+<span class="o">&gt;</span><span class="n">X02883</span><span class="o">|</span><span class="n">hTRAC</span><span class="o">*</span><span class="mi">01</span><span class="o">|</span><span class="n">Homo</span> <span class="n">sapiens</span><span class="o">|</span><span class="n">F</span><span class="o">|</span><span class="n">EX1</span><span class="o">+</span><span class="n">EX2</span><span class="o">+</span><span class="n">EX3</span><span class="o">+</span><span class="n">EX</span><span class="o">|</span><span class="n">anything</span> <span class="k">else</span><span class="o">...</span>
+</pre></div>
+</div>
+<p>Only the second and fifth fields are important for these additional genes, and all other fields can be left empty (with empty functionality calls being presumed functional). The second field contains gene name and allele information: the gene name can be any alphanumeric string (that doesn’t contain an asterisk), while the allele should be a zero-padded two (or more) digit integer (e.g. ‘01’). Any case can be used in gene names, but bear in mind all will be made upper case when running. The fifth field corresponds to the relevant portion of a final TCR transcript, again drawing on IMGT nomenclature. There are four valid options: V-REGION, J-REGION, EX1+EX2+EX3+EX4 (constant region), or
+L-PART1+L-PART2 (leader sequence). Some things to remember when using custom sequences:</p>
+<ul class="simple">
+<li><p>Functional leader sequences usually have lengths that are multiples of 3. They don’t need to be, but if they’re not the V gene will need to account for it to maintain the reading frame.</p></li>
+<li><p>The 3’ nucleotide of the J gene is the first nucleotide of the first codon of the constant region.</p></li>
+<li><p>Constant regions in default settings are trimmed by the script to run up to the codon just before the first stop codon (as occur in EX4UTR exons of TRAC and TRDC). This is not required, and stop codons can be left in if desired, but care must be taken if the intention is to use <code class="docutils literal notranslate"><span class="pre">thimble</span></code> or <code class="docutils literal notranslate"><span class="pre">gui-stitchr</span></code> with these genes to make bicistronic expression constructs. It’s recommended to leave stop codons off any constant regions added to additional-genes.fasta, and then provide them in <code class="docutils literal notranslate"><span class="pre">thimble</span></code> instead as needed.</p></li>
+<li><p>Most of the gene sequence and format checks cannot be applied, so extra care must be taken to ensure input genes are valid. For instance, using the <code class="docutils literal notranslate"><span class="pre">-xg</span></code> flag automatically sets the <code class="docutils literal notranslate"><span class="pre">-sc</span></code> flag,
+which skips the usual constant region frame check (as <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> doesn’t know what frame is intended, see below).</p></li>
+<li><p>Extra genes added via the additional-genes.fasta file are supplemented to the working dictionaries in <code class="docutils literal notranslate"><span class="pre">stitcher</span></code> <em>after</em> IMGT gene sequences are read in; any extra genes with the same gene name/allele combination as one already in the IMGT dataset will    overwrite the default sequence. If you wish to use both in the same rearrangement or <code class="docutils literal notranslate"><span class="pre">thimble</span></code> run, use novel naming in the input FASTA file - e.g. the example constant regions added have ‘m’ and ‘h’ prefixes, denoting their human or mouse origin, but any chance to ensure unique names will work.</p></li>
+</ul>
+</section>
+</section>
+<section id="skipping-constant-region-checks">
+<h3>Skipping constant region checks<a class="headerlink" href="#skipping-constant-region-checks" title="Permalink to this heading"></a></h3>
+<p>For the default loci covered, <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> has a constant region frame-checking function that uses known correctly-translated sequences to infer the right frame (and where appropriate, placement of endogenous stop codons). If you wish to override these checks for some reason (most likely if you’re manually creating your own non-standard or engineered constant region sequences) then you can get the <code class="docutils literal notranslate"><span class="pre">-sc</span> <span class="pre">/</span> <span class="pre">--skip_c_checks</span></code> flag in the command line. Under these circumstances, <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> will instead determine the correct frame of the C terminal domain by finding the one with the longest stretch of amino acids before hitting a stop codon. Note that this is less reliable and slower than using the pre-computed motif files. This feature will also <strong>only activate if the gene name of the relevant constant region is not found in the C-region-motifs.tsv file for that species</strong>.</p>
+<p>If for some reason users which to skip the C region checks (using the automatically inferred translation frame) for a gene that already is covered in the pre-generated motifs file, they should add a renamed variant of that gene to the <code class="docutils literal notranslate"><span class="pre">additional-genes.fasta</span></code> file, and use the <code class="docutils literal notranslate"><span class="pre">-xg</span></code> extra genes flag. Note that using the <code class="docutils literal notranslate"><span class="pre">-xg</span></code> flag will automatically set the <code class="docutils literal notranslate"><span class="pre">-sc</span> <span class="pre">/</span> <span class="pre">--skip_c_checks</span></code> on.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="usage.html" class="btn btn-neutral float-left" title="Using stitchr" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="thimble.html" class="btn btn-neutral float-right" title="Thimble" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Jamie Heather.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

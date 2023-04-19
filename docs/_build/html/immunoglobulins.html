@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stitching immunoglobulins &mdash; stitchr  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Links" href="referencing.html" />
+    <link rel="prev" title="GUI-stitchr" href="guistitchr.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            stitchr
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using <code class="docutils literal notranslate"><span class="pre">stitchr</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="inputdata.html"><code class="docutils literal notranslate"><span class="pre">stitchr</span></code> input data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="thimble.html">Thimble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guistitchr.html">GUI-stitchr</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Stitching immunoglobulins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="referencing.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="referencing.html#citing-stitchr">Citing <code class="docutils literal notranslate"><span class="pre">stitchr</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="referencing.html#licensing-information">Licensing information</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">stitchr</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Stitching immunoglobulins</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/immunoglobulins.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="stitching-immunoglobulins">
+<h1>Stitching immunoglobulins<a class="headerlink" href="#stitching-immunoglobulins" title="Permalink to this heading"></a></h1>
+<p>BCR and antibodies are of course produced in a similar manner to TCRs, and thus the conceptual framework applies equally to those sequences. However, the existence of somatic hypermutation, far greater structural- and allelic-polymorphism, and more complicated constant region biology in the IG loci makes <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> more difficult to apply. While we are not officially supporting the use of <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> to make immunoglobulin sequences, we have made it possible for users to do so if they wish.</p>
+<p>In order to achieve this, users can try using <a class="reference external" href="https://gist.github.com/JamieHeather/bb86ea2c5968bf93a6c1df59c8849435">this modified version of stitchrdl</a> to download formatted human immunoglobulin sequences from IMGT. This will create an additional species folder called ‘HUMAN-IG’ in the stitchr data folder, wherever that’s installed. Note that we strongly recommend thoroughly checking the sequences downloaded in this manner. Alternatively users may wish to curate their own germline datasets as per the <a class="reference internal" href="inputdata.html#data-formatting-label"><span class="std std-ref">Stitchr data formatting</span></a> section, and move it to the stitchr data directory (<code class="docutils literal notranslate"><span class="pre">stitchr</span> <span class="pre">-dd</span></code>) themselves.</p>
+<p>These can then be used like so:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>stitchr<span class="w"> </span>-v<span class="w"> </span>IGHV3-30-3*01<span class="w"> </span>-j<span class="w"> </span>IGHJ4*02<span class="w"> </span>-cdr3<span class="w"> </span>CARLSPAGGFFDYW<span class="w"> </span>-c<span class="w"> </span>IGHM*01<span class="w"> </span>-s<span class="w"> </span>HUMAN-IG<span class="w"> </span>-n<span class="w"> </span>JQ304252
+stitchr<span class="w"> </span>-v<span class="w"> </span>IGHV4-61*01<span class="w"> </span>-j<span class="w"> </span>IGHJ3*02<span class="w"> </span>-cdr3<span class="w"> </span>CARITGDRGAFDIW<span class="w"> </span>-c<span class="w"> </span>IGHD*01<span class="w"> </span>-s<span class="w"> </span>HUMAN-IG<span class="w"> </span>-n<span class="w"> </span>AF262208
+stitchr<span class="w"> </span>-v<span class="w"> </span>IGHV1-69*01<span class="w"> </span>-j<span class="w"> </span>IGHJ3*02<span class="w"> </span>-cdr3<span class="w"> </span>CAREVVPTFRENAFDIW<span class="w"> </span>-c<span class="w"> </span>IGHG1*01<span class="w"> </span>-s<span class="w"> </span>HUMAN-IG<span class="w"> </span>-n<span class="w"> </span>MW177368
+stitchr<span class="w"> </span>-v<span class="w"> </span>IGHV4-59*01<span class="w"> </span>-j<span class="w"> </span>IGHJ5*02<span class="w"> </span>-cdr3<span class="w"> </span>CARGISWFDPW<span class="w"> </span>-c<span class="w"> </span>IGHE*01<span class="w"> </span>-s<span class="w"> </span>HUMAN-IG<span class="w"> </span>-n<span class="w"> </span>DQ005305
+stitchr<span class="w"> </span>-v<span class="w"> </span>IGKV3-20*01<span class="w"> </span>-j<span class="w"> </span>IGKJ5*01<span class="w"> </span>-cdr3<span class="w"> </span>CQQYGTSRPITF<span class="w"> </span>-c<span class="w"> </span>IGKC*01<span class="w"> </span>-s<span class="w"> </span>HUMAN-IG<span class="w"> </span>-n<span class="w"> </span>BC032451
+stitchr<span class="w"> </span>-v<span class="w"> </span>IGLV1-47*01<span class="w"> </span>-j<span class="w"> </span>IGLJ3*02<span class="w"> </span>-cdr3<span class="w"> </span>CAAWDDSLSGWVF<span class="w"> </span>-c<span class="w"> </span>IGLC2*01<span class="w"> </span>-s<span class="w"> </span>HUMAN-IG<span class="w"> </span>-l<span class="w"> </span>IGLV1-47*02<span class="w"> </span>-n<span class="w"> </span>AB064224
+</pre></div>
+</div>
+<p>However for the reasons stated above we recommend using caution when applying <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> to these loci: long read sequencing (both into the V and the C) and liberal use of the ‘seamless’ setting is recommended.</p>
+<p>Note that the default form of the IGH constant regions supplied when using just the gene+allele is the secreted form: (where available) the membrane bound form is produced by appending ’_M’. E.g. use <code class="docutils literal notranslate"><span class="pre">IGHM*01</span></code> for the secreted form, and <code class="docutils literal notranslate"><span class="pre">IGHM*01_M</span></code> for the membranous.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="guistitchr.html" class="btn btn-neutral float-left" title="GUI-stitchr" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="referencing.html" class="btn btn-neutral float-right" title="Links" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Jamie Heather.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
