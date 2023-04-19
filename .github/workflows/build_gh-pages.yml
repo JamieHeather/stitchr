@@ -1,8 +1,6 @@
 name: Deploy Sphinx documentation to Pages
 
-on:
-  push:
-    branches: [master] # branch to trigger deployment
+on: [ push ] # branch to trigger deployment
 
 jobs:
   pages:
