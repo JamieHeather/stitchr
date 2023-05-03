@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 """
@@ -11,8 +10,8 @@ No fancy backronym or contrived silent capitals - it just helps you stitch faste
 """
 
 
-from . import functions as fxn
-from . import stitchr as st
+from Scripts import stitchrfunctions as fxn
+from Scripts import stitchr as st
 import warnings
 import argparse
 import os

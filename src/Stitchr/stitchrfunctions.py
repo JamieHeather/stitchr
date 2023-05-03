@@ -1,8 +1,7 @@
-#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 """
-functions.py
+stitchrfunctions.py
 
 Functions for stiTChR and its related scripts
 """
@@ -22,7 +21,7 @@ if sys.version_info < (3, 9):
 else:
     import importlib.resources as importlib_resources       # importlib.resources
 
-__version__ = '1.2.1'
+__version__ = '1.2.3'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -32,8 +31,8 @@ sys.tracebacklimit = 0  # comment when debugging
 data_files = importlib_resources.files("Data")
 additional_genes_file = str(data_files / 'additional-genes.fasta')
 linkers_file = str(data_files / 'linkers.tsv')
-data_dir = additional_genes_file[:additional_genes_file.rfind('/') + 1]
-gui_examples_dir = data_dir + 'GUI-Examples/'
+data_dir = os.path.dirname(additional_genes_file)
+gui_examples_dir = os.path.join(data_dir, 'GUI-Examples')
 
 
 def custom_formatwarning(warning_msg, *args, **kwargs):
@@ -136,7 +135,7 @@ def find_species_covered():
     """
     :return: list of data directories for different species available
     """
-    species_list = [x for x in os.listdir(data_dir) if os.path.isdir(data_dir + '/' + x) and
+    species_list = [x for x in os.listdir(data_dir) if os.path.isdir(os.path.normpath(os.path.join(data_dir, x))) and
                     x != 'kazusa' and x != 'GUI-Examples' and '__' not in x]
 
     if not species_list:
@@ -151,7 +150,7 @@ def infer_species(path_to_file):
     :param path_to_file: str of a path to an input file that may or may not contain
     :return: the species detected, if one found that fits the data available in the data directory
     """
-    in_file_name = path_to_file.split('/')[-1]
+    in_file_name = os.path.basename(path_to_file)
     species_search = [x for x in find_species_covered() if x in in_file_name.upper()]
 
     if len(species_search) == 1:
@@ -306,8 +305,7 @@ def get_imgt_data(tcr_chain, gene_types, species):
 
     for gene_type in gene_types:
         if len(tcr_data[gene_type]) == 0:
-            raise Exception("No entries for " + gene_type + " in IMGT data.\nPlease ensure all appropriate data is in "
-                            "the Data/imgt-data.fasta file, and re-run split-imgt-data.py. ")
+            raise Exception("No entries for " + gene_type + " in IMGT data. ")
 
     return tcr_data, functionality, partial_genes
 
@@ -882,6 +880,10 @@ def find_j_overlap(nt_cdr3, j_germline):
             index_longest = i
 
     return j_germline[index_longest + len(longest_overlap):]
+
+
+def main():
+    print("Please use the appropriate 'stitchr', 'thimble', 'gui_stitchr' or 'stitchrdl' command.")
 
 
 codons = {'AAA': 'K', 'AAC': 'N', 'AAG': 'K', 'AAT': 'N',

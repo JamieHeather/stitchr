@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 """
@@ -11,14 +10,14 @@ A graphical user interface for stitchr, powered by PySimpleGUI
 
 import PySimpleGUI as sg
 import os
-from . import functions as fxn
+from . import stitchrfunctions as fxn
 from . import stitchr as st
 from . import thimble as th
 import collections as coll
 import warnings
 
 
-__version__ = '1.3.1'
+__version__ = '1.3.2'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -420,8 +419,7 @@ def main():
         elif event == 'find_preferred_alleles':
 
             preferred_file = values['find_preferred_alleles']
-            just_file = preferred_file.split('/')[-1]
-            window['preferred_allele_button'].update(just_file)
+            window['preferred_allele_button'].update(os.path.basename(preferred_file))
 
         elif event == 'Run Stitchr':
             warning_msgs = coll.defaultdict(str)
@@ -460,7 +458,9 @@ def main():
 
                     # Also throw in an alert if non-DNA characters used
                     if not fxn.dna_check(extra_gene[1]):
-                        warnings.warn("Warning: user-provided gene " + extra_gene[0] + " contains non-DNA sequences.")
+                        if fxn.dna_check(extra_gene[1]) != extra_gene_text:
+                            warnings.warn("Warning: user-provided gene " + extra_gene[0] +
+                                          " contains non-DNA sequences.")
 
             # Check if seamless stitching selected
             if values['chk_seamless']:

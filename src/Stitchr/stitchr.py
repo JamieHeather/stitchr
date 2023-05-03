@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 """
@@ -10,13 +9,13 @@ Can be used for TCR vector design, and other purposes.
 
 """
 
-from . import functions as fxn
+from . import stitchrfunctions as fxn
 import argparse
 import sys
 import warnings
 
 
-__version__ = '1.1.1'
+__version__ = '1.1.2'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 

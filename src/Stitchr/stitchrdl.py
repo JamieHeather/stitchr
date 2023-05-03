@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 """
@@ -9,7 +8,7 @@ Download IMGT/GENE-DB data for stitching, for a given species
 
 
 import os
-from . import functions as fxn
+from . import stitchrfunctions as fxn
 import argparse
 import subprocess
 import sys
