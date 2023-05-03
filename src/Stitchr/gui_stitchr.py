@@ -384,7 +384,8 @@ def main():
                              'using the first alphabetically.')
                     example_matches.sort()
 
-                receptor, species = upload_tcr_details(examples_path + example_matches[0], receptor, species)
+                receptor, species = upload_tcr_details(os.path.join(examples_path, example_matches[0]),
+                                                       receptor, species)
 
         elif event == 'change_receptor':
 

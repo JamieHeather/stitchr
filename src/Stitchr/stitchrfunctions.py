@@ -21,7 +21,7 @@ if sys.version_info < (3, 9):
 else:
     import importlib.resources as importlib_resources       # importlib.resources
 
-__version__ = '1.2.3'
+__version__ = '1.2.2'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -737,13 +737,12 @@ def get_linker_dict():
     :return: Dictionary of linkers contained in the Data/linkers.tsv file
     """
 
-    linker_file_path = data_dir + 'linkers.tsv'
-    if not os.path.isfile(linker_file_path):
-        raise IOError(linker_file_path + " not detected - please check linker file is present and run again. ")
+    if not os.path.isfile(linkers_file):
+        raise IOError(linkers_file + " not detected - please check linker file is present and run again. ")
 
     else:
         linkers = coll.defaultdict()
-        with open(linker_file_path, 'r') as in_file:
+        with open(linkers_file, 'r') as in_file:
             for line in in_file:
                 bits = line.rstrip().split('\t')
                 linkers[bits[0]] = bits[1]

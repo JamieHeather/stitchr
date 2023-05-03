@@ -10,15 +10,15 @@ No fancy backronym or contrived silent capitals - it just helps you stitch faste
 """
 
 
-from Scripts import stitchrfunctions as fxn
-from Scripts import stitchr as st
+from . import stitchrfunctions as fxn
+from . import stitchr as st
 import warnings
 import argparse
 import os
 import sys
 from time import time
 
-__version__ = '1.2.1'
+__version__ = '1.2.2'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 

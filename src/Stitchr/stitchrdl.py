@@ -22,7 +22,7 @@ except (ImportError, ModuleNotFoundError) as err:
     sys.exit()
 
 
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 

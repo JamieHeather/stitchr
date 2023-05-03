@@ -9,8 +9,8 @@ The main things to remember are that:
 
 * Whatever script is importing ``stitchr`` will need to initialise the necessary data using the ``get_imgt_data`` function in the ``stitchrfunctions`` script
 
-    * This must be done *for each chain*
-    * Therefore if users wish to stitch heterodimers or multiple chains in one session, they must generate the necessary data as separate variables or dictionary entries
+    * This must be done *per chain* that needs to be stitched
+    * Therefore if users wish to stitch heterodimers or multiple loci in one session, they must generate the necessary data as separate variables or dictionary entries
     * The underlying data to be stitched must be installed in the ``stitchr`` data directory (see the :ref:`input-data-label` section)
 
 * The core ``stitch`` function works on **single rearrangements**
@@ -55,7 +55,7 @@ Note that the ``stitch`` function outputs three items:
 * A string detailing the nucleotide sequence of the stitched TCR
 * An integer (0-2) detailing the translation offset (only relevant if a user-supplied 5 prime sequence has been included)
 
-If users elect to do import ``stitchr`` into their own pipelines we recommend that they familiarise themselves with the code, particularly how ``stitchr`` is called in ``thimble`` and ``gui_stitchr``. The should also validate their results using vanilla ``stitchr`` and/or known TCR sequence controls.
+If users elect to do import ``stitchr`` into their own pipelines we recommend that they familiarise themselves with the code, particularly how ``stitchr`` is called in ``thimble`` and ``gui_stitchr``. The should also validate their results using vanilla ``stitchr`` and/or known TCR sequence controls. It is also recommended that users pay attention to the warnings produced, which can be instructive even for properly stitched sequences.
 
 
 

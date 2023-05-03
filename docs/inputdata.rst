@@ -1,3 +1,5 @@
+.. _input-data-label:
+
 ``stitchr`` input data
 ======================
 
@@ -5,7 +7,6 @@
 
 Species covered
 ~~~~~~~~~~~~~~~
-
 
 ``stitchr`` can stitch any TCR loci for which it has the necessary raw data, appropriately formatted in the ``Data`` directory (which can be located by running ``stitchr -dd`` or ``stitchr --data_dir``). IMGT currently contains enough TCR data for stitching (i.e. at least one leader, V gene, J gene, and constant region for a given loci) for the following species/loci:
 
