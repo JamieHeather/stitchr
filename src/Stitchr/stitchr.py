@@ -32,7 +32,7 @@ def args():
         description="stiTChR v" + str(__version__) + '\n' +
                     ": Stitch together a coding TCR nucleotide sequence from V, J, and CDR3 info.\n"
                     "Use IMGT gene names, and include terminal CDR3 residues (C/F).\n\n"
-                    "E.g. \'python stitchr.py -v TRBV20-1 -j TRVJ1-2 -cdr3 CASWHATEVERF\'.\n"
+                    "E.g. \'stitchr -v TRBV20-1 -j TRVJ1-2 -cdr3 CASWHATEVERF\'.\n"
                     "See https://github.com/JamieHeather/stitchr and https://doi.org/10.1093/nar/gkac190.")
 
     # Input and output options
