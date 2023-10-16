@@ -1,0 +1,6 @@
+[console_scripts]
+gui_stitchr = Stitchr.gui_stitchr:main
+stitchr = Stitchr.stitchr:main
+stitchrdl = Stitchr.stitchrdl:main
+stitchrfunctions = Stitchr.stitchrfunctions:main
+thimble = Stitchr.thimble:main

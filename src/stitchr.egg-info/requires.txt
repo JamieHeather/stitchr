@@ -1,0 +1,2 @@
+IMGTgeneDL>=0.5.2
+importlib-resources>=1.1.0

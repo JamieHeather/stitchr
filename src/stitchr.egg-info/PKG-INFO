@@ -1,0 +1,24 @@
+Metadata-Version: 2.1
+Name: stitchr
+Version: 1.1.2
+Summary: Stitch together coding TCR sequences from V/J/CDR3 information
+Home-page: https://github.com/JamieHeather/stitchr
+Author: Jamie Heather
+Author-email: jheather@mgh.harvard.edu
+License: : OSI Approved :: MIT License
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: IMGTgeneDL>=0.5.2
+Requires-Dist: importlib-resources>=1.1.0
+
+![](images/stitchr-logo.png)
+
+### Stitch together TCR coding nucleotide sequences from V/J/CDR3 information
+
+##### Jamie Heather | CCR @ MGH | 2023
+
+[The documentation for stitchr can be accessed at this link: https://jamieheather.github.io/stitchr/](https://jamieheather.github.io/stitchr/)
+
+
+
