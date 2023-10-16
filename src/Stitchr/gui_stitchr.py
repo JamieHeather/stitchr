@@ -301,7 +301,7 @@ def main():
         [sg.InputText('', key='TR1_leader', size=half_sz),
          sg.InputText('', key='TR1C', size=half_sz)],
 
-        [sg.Text('5\' sequence', size=half_sz), sg.Text('3\' sequence')],
+        [sg.Text('Sequence to append to 5\' (optional)', size=half_sz), sg.Text('Sequence to append to 3\' (optional)')],
         [sg.InputText('', key='TR1_5_prime_seq', size=half_sz),
          sg.InputText('', key='TR1_3_prime_seq', size=half_sz)],
 
@@ -331,7 +331,7 @@ def main():
         [sg.InputText('', key='TR2_leader', size=half_sz),
          sg.InputText('', key='TR2C', size=half_sz)],
 
-        [sg.Text('5\' sequence', size=half_sz), sg.Text('3\' sequence')],
+        [sg.Text('Sequence to append to 5\' (optional)', size=half_sz), sg.Text('Sequence to append to 3\' (optional)')],
 
         [sg.InputText('', key='TR2_5_prime_seq', size=half_sz),
          sg.InputText('', key='TR2_3_prime_seq', size=half_sz)],
