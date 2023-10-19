@@ -296,7 +296,7 @@ def main():
 
         [sg.Text('TRA arbitrary name (optional)', key='TR1_name_text')], [sg.InputText('', key='TR1_name', size=sz)],
 
-        [sg.Text('TRA alternative leader (optional)', size=half_sz, key='TR1_l_title_text'), sg.Text('TRAC gene name (required)', key='TR1_c_title_text')],
+        [sg.Text('TRA alternative leader (optional)', size=half_sz, key='TR1_l_title_text'), sg.Text('TRAC gene name (optional)', key='TR1_c_title_text')],
 
         [sg.InputText('', key='TR1_leader', size=half_sz),
          sg.InputText('', key='TR1C', size=half_sz)],
@@ -326,7 +326,7 @@ def main():
 
         [sg.Text('TRB aribitrary name (optional)', key='TR2_name_text')], [sg.InputText('', key='TR2_name', size=sz)],
 
-        [sg.Text('TRB alternative leader (optional)', size=half_sz, key='TR2_l_title_text'), sg.Text('TRBC gene name (required)', key='TR2_c_title_text')],
+        [sg.Text('TRB alternative leader (optional)', size=half_sz, key='TR2_l_title_text'), sg.Text('TRBC gene name (optional)', key='TR2_c_title_text')],
 
         [sg.InputText('', key='TR2_leader', size=half_sz),
          sg.InputText('', key='TR2C', size=half_sz)],
