@@ -102,7 +102,7 @@ def args():
     return parser.parse_args()
 
 
-def stitch(specific_args, tcr_info, functionality, partial_info, codon_dict, j_warning_threshold, preferences):
+def stitch(specific_args, tcr_info, functionality, partial_info, codon_dict, j_warning_threshold, preferences, restriction):
     """
     Core function, that performs the actual TCR stitching
     :param specific_args: basic input arguments of a given rearrangement (e.g. V/J/CDR3)
@@ -388,6 +388,11 @@ def stitch(specific_args, tcr_info, functionality, partial_info, codon_dict, j_w
     # Then finally stitch all that info together and output!
     out_bits = [specific_args['name'], used_alleles['v'], used_alleles['j'],
                 used_alleles['c'], specific_args['cdr3'], used_alleles['l'] + '(L)']
+
+    print(restriction)
+    # TODO add call to a restriction site checker if a condition is met
+    if restriction == True:
+        print(stitched_nt)
 
     # TODO add information to output header if additional 5'/3' sequences specified?
     return out_bits, stitched_nt, transl_offset
