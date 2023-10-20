@@ -269,6 +269,9 @@ def main():
 
         [sg.Checkbox('Seamless CDR3 stitching', key='chk_seamless', enable_events=True, font=(fnt, 12))],
 
+        #Added a box to check for whether User wants to check for restriction sites in their TCR
+        [sg.Checkbox('Restriction Site Check', key='chk_restriction', enable_events=True, font=(fnt, 12))],
+
         [sg.Button('Run Stitchr', size=(int(box_width / 4), 2), font=(fnt, 20))],
 
         [sg.InputText(key='Export output', do_not_clear=False, enable_events=True, visible=False,
@@ -469,6 +472,11 @@ def main():
             else:
                 seamless = False
 
+            if values['chk_restriction']:
+                restriction = True
+            else:
+                restriction = False
+
             # Then stitch each individual chain...
             for ref_chain in ['TR1', 'TR2']:
                 chain = convert_chains[receptor][ref_chain]
@@ -529,12 +537,12 @@ def main():
                             outputs[ref_chain + '_out_list'], \
                             outputs[ref_chain + '_stitched'], \
                             outputs[ref_chain + '_offset'] = st.stitch(tcr_bits, tcr_dat, functionality,
-                                                                       partial, codons, 3, preferred)
+                                                                       partial, codons, 3, preferred, restriction)
 
                             outputs[ref_chain + '_out_str'] = '|'.join(outputs[ref_chain + '_out_list'])
                             outputs[ref_chain + '_fasta'] = fxn.fastafy('nt|' + outputs[ref_chain + '_out_str'],
                                                                         outputs[ref_chain + '_stitched'])
-
+                           
                             window[ref_chain + '_out'].update(outputs[ref_chain + '_fasta'])
 
                         except Exception as message:
