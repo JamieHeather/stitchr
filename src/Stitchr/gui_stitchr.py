@@ -231,8 +231,8 @@ def main():
     receptor_list = ['TRA/TRB', 'TRG/TRD']
 
     global link_orders
-    link_orders = {'TRA/TRB': ['A-B', 'B-A'],
-                   'TRG/TRD': ['G-D', 'D-G']}
+    link_orders = {'TRA/TRB': ['AB', 'BA'],
+                   'TRG/TRD': ['GD', 'DG']}
 
     examples_path = fxn.gui_examples_dir
     preferred = ''
@@ -241,7 +241,7 @@ def main():
     # General interface column
     col1 = [
 
-        [sg.Button('Use Example Data', size=quart_sz), sg.Button('Reset Form', size=quart_sz)],
+        [sg.Button('Example data', size=quart_sz), sg.Button('Reset form', size=quart_sz)],
 
         [sg.FileBrowse(key="uploaded_tcr", size=quart_sz, button_text='Find TCR input file'),
          sg.Button("Upload TCR details", size=quart_sz)],
@@ -263,7 +263,7 @@ def main():
 
         [sg.InputText('', key='custom_linker', visible=False, size=third_sz)],
 
-        [sg.Text('Chain link order', size=quart_sz, font=(fnt, 12), justification='c'),
+        [sg.Text('Link order', size=quart_sz, font=(fnt, 12), justification='c'),
          sg.Combo(link_orders[receptor], key='link_order_choice', default_value=link_orders[receptor][1],
                   size=(8, 1), enable_events=True)],
 
@@ -276,7 +276,7 @@ def main():
          sg.FileSaveAs(file_types=(("FASTA files", "*.fasta"),), default_extension='.fasta',
                        size=quart_sz, button_text='Export output'), sg.Button('Exit', size=quart_sz)],
 
-        [sg.Text('Linked product out', key='linked_out_text')],
+        [sg.Text('Linked out', key='linked_out_text')],
         [sg.MLine(default_text='', size=(int(box_width / 2), 10), key='linked_out', font=out_box_font)],
 
         [sg.Text('Linked log', key='linked_log_text')],
@@ -288,20 +288,20 @@ def main():
 
         [sg.Text('Alpha chain TCR', font=(fnt, 16), key='TR1_title_text')],
 
-        [sg.Text('TRAV gene name (required)', key='TR1_V_text')], [sg.InputText('', key='TR1V', size=sz)],
+        [sg.Text('TRAV gene name*', key='TR1_V_text')], [sg.InputText('', key='TR1V', size=sz)],
 
-        [sg.Text('TRAJ gene name (required)', key='TR1_J_text')], [sg.InputText('', key='TR1J', size=sz)],
+        [sg.Text('TRAJ gene name*', key='TR1_J_text')], [sg.InputText('', key='TR1J', size=sz)],
 
-        [sg.Text('TRA CDR3 junction (nucleotide/amino acid (required))', key='TR1_CDR3_text')], [sg.InputText('', key='TR1_CDR3', size=sz)],
+        [sg.Text('TRA CDR3 junction* (nt/aa)', key='TR1_CDR3_text')], [sg.InputText('', key='TR1_CDR3', size=sz)],
 
-        [sg.Text('TRA arbitrary name (optional)', key='TR1_name_text')], [sg.InputText('', key='TR1_name', size=sz)],
+        [sg.Text('TRA arbitrary name', key='TR1_name_text')], [sg.InputText('', key='TR1_name', size=sz)],
 
-        [sg.Text('TRA alternative leader (optional)', size=half_sz, key='TR1_l_title_text'), sg.Text('TRAC gene name (optional)', key='TR1_c_title_text')],
+        [sg.Text('TRA leader', size=half_sz, key='TR1_l_title_text'), sg.Text('TRAC gene name', key='TR1_c_title_text')],
 
         [sg.InputText('', key='TR1_leader', size=half_sz),
          sg.InputText('', key='TR1C', size=half_sz)],
 
-        [sg.Text('Sequence to append to 5\' (optional)', size=half_sz), sg.Text('Sequence to append to 3\' (optional)')],
+        [sg.Text('5\' alpha chain append', size=half_sz), sg.Text('3\' alpha chain append')],
         [sg.InputText('', key='TR1_5_prime_seq', size=half_sz),
          sg.InputText('', key='TR1_3_prime_seq', size=half_sz)],
 
@@ -318,20 +318,20 @@ def main():
 
         [sg.Text('Beta chain TCR', font=(fnt, 16), key='TR2_title_text')],
 
-        [sg.Text('TRBV gene name (required)', key='TR2_V_text')], [sg.InputText('', key='TR2V', size=sz)],
+        [sg.Text('TRBV gene name*', key='TR2_V_text')], [sg.InputText('', key='TR2V', size=sz)],
 
-        [sg.Text('TRBJ gene name (required)', key='TR2_J_text')], [sg.InputText('', key='TR2J', size=sz)],
+        [sg.Text('TRBJ gene name*', key='TR2_J_text')], [sg.InputText('', key='TR2J', size=sz)],
 
-        [sg.Text('TRB CDR3 junction (nucleotide/amino acid (required))', key='TR2_CDR3_text')], [sg.InputText('', key='TR2_CDR3', size=sz)],
+        [sg.Text('TRB CDR3 junction* (nt/aa)', key='TR2_CDR3_text')], [sg.InputText('', key='TR2_CDR3', size=sz)],
 
-        [sg.Text('TRB aribitrary name (optional)', key='TR2_name_text')], [sg.InputText('', key='TR2_name', size=sz)],
+        [sg.Text('TRB arbitrary name', key='TR2_name_text')], [sg.InputText('', key='TR2_name', size=sz)],
 
-        [sg.Text('TRB alternative leader (optional)', size=half_sz, key='TR2_l_title_text'), sg.Text('TRBC gene name (optional)', key='TR2_c_title_text')],
+        [sg.Text('TRB leader', size=half_sz, key='TR2_l_title_text'), sg.Text('TRBC gene name', key='TR2_c_title_text')],
 
         [sg.InputText('', key='TR2_leader', size=half_sz),
          sg.InputText('', key='TR2C', size=half_sz)],
 
-        [sg.Text('Sequence to append to 5\' (optional)', size=half_sz), sg.Text('Sequence to append to 3\' (optional)')],
+        [sg.Text('5\' alpha chain append', size=half_sz), sg.Text('3\' alpha chain append')],
 
         [sg.InputText('', key='TR2_5_prime_seq', size=half_sz),
          sg.InputText('', key='TR2_3_prime_seq', size=half_sz)],
