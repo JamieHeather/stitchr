@@ -267,7 +267,7 @@ def main():
          sg.Combo(link_orders[receptor], key='link_order_choice', default_value=link_orders[receptor][1],
                   size=(8, 1), enable_events=True)],
 
-        [sg.Checkbox('Seamless stitching', key='chk_seamless', enable_events=True, font=(fnt, 12))],
+        [sg.Checkbox('Seamless CDR3 stitching', key='chk_seamless', enable_events=True, font=(fnt, 12))],
 
         [sg.Button('Run Stitchr', size=(int(box_width / 4), 2), font=(fnt, 20))],
 
@@ -288,20 +288,20 @@ def main():
 
         [sg.Text('Alpha chain TCR', font=(fnt, 16), key='TR1_title_text')],
 
-        [sg.Text('TRAV', key='TR1_V_text')], [sg.InputText('', key='TR1V', size=sz)],
+        [sg.Text('TRAV gene name*', key='TR1_V_text')], [sg.InputText('', key='TR1V', size=sz)],
 
-        [sg.Text('TRAJ', key='TR1_J_text')], [sg.InputText('', key='TR1J', size=sz)],
+        [sg.Text('TRAJ gene name*', key='TR1_J_text')], [sg.InputText('', key='TR1J', size=sz)],
 
-        [sg.Text('TRA CDR3 junction', key='TR1_CDR3_text')], [sg.InputText('', key='TR1_CDR3', size=sz)],
+        [sg.Text('TRA CDR3 junction* (nt/aa)', key='TR1_CDR3_text')], [sg.InputText('', key='TR1_CDR3', size=sz)],
 
-        [sg.Text('TRA name', key='TR1_name_text')], [sg.InputText('', key='TR1_name', size=sz)],
+        [sg.Text('TRA arbitrary name', key='TR1_name_text')], [sg.InputText('', key='TR1_name', size=sz)],
 
-        [sg.Text('TRA leader', size=half_sz, key='TR1_l_title_text'), sg.Text('TRAC', key='TR1_c_title_text')],
+        [sg.Text('TRA leader', size=half_sz, key='TR1_l_title_text'), sg.Text('TRAC gene name', key='TR1_c_title_text')],
 
         [sg.InputText('', key='TR1_leader', size=half_sz),
          sg.InputText('', key='TR1C', size=half_sz)],
 
-        [sg.Text('5\' sequence', size=half_sz), sg.Text('3\' sequence')],
+        [sg.Text('5\' alpha chain append', size=half_sz), sg.Text('3\' alpha chain append')],
         [sg.InputText('', key='TR1_5_prime_seq', size=half_sz),
          sg.InputText('', key='TR1_3_prime_seq', size=half_sz)],
 
@@ -318,20 +318,20 @@ def main():
 
         [sg.Text('Beta chain TCR', font=(fnt, 16), key='TR2_title_text')],
 
-        [sg.Text('TRBV', key='TR2_V_text')], [sg.InputText('', key='TR2V', size=sz)],
+        [sg.Text('TRBV gene name*', key='TR2_V_text')], [sg.InputText('', key='TR2V', size=sz)],
 
-        [sg.Text('TRBJ', key='TR2_J_text')], [sg.InputText('', key='TR2J', size=sz)],
+        [sg.Text('TRBJ gene name*', key='TR2_J_text')], [sg.InputText('', key='TR2J', size=sz)],
 
-        [sg.Text('TRB CDR3 junction', key='TR2_CDR3_text')], [sg.InputText('', key='TR2_CDR3', size=sz)],
+        [sg.Text('TRB CDR3 junction* (nt/aa)', key='TR2_CDR3_text')], [sg.InputText('', key='TR2_CDR3', size=sz)],
 
-        [sg.Text('TRB name', key='TR2_name_text')], [sg.InputText('', key='TR2_name', size=sz)],
+        [sg.Text('TRB arbitrary name', key='TR2_name_text')], [sg.InputText('', key='TR2_name', size=sz)],
 
-        [sg.Text('TRB leader', size=half_sz, key='TR2_l_title_text'), sg.Text('TRBC', key='TR2_c_title_text')],
+        [sg.Text('TRB leader', size=half_sz, key='TR2_l_title_text'), sg.Text('TRBC gene name', key='TR2_c_title_text')],
 
         [sg.InputText('', key='TR2_leader', size=half_sz),
          sg.InputText('', key='TR2C', size=half_sz)],
 
-        [sg.Text('5\' sequence', size=half_sz), sg.Text('3\' sequence')],
+        [sg.Text('5\' alpha chain append', size=half_sz), sg.Text('3\' alpha chain append')],
 
         [sg.InputText('', key='TR2_5_prime_seq', size=half_sz),
          sg.InputText('', key='TR2_3_prime_seq', size=half_sz)],
