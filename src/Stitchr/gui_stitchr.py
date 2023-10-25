@@ -537,7 +537,7 @@ def main():
                             outputs[ref_chain + '_out_list'], \
                             outputs[ref_chain + '_stitched'], \
                             outputs[ref_chain + '_offset'] = st.stitch(tcr_bits, tcr_dat, functionality,
-                                                                       partial, codons, 3, preferred, restriction)
+                                                                       partial, codons, 3, preferred, restriction, ref_chain)
 
                             outputs[ref_chain + '_out_str'] = '|'.join(outputs[ref_chain + '_out_list'])
                             outputs[ref_chain + '_fasta'] = fxn.fastafy('nt|' + outputs[ref_chain + '_out_str'],
