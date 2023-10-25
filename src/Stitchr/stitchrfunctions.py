@@ -14,6 +14,8 @@ import sys
 import textwrap
 import datetime
 import warnings
+from Bio.Seq import Seq
+from Bio.Restriction import Restriction as Re
 
 # Ensure correct importlib-resources function imported
 if sys.version_info < (3, 9):
@@ -879,6 +881,14 @@ def find_j_overlap(nt_cdr3, j_germline):
             index_longest = i
 
     return j_germline[index_longest + len(longest_overlap):]
+
+
+def check_restricts(sequence, enzymes):
+    seq = Seq(sequence)
+    rb = Re.RestrictionBatch()
+    for i in enzymes:
+        rb.add(i)
+    return(rb.search(seq))
 
 
 def main():
