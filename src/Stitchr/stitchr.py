@@ -389,7 +389,7 @@ def stitch(specific_args, tcr_info, functionality, partial_info, codon_dict, j_w
     out_bits = [specific_args['name'], used_alleles['v'], used_alleles['j'],
                 used_alleles['c'], specific_args['cdr3'], used_alleles['l'] + '(L)']
 
-    # TODO add call to a restriction site checker if a condition is met
+    # Call to a restriction site checker if a condition is met
     if restriction == True:
         enzymes = ['BamHI', 'SalI']
         print(ref_chain)
@@ -398,7 +398,8 @@ def stitch(specific_args, tcr_info, functionality, partial_info, codon_dict, j_w
             if not given:
                 break
             enzymes.append(given)
-        print(fxn.check_restricts(stitched_nt, enzymes))
+        sites = fxn.check_restricts(stitched_nt, enzymes)
+        print(fxn.show(sites, stitched_nt))
 
     # TODO add information to output header if additional 5'/3' sequences specified?
     return out_bits, stitched_nt, transl_offset

@@ -884,11 +884,32 @@ def find_j_overlap(nt_cdr3, j_germline):
 
 
 def check_restricts(sequence, enzymes):
+    '''
+    Input: String of TCR sequence, List of enzymes specificed by user to check
+    Ouput: Dictionary of Restriction enzymes that have a site located in the TCR sequence
+    Method: Checks the sequence using a BioPython Restriction enzyme tool   
+    '''
     seq = Seq(sequence)
     rb = Re.RestrictionBatch()
     for i in enzymes:
         rb.add(i)
     return(rb.search(seq))
+
+
+def show(sites, sequence):
+    b = 0
+    sections = list()
+    for i in sites:
+        sections.append(i)
+        if len(sites[i]) > 0:
+            for a in sites[i]:
+                sections.append(sites[i])
+                sections.append(sequence[b:a-1])
+                b = a - 1
+            sections.append(sequence[b:])
+        else:
+            sections.append("[]")
+    return(sections)
 
 
 def main():
