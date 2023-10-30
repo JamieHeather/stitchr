@@ -895,7 +895,7 @@ def check_restricts(sequence, enzymes):
         rb.add(i)
     return(rb.search(seq))
 
-
+'''
 def show(sites, sequence):
     b = 0
     sections = list()
@@ -910,7 +910,7 @@ def show(sites, sequence):
         else:
             sections.append("[]")
     return(sections)
-
+'''
 
 def main():
     print("Please use the appropriate 'stitchr', 'thimble', 'gui_stitchr' or 'stitchrdl' command.")
