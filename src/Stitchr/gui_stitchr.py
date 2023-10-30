@@ -269,8 +269,7 @@ def main():
 
         [sg.Checkbox('Seamless CDR3 stitching', key='chk_seamless', enable_events=True, font=(fnt, 12))],
 
-        #Added a box to check for whether User wants to check for restriction sites in their TCR
-        [sg.Checkbox('Restriction Site Check', key='chk_restriction', enable_events=True, font=(fnt, 12))],
+        [sg.Checkbox('Check Restriction Sites (BamHI, SalI)', key='chk_restriction', enable_events=True, font=(fnt, 12))],
 
         [sg.Button('Run Stitchr', size=(int(box_width / 4), 2), font=(fnt, 20))],
 
