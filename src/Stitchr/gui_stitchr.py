@@ -267,7 +267,7 @@ def main():
          sg.Combo(link_orders[receptor], key='link_order_choice', default_value=link_orders[receptor][1],
                   size=(8, 1), enable_events=True)],
 
-        [sg.Checkbox('Seamless CDR3 stitching', key='chk_seamless', enable_events=True, font=(fnt, 12))],
+        [sg.Checkbox('CDR3 flanking nucleotides (20)', key='chk_seamless', enable_events=True, font=(fnt, 12))],
 
         [sg.Button('Run Stitchr', size=(int(box_width / 4), 2), font=(fnt, 20))],
 
@@ -296,7 +296,7 @@ def main():
 
         [sg.Text('TRA arbitrary name', key='TR1_name_text')], [sg.InputText('', key='TR1_name', size=sz)],
 
-        [sg.Text('TRA leader', size=half_sz, key='TR1_l_title_text'), sg.Text('TRAC gene name', key='TR1_c_title_text')],
+        #[sg.Text('TRA leader', size=half_sz, key='TR1_l_title_text'), sg.Text('TRAC gene name', key='TR1_c_title_text')],
 
         [sg.InputText('', key='TR1_leader', size=half_sz),
          sg.InputText('', key='TR1C', size=half_sz)],
