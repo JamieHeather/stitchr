@@ -296,11 +296,11 @@ def main():
 
         [sg.Text('TRA arbitrary name', key='TR1_name_text')], [sg.InputText('', key='TR1_name', size=sz)],
 
-        [sg.Text('Alternativbe TRA leader', size=half_sz, key='TR1_l_title_text'), sg.Text('TRAC gene name', size=half_sz, key='TR1_c_title_text')],
+        [sg.Text('TRA Alternative leader', size=half_sz, key='TR1_l_title_text'), sg.Text('TRAC gene name', size=half_sz, key='TR1_c_title_text')],
 
         [sg.InputText('', key='TR1_leader', size=half_sz), sg.InputText('', key='TR1C', size=half_sz)],
 
-        [sg.Text('5\' alpha chain append', size=half_sz), sg.Text('3\' alpha chain append')],
+        [sg.Text('5\' chain append', size=half_sz), sg.Text('3\' chain append')],
         [sg.InputText('', key='TR1_5_prime_seq', size=half_sz),
          sg.InputText('', key='TR1_3_prime_seq', size=half_sz)],
 
@@ -325,11 +325,11 @@ def main():
 
         [sg.Text('TRB arbitrary name', key='TR2_name_text')], [sg.InputText('', key='TR2_name', size=sz)],
 
-        [sg.Text('Alternative TRB leader', size=half_sz, key='TR2_l_title_text'), sg.Text('TRBC gene name', key='TR2_c_title_text', size=half_sz)],
+        [sg.Text('TRB Alternative leader', size=half_sz, key='TR2_l_title_text'), sg.Text('TRBC gene name', key='TR2_c_title_text', size=half_sz)],
 
         [sg.InputText('', key='TR2_leader', size=half_sz), sg.InputText('', key='TR2C', size=half_sz)],
 
-        [sg.Text('5\' alpha chain append', size=half_sz), sg.Text('3\' alpha chain append')],
+        [sg.Text('5\' chain append', size=half_sz), sg.Text('3\' chain append')],
 
         [sg.InputText('', key='TR2_5_prime_seq', size=half_sz),
          sg.InputText('', key='TR2_3_prime_seq', size=half_sz)],
