@@ -895,22 +895,45 @@ def check_restricts(sequence, enzymes):
         rb.add(i)
     return(rb.search(seq))
 
-'''
-def show(sites, sequence):
-    b = 0
-    sections = list()
+
+def find_start(sequence):
+    """
+    Input: Takes a string sequence
+    Ouput: Returns the position of the first ATG codon it finds
+    Method: Utilizes the Biopython Seq module and find function
+    """
+    seq = Seq(sequence)
+    result = seq.index('ATG')
+    return(result)
+
+
+def wobble(sequence, sites):
     for i in sites:
-        sections.append(i)
         if len(sites[i]) > 0:
             for a in sites[i]:
-                sections.append(sites[i])
-                sections.append(sequence[b:a-1])
-                b = a - 1
-            sections.append(sequence[b:])
-        else:
-            sections.append("[]")
-    return(sections)
-'''
+                codon = ""
+                length = len(sequence[:a-2])
+                if (length % 3) == 0:
+                    codon = sequence[a-2:a+1]
+                    sequence = sequence[:a-2] + replace_acid(codon) + sequence[a+1:]
+                elif(length % 3) == 1:
+                    codon = sequence[a-3: a]
+                    sequence = sequence[:a-3] + replace_acid(codon) + sequence[a:]
+                else:
+                    codon = sequence[a-4: a-1]
+                    sequence = sequence[:a-4] + replace_acid(codon) + sequence[a-1:]
+    return(sequence)
+
+def replace_acid(seq):
+    nt = ""
+    for i in range(0, len(seq), 3):
+        site = seq[i:i+3].upper()
+        for codon in codons:
+            if (codons[codon] == codons[site]) & (codon != site):
+                nt += codon
+                break
+    return(nt)
+
 
 def main():
     print("Please use the appropriate 'stitchr', 'thimble', 'gui_stitchr' or 'stitchrdl' command.")
