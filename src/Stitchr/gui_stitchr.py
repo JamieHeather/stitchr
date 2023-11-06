@@ -271,6 +271,8 @@ def main():
 
         [sg.Checkbox('Check Restriction Sites (BamHI, SalI)', key='chk_restriction', enable_events=True, font=(fnt, 12))],
 
+        [sg.Checkbox('Check Restriction Sites (BamHI, SalI)', key='chk_restriction', enable_events=True, font=(fnt, 12))],
+
         [sg.Button('Run Stitchr', size=(int(box_width / 4), 2), font=(fnt, 20))],
 
         [sg.InputText(key='Export output', do_not_clear=False, enable_events=True, visible=False,
