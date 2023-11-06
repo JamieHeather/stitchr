@@ -911,7 +911,7 @@ def wobble(sequence, sites):
     """
     Input: String sequence, set of restriction sites and positions they occur
     Output: String sequence that has synonymous AA sequence to input
-    Method: Checks frame and finds a codon with site nt being the last nt and sends to replace_acid
+    Method: Checks frame and finds a codon that can be excised and still be inframe and sends to replace_codon
     """
     for i in sites:
         if len(sites[i]) > 0:
@@ -920,16 +920,16 @@ def wobble(sequence, sites):
                 length = len(sequence[:a-2])
                 if (length % 3) == 0:
                     codon = sequence[a-2:a+1]
-                    sequence = sequence[:a-2] + replace_acid(codon) + sequence[a+1:]
+                    sequence = sequence[:a-2] + replace_codon(codon) + sequence[a+1:]
                 elif(length % 3) == 1:
                     codon = sequence[a-3: a]
-                    sequence = sequence[:a-3] + replace_acid(codon) + sequence[a:]
+                    sequence = sequence[:a-3] + replace_codon(codon) + sequence[a:]
                 else:
                     codon = sequence[a-4: a-1]
-                    sequence = sequence[:a-4] + replace_acid(codon) + sequence[a-1:]
+                    sequence = sequence[:a-4] + replace_codon(codon) + sequence[a-1:]
     return(sequence)
 
-def replace_acid(seq):
+def replace_codon(seq):
     """
     Input: A string of 3 letters
     Output: A string of 3 letters
