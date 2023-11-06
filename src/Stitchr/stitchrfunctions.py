@@ -908,6 +908,11 @@ def find_start(sequence):
 
 
 def wobble(sequence, sites):
+    """
+    Input: String sequence, set of restriction sites and positions they occur
+    Output: String sequence that has synonymous AA sequence to input
+    Method: Checks frame and finds a codon with site nt being the last nt and sends to replace_acid
+    """
     for i in sites:
         if len(sites[i]) > 0:
             for a in sites[i]:
@@ -925,6 +930,11 @@ def wobble(sequence, sites):
     return(sequence)
 
 def replace_acid(seq):
+    """
+    Input: A string of 3 letters
+    Output: A string of 3 letters
+    Method: Finds synonymous codon sequence to the input
+    """
     nt = ""
     for i in range(0, len(seq), 3):
         site = seq[i:i+3].upper()
