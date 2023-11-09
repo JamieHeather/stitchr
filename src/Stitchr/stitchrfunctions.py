@@ -929,6 +929,7 @@ def wobble(sequence, sites):
                 else:
                     codon = sequence[a-4: a-1]
                     sequence = sequence[:a-4] + replace_codon(codon) + sequence[a-1:]
+                sites = check_restricts(sequence, ["BamHI", "SalI"])
     return(sequence)
 
 def replace_codon(seq):
