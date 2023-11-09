@@ -372,7 +372,7 @@ def stitch(specific_args, tcr_info, functionality, partial_info, codon_dict, j_w
 
         # Call to a restriction site checker if a condition is met
     if restriction == True:
-        enzymes = ['EcoRI', 'SalI']
+        enzymes = ['BamHI', 'SalI']
         sites = fxn.check_restricts(stitched_nt, enzymes)
         print(ref_chain, ": ", sites)
         fxn.wobble(stitched_nt, sites)
