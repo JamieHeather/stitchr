@@ -375,7 +375,7 @@ def stitch(specific_args, tcr_info, functionality, partial_info, codon_dict, j_w
         enzymes = ['BamHI', 'SalI']
         sites = fxn.check_restricts(stitched_nt, enzymes)
         print(ref_chain, ": ", sites)
-        fxn.wobble(stitched_nt, sites)
+        fxn.wobble(stitched_nt, sites, enzymes)
 
     # If optional 5'/3' sequences are specified, add them to the relevant place
     if specific_args['5_prime_seq']:

@@ -909,7 +909,7 @@ def find_start(sequence):
     return(result)
 
 
-def wobble(sequence, sites):
+def wobble(sequence, sites, enzymes):
     """
     Input: String sequence, set of restriction sites and positions they occur
     Output: String sequence that has synonymous AA sequence to input
@@ -929,7 +929,7 @@ def wobble(sequence, sites):
                 else:
                     codon = sequence[a-4: a-1]
                     sequence = sequence[:a-4] + replace_codon(codon) + sequence[a-1:]
-                sites = check_restricts(sequence, ["BamHI", "SalI"])
+                sites = check_restricts(sequence, enzymes)
     return(sequence)
 
 def replace_codon(seq):
