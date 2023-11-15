@@ -916,20 +916,28 @@ def wobble(sequence, sites, enzymes):
     Method: Checks frame and finds a codon that can be excised and still be inframe and sends to replace_codon
     """
     for i in sites:
+        while len(sites[i]) > 0:
+            site_list = sites[i]
+            a = site_list[0]
+            site = i.site
+            site_len = len(site)
+            if (site_len % 3) != 0:
+                site_len += (3 - (site_len % 3))
+            seq_len = len(sequence[:a-2])
+            if (seq_len % 3) == 0:
+                site = sequence[a-2:a-2+site_len]
+                sequence = sequence[:a-2] + replace_codon(site) + sequence[a-2+site_len:]
+            elif(seq_len % 3) == 1:
+                site = sequence[a-3: a-3+site_len]
+                sequence = sequence[:a-3] + replace_codon(site) + sequence[a-3+site_len:]
+            else:
+                site = sequence[a-4: a-4+site_len]
+                sequence = sequence[:a-4] + replace_codon(site) + sequence[a-4+site_len:]
+            sites = check_restricts(sequence, enzymes)
+    #Recheck
+    for i in sites:
         if len(sites[i]) > 0:
-            for a in sites[i]:
-                codon = ""
-                length = len(sequence[:a-2])
-                if (length % 3) == 0:
-                    codon = sequence[a-2:a+1]
-                    sequence = sequence[:a-2] + replace_codon(codon) + sequence[a+1:]
-                elif(length % 3) == 1:
-                    codon = sequence[a-3: a]
-                    sequence = sequence[:a-3] + replace_codon(codon) + sequence[a:]
-                else:
-                    codon = sequence[a-4: a-1]
-                    sequence = sequence[:a-4] + replace_codon(codon) + sequence[a-1:]
-                sites = check_restricts(sequence, enzymes)
+            sequence = wobble(sequence, sites, enzymes)
     return(sequence)
 
 def replace_codon(seq):
