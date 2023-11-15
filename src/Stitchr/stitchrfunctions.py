@@ -942,9 +942,9 @@ def wobble(sequence, sites, enzymes):
 
 def replace_codon(seq):
     """
-    Input: A string of 3 letters
-    Output: A string of 3 letters
-    Method: Finds synonymous codon sequence to the input
+    Input: A string of letter representing a restriction site
+    Output: A string of equal letters replacing restriction site
+    Method: Finds synonymous codon sequences to the input
     """
     nt = ""
     for i in range(0, len(seq), 3):
