@@ -269,7 +269,7 @@ def main():
 
         [sg.Checkbox('Seamless CDR3 stitching', key='chk_seamless', enable_events=True, font=(fnt, 12))],
 
-        [sg.Checkbox('Check Restriction Sites (BamHI, SalI)', key='chk_restriction', enable_events=True, font=(fnt, 12))],
+        [sg.Checkbox('Add Restriction Sites (BamHI, SalI)', key='chk_restriction', enable_events=True, font=(fnt, 12))],
 
         [sg.Button('Run Stitchr', size=(int(box_width / 4), 2), font=(fnt, 20))],
 
@@ -471,8 +471,11 @@ def main():
             else:
                 seamless = False
 
+            Seq_5 = ""
+            Seq_3 = ""
             if values['chk_restriction']:
-                restriction = True
+                Seq_5 = "GGATCC"
+                Seq_3 = "GTCGAC"
             else:
                 restriction = False
 
@@ -536,7 +539,7 @@ def main():
                             outputs[ref_chain + '_out_list'], \
                             outputs[ref_chain + '_stitched'], \
                             outputs[ref_chain + '_offset'] = st.stitch(tcr_bits, tcr_dat, functionality,
-                                                                       partial, codons, 3, preferred, restriction, ref_chain)
+                                                                       partial, codons, 3, preferred, ref_chain)
 
                             outputs[ref_chain + '_out_str'] = '|'.join(outputs[ref_chain + '_out_list'])
                             outputs[ref_chain + '_fasta'] = fxn.fastafy('nt|' + outputs[ref_chain + '_out_str'],
@@ -584,9 +587,9 @@ def main():
 
                             outputs['linker_seq'] = fxn.get_linker_seq(outputs['linker'], linkers)
 
-                            outputs['linked'] = outputs['TR' + tr1 + '_stitched'] + \
+                            outputs['linked'] = Seq_5 + outputs['TR' + tr1 + '_stitched'] + \
                                                 outputs['linker_seq'] + \
-                                                outputs['TR' + tr2 + '_stitched']
+                                                outputs['TR' + tr2 + '_stitched'] + Seq_3
 
                             outputs['linked_header'] = '_'.join([outputs['TR' + tr1 + '_out_str'],
                                                                  outputs['linker'],
