@@ -473,11 +473,14 @@ def main():
 
             Seq_5 = ""
             Seq_3 = ""
+            restriction = False
             if values['chk_restriction']:
-                Seq_5 = "GGATCC"
-                Seq_3 = "GTCGAC"
-            else:
-                restriction = False
+                if values['chk_linker']:
+                    Seq_5 = "GGATCC"
+                    Seq_3 = "GTCGAC"
+                    restriction = False
+                else:
+                    restriction = True
 
             # Then stitch each individual chain...
             for ref_chain in ['TR1', 'TR2']:
@@ -539,7 +542,7 @@ def main():
                             outputs[ref_chain + '_out_list'], \
                             outputs[ref_chain + '_stitched'], \
                             outputs[ref_chain + '_offset'] = st.stitch(tcr_bits, tcr_dat, functionality,
-                                                                       partial, codons, 3, preferred, ref_chain)
+                                                                       partial, codons, 3, preferred, ref_chain, restriction)
 
                             outputs[ref_chain + '_out_str'] = '|'.join(outputs[ref_chain + '_out_list'])
                             outputs[ref_chain + '_fasta'] = fxn.fastafy('nt|' + outputs[ref_chain + '_out_str'],
