@@ -21,7 +21,7 @@ if sys.version_info < (3, 9):
 else:
     import importlib.resources as importlib_resources       # importlib.resources
 
-__version__ = '1.2.2'
+__version__ = '1.2.3'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -325,7 +325,7 @@ def get_additional_genes(imgt_data, imgt_functionality):
     :return: the same dicts supplemented with any genes found in the 'additional genes.fasta' file
     """
 
-    with open(data_dir + 'additional-genes.fasta', 'r') as in_file:
+    with open(additional_genes_file, 'r') as in_file:
         for fasta_id, seq, blank in read_fa(in_file):
             bits = fasta_id.split('|')
 

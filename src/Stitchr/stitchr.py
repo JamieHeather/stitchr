@@ -15,7 +15,7 @@ import sys
 import warnings
 
 
-__version__ = '1.1.2'
+__version__ = '1.1.3'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -32,7 +32,7 @@ def args():
         description="stiTChR v" + str(__version__) + '\n' +
                     ": Stitch together a coding TCR nucleotide sequence from V, J, and CDR3 info.\n"
                     "Use IMGT gene names, and include terminal CDR3 residues (C/F).\n\n"
-                    "E.g. \'stitchr -v TRBV20-1 -j TRVJ1-2 -cdr3 CASWHATEVERF\'.\n"
+                    "E.g. \'stitchr -v TRBV20-1*01 -j TRBJ1-2*01 -cdr3 CASWHATEVERF\'.\n"
                     "See https://github.com/JamieHeather/stitchr and https://doi.org/10.1093/nar/gkac190.")
 
     # Input and output options
