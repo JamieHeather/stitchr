@@ -21,7 +21,7 @@ if sys.version_info < (3, 9):
 else:
     import importlib.resources as importlib_resources       # importlib.resources
 
-__version__ = '1.2.3'
+__version__ = '1.2.4'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -445,7 +445,7 @@ def tidy_c_term(c_term_nt, skip, c_region_motifs, c_gene):
     """
     Tidy up the germline C-terminal half (i.e. post-CDR3, J+C) of the nt seq so that it's the right frame/trimmed
     :param c_term_nt: done['j'] + done['c']
-    :param skip: boolean, whether or not to skip the C region checks
+    :param skip: boolean, whether to skip the C region checks or not
     :param c_region_motifs: nested dict of details of motifs required for finding the right translation frame
     :param c_gene: str of actual C gene used
     :return: c_term_nt trimmed/in right frame
@@ -551,7 +551,7 @@ def find_cdr3_c_term(cdr3_chunk, j_seq, strict):
 
 def determine_j_interface(cdr3_cterm_aa, c_term_nuc, c_term_amino, gl_nt_j_len, j_warning_threshold):
     """
-    Determine germline J contribution, and subtract from the the CDR3 (to leave just non-templated residues)
+    Determine germline J contribution, and subtract from the CDR3 (to leave just non-templated residues)
     Starts with the whole CDR3 (that isn't contributed by V) and looks for successively N-terminal truncated
     regions in the germline J-REGION.
     :param cdr3_cterm_aa: CDR3 region (protein sequence), minus the N-terminal V gene germline contributions
@@ -572,14 +572,13 @@ def determine_j_interface(cdr3_cterm_aa, c_term_nuc, c_term_amino, gl_nt_j_len, 
 
         # Look for the decreasing chunks of the CDR3 in the theoretical translation of this J gene as germline
         search = [x for x in find_cdr3_c_term(c_term_cdr3_chunk, c_term_amino[:search_len], False)]
-
         if search:
             if len(search) == 1:
                 cdr3_c_end = search[0]
 
                 c_term_nt_trimmed = c_term_nuc[cdr3_c_end * 3:]
 
-                # Add a warning if the detected J match is too far or too shore
+                # Add a warning if the detected J match is too far or too short
                 if cdr3_c_end > 22:
                     warnings.warn("Warning: germline match \'" + c_term_cdr3_chunk + "\' was found " +
                                   str(search.start()) + " residues past the start of the J, "
@@ -817,10 +816,13 @@ def translate_nt(nt_seq):
     for i in range(0, len(nt_seq), 3):
         codon = nt_seq[i:i+3].upper()
         if len(codon) == 3:
-            try:
-                aa_seq += codons[codon]
-            except Exception:
-                raise IOError("Cannot translate codon: " + codon + ". ")
+            if 'N' in codon:
+                aa_seq += 'x'
+            else:
+                try:
+                    aa_seq += codons[codon]
+                except Exception:
+                    raise IOError("Cannot translate codon: " + codon + ". ")
 
     return aa_seq
 
@@ -900,13 +902,7 @@ codons = {'AAA': 'K', 'AAC': 'N', 'AAG': 'K', 'AAT': 'N',
           'TAA': '*', 'TAC': 'Y', 'TAG': '*', 'TAT': 'Y',
           'TCA': 'S', 'TCC': 'S', 'TCG': 'S', 'TCT': 'S',
           'TGA': '*', 'TGC': 'C', 'TGG': 'W', 'TGT': 'C',
-          'TTA': 'L', 'TTC': 'F', 'TTG': 'L', 'TTT': 'F',
-          # Plus N-padded codons, to account for cases where someone stitched with a len(5' extension) % 3 != 0
-          'NNA': '_', 'NNC': '_', 'NNG': '_', 'NNT': '_',
-          'NAA': '_', 'NAC': '_', 'NAT': '_', 'NAG': '_',
-          'NCA': '_', 'NCC': '_', 'NCT': '_', 'NCG': '_',
-          'NTA': '_', 'NTC': '_', 'NTT': '_', 'NTG': '_',
-          'NGA': '_', 'NGC': '_', 'NGT': '_', 'NGG': '_'}
+          'TTA': 'L', 'TTC': 'F', 'TTG': 'L', 'TTT': 'F'}
 
 regions = {'l': 'LEADER',
            'v': 'VARIABLE',
