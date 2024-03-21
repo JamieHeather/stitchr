@@ -23,6 +23,7 @@ Stitch together TCR coding nucleotide sequences from V/J/CDR3 information
    guistitchr
    immunoglobulins
    importing
+   warnings
    referencing
 
 Sometimes you need a complete TCR nucleotide or amino acid sequence, but all you have is limited information. This script aims to generate a coding nucleotide sequence for a given rearrangement (e.g. for use when generating TCR expression vectors) in those situations.
