@@ -21,12 +21,11 @@ if sys.version_info < (3, 9):
 else:
     import importlib.resources as importlib_resources       # importlib.resources
 
-__version__ = '1.2.4'
+__version__ = '1.2.5'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
 sys.tracebacklimit = 0  # comment when debugging
-
 
 data_files = importlib_resources.files("Data")
 additional_genes_file = str(data_files / 'additional-genes.fasta')
@@ -105,9 +104,9 @@ def nest_counter():
 
 def get_chain(v, j):
     """
-    :param v: From input args
-    :param j: From input args
-    :return: TRA or TRB (the chain in use) or throw an error
+    :param v: str describing V gene (from input args)
+    :param j: str describing J gene (from input args)
+    :return: str of the chain in use (if plausible) or throw an error
     """
 
     if v.startswith('TRB') and j.startswith('TRB'):
@@ -147,7 +146,7 @@ def find_species_covered():
 
 def infer_species(path_to_file):
     """
-    :param path_to_file: str of a path to an input file that may or may not contain
+    :param path_to_file: str of a path to an input file that may or may not contain a species str
     :return: the species detected, if one found that fits the data available in the data directory
     """
     in_file_name = os.path.basename(path_to_file)
