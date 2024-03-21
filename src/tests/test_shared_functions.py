@@ -1,10 +1,10 @@
 
 import sys
-from distutils.dir_util import copy_tree
-from ..Stitchr import stitchrfunctions as fxn
 import os
 import pytest
-import subprocess # TODO rm?
+import subprocess
+from Stitchr import stitchrfunctions as fxn
+
 
 def empty_file(file_name):
     with open(file_name, 'w') as out_file:
@@ -14,16 +14,11 @@ def empty_file(file_name):
 
 def test_downloaded_data_handling():
     # Need to have data downloaded to test various functions; arbitrarily use canine and mouse
+    dl_cmd = 'stitchrdl -s dog'
+    subprocess.call(dl_cmd, shell=True)
+    dl_cmd = 'stitchrdl -s mouse'
+    subprocess.call(dl_cmd, shell=True)
 
-    os.chdir('src/Data/')
-    cmd = 'IMGTgeneDL -m stitchr -n -s DOG'
-    subprocess.call(cmd, shell=True)
-    cmd = 'IMGTgeneDL -m stitchr -n -s MOUSE'
-    subprocess.call(cmd, shell=True)
-
-    copy_tree(os.getcwd(), fxn.data_dir)
-
-    os.chdir('../../')
     assert 'DOG' in fxn.find_species_covered()
     assert 'MOUSE' in fxn.find_species_covered()
 
