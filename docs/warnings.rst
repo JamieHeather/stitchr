@@ -16,7 +16,7 @@ Some of the warnings most commonly seen are explained below:
 
     * However even if ``stitchr`` has detected the corrected conserved F residue, this position occurs relatively far into the J gene, past the point where most J genes would get deleted to during recombination - which is why ``stitchr`` flags this up as a potential problem.
 
-    * Usually this indicates the incorrect J allele being provided, so it's looking for the wrong amino acid sequence. E.g. a common example is seen in VDJdb data of TCRs using TRAJ24, as many of the \*01 allele calls are likely actually supposed to be \*02. As these two sites differ by the two residues immediately upstream of the conserved F (below) misannotation prevents a typical length J motif being found:
+    * Usually this indicates the incorrect J allele being provided, so it's looking for the wrong amino acid sequence. E.g. a common example is seen in VDJdb data of TCRs using TRAJ24, as many of the ``*``01 allele calls are likely actually supposed to be ``*``02. As these two sites differ by the two residues immediately upstream of the conserved F (below) misannotation prevents a typical length J motif being found:
 
 ::
 
