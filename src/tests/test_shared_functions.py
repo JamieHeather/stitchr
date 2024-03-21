@@ -121,7 +121,6 @@ def test_linker_handling():
 
 
 # TODO STILL
-    # actuall call an installed stitchrdl and test (can't currently test it due to intern
     # def get_additional_genes(imgt_data, imgt_functionality):
     # def tidy_c_term(c_term_nt, skip, c_region_motifs, c_gene):
     # def determine_v_interface(cdr3aa, n_term_nuc, n_term_amino):
