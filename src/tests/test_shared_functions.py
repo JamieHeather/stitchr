@@ -1,14 +1,10 @@
 
 import sys
 from distutils.dir_util import copy_tree
-# from os import path
-# sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
-
-from ..Stitchr import stitchrdl as sdl
 from ..Stitchr import stitchrfunctions as fxn
 import os
 import pytest
-# import subprocess # TODO rm?
+import subprocess # TODO rm?
 
 def empty_file(file_name):
     with open(file_name, 'w') as out_file:
@@ -16,21 +12,18 @@ def empty_file(file_name):
     return file_name
 
 
-
 def test_downloaded_data_handling():
     # Need to have data downloaded to test various functions; arbitrarily use canine and mouse
-    # dl_cmd = 'stitchrdl -s dog'
-    # subprocess.call(dl_cmd, shell=True)
-    # dl_cmd = 'stitchrdl -s mouse'
-    # subprocess.call(dl_cmd, shell=True) # TODO rm 4^?
 
-    sys.argv = ['', '-s', 'DOG']
-    sdl.main()
-    sys.argv = ['', '-s', 'MOUSE']
-    sdl.main()
+    os.chdir('src/Data/')
+    cmd = 'IMGTgeneDL -m stitchr -n -s DOG'
+    subprocess.call(cmd, shell=True)
+    cmd = 'IMGTgeneDL -m stitchr -n -s MOUSE'
+    subprocess.call(cmd, shell=True)
 
-    copy_tree(os.getcwd() + '/src/Data/', fxn.data_dir)
+    copy_tree(os.getcwd(), fxn.data_dir)
 
+    os.chdir('../../')
     assert 'DOG' in fxn.find_species_covered()
     assert 'MOUSE' in fxn.find_species_covered()
 
@@ -133,6 +126,7 @@ def test_linker_handling():
 
 
 # TODO STILL
+    # actuall call an installed stitchrdl and test (can't currently test it due to intern
     # def get_additional_genes(imgt_data, imgt_functionality):
     # def tidy_c_term(c_term_nt, skip, c_region_motifs, c_gene):
     # def determine_v_interface(cdr3aa, n_term_nuc, n_term_amino):
