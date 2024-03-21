@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>stitchr warnings &#8212; stitchr  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Citing stitchr" href="referencing.html" />
+    <link rel="prev" title="Importing stitchr for use in other Python scripts" href="importing.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="stitchr-warnings">
+<h1><code class="docutils literal notranslate"><span class="pre">stitchr</span></code> warnings<a class="headerlink" href="#stitchr-warnings" title="Link to this heading">¶</a></h1>
+<p>As stitchr runs it will often generate a number of warning strings which describe properties of the rearrangement in question. While some of these sound bad, they are often perfectly fine, usally reflecting either a minor annotation or data input error, or a rearrangement with some slightly-uncommon recombination parameters.</p>
+<p>Some of the warnings most commonly seen are explained below:</p>
+<ul>
+<li><p><em>“Note: while a C-terminal CDR3:J germline match has been found, it was only the string ‘F’</em>” (or something similar)</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The way that <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> figures out how far to trim the germline regions is to effectively take the ends of the CDR3 and ask ‘how much of this could be encoded by the V and the J?’. It does that by taking the amino acid sequence of say the 3’ end of the CDR3, and looking for that amino acid sequence in the translation of the J gene. If it doesn’t find one, it trims off one of the N terminal residues and then looks again.</p></li>
+<li><p>As most J genes end their CDR3s with a conserved phenylalanine, ‘F’ is often the minimum amount that can be matched.</p></li>
+<li><p>This can present technical problems in cases where say more than one F occurs in a J gene, or if people/tools annotate their CDR3 junctions improperly (e.g. perhaps ending in an F that’s not the conserved F, which is an error that occurs more frequently in J genes that have an additional F immediately upstream of the FGXG motif).</p></li>
+<li><p>However even if <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> has detected the corrected conserved F residue, this position occurs relatively far into the J gene, past the point where most J genes would get deleted to during recombination - which is why <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> flags this up as a potential problem.</p></li>
+<li><p>Usually this indicates the incorrect J allele being provided, so it’s looking for the wrong amino acid sequence. E.g. a common example is seen in VDJdb data of TCRs using TRAJ24, as many of the *01 allele calls are likely actually supposed to be *02. As these two sites differ by the two residues immediately upstream of the conserved F (below) misannotation prevents a typical length J motif being found:</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>TTDSWGKFEFGAGTQVVVTP = TRAJ24*01
+TTDSWGKLQFGAGTQVVVTP = TRAJ24*02
+*******—-***********
+</pre></div>
+</div>
+<ul>
+<li><p><em>Warning: TR[AB]JXX*YY has a ‘low confidence’ CDR3-ending motif.</em></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>This warning is produced when <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> detects that a non-classical FGXG motif is used in a particular J gene. This doesn’t necessarily mean that this J (or TCRs using it) are non-functional, but as this is atypical it gets flagged for users to apply appropriate caution - especially in species for which there may be less data.</p></li>
+<li><p>E.g. this commonly occurs with TRAJ35 in human data, as it uses a ‘CGSG’ motif, yet is seemingly functional.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><em>Unable to locate N terminus of CDR3 in V gene correctly. Please ensure sequence plausibility.</em></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>This is similar to the V gene equivalent of the first J gene problem above, in that it occurs when <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> cannot find the expected 2nd-Cys motif that should form the beginning of the CDR3 function.</p></li>
+<li><p>This usually occurs as a failure of whatever VDJ annotation software was used. Almost invariably when I see this it’s due to partial or truncated CDR3 sequences.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><em>Error: a [LEADER/VARIABLE/JOINING/CONSTANT] sequence region has not been found for gene in the IMGT data for this chain/species. Please check your TCR and species data.</em></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>It’s a requirement of <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> that it has to have an entry for every part of every gene (leader/V/J/constant) that it’s being asked to stitch. This error occurs when you’ve asked <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> to use a gene that it doesn’t have all of the necessary sequences for.</p></li>
+<li><p>This error most frequently occurs for leader regions (especially in non-human species), even when the corresponding V gene is included. In these circustances you can still get <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> to produce something if you don’t care about the ‘true’ sequence, by either entering a different V gene/allele name in the leader field. Alternatively, if you don’t care about expressing the stitched sequence, you can add any arbitrary DNA sequence (e.g. ‘<code class="docutils literal notranslate"><span class="pre">ATG</span></code>’, or even ‘<code class="docutils literal notranslate"><span class="pre">nnn</span></code>’ will work).</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">stitchr</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using <code class="docutils literal notranslate"><span class="pre">stitchr</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="inputdata.html"><code class="docutils literal notranslate"><span class="pre">stitchr</span></code> input data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="thimble.html">Thimble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guistitchr.html">GUI-stitchr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="immunoglobulins.html">Stitching immunoglobulins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="importing.html">Importing <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> for use in other Python scripts</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">stitchr</span></code> warnings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="referencing.html">Citing <code class="docutils literal notranslate"><span class="pre">stitchr</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="referencing.html#licensing-information">Licensing information</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="importing.html" title="previous chapter">Importing <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> for use in other Python scripts</a></li>
+      <li>Next: <a href="referencing.html" title="next chapter">Citing <code class="docutils literal notranslate"><span class="pre">stitchr</span></code></a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2023, Jamie Heather.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/warnings.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

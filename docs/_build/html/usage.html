@@ -1,17 +1,16 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Using stitchr &#8212; stitchr  documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="stitchr input data" href="inputdata.html" />
@@ -19,8 +18,9 @@
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
+
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  
 
   </head><body>
   
@@ -33,7 +33,7 @@
           <div class="body" role="main">
             
   <section id="using-stitchr">
-<span id="usage-label"></span><h1>Using <code class="docutils literal notranslate"><span class="pre">stitchr</span></code><a class="headerlink" href="#using-stitchr" title="Permalink to this heading">¶</a></h1>
+<span id="usage-label"></span><h1>Using <code class="docutils literal notranslate"><span class="pre">stitchr</span></code><a class="headerlink" href="#using-stitchr" title="Link to this heading">¶</a></h1>
 <p>This script can take either amino acid or nucleotide sequences for the CDR3 junction. However when submitting an amino acid CDR3 sequence, <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> will in most cases <strong>not</strong> produce the actual recombined sequences that encoded the original TCRs, apart from a few edge cases (such as particularly germ-like like alpha chain rearrangements). In these cases, <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> recreates an equivalent full length DNA sequence that will encode the same protein sequence. It aims to produce a sequence as close to germline as possible, so all CDR3 residues that <em>can</em> be germline encoded by the V and J genes are. Non-templated residues in the CDR3 (or those templated by the D gene, which is treated as non-templated for the purpose of stitching) are chosen from taking the most commonly used codon per residue.</p>
 <p>When provided with a nucleotide CDR3 sequence <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> can simply line up the edges of the V and the J and pop it in. (The exception that might still produce slightly different nucleotide sequences is when during non-templated deletion and addition a long stretch of V or J gene nucleotides were removed and then a different sequence coincidentally encoding the same amino acids was introduced.)</p>
 <p>Care must be taken to ensure that the correct TCR informaton is input, ensuring that:</p>
@@ -42,14 +42,16 @@
 <blockquote>
 <div><ul class="simple">
 <li><p>Older/deprecated gene names will not work</p></li>
+<li><p><a class="reference external" href="https://github.com/yutanagano/tidytcells">If you find yourself with older or otherwise non-IMGT names, the tidytcell package can be used to convert them</a> (for human or mouse TCR genes)</p></li>
 </ul>
 </div></blockquote>
 </li>
 <li><p><strong>You have the correct and full CDR3 junction sequence</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><p><a class="reference external" href="http://www.imgt.org/FAQ/#question39">I.e. running inclusively from the conserved cysteine to the conserved phenylalanine (or rarely, tryptophan) residues</a></p></li>
+<li><p><a class="reference external" href="http://www.imgt.org/FAQ/#question39">I.e. running inclusively from the conserved second cysteine to the conserved phenylalanine residues (or the equivalent residues at those conserved positions)</a></p></li>
 <li><p>Either as amino acid or DNA sequences</p></li>
+<li><p><a class="reference external" href="https://github.com/yutanagano/tidytcells">If using amino acids and only the conserved positions are missing, the tidytcell package can again be used to convert them</a> (although this may not work for TCRs using genes that have non-standard residues at these positions)</p></li>
 </ul>
 </div></blockquote>
 </li>
@@ -65,16 +67,16 @@
 </ul>
 <p>The script produces a TCR from the information given, trying to provide warnings or errors if it detects an improbable or implausible combination, yet it’s possible that the script might produce output that <em>looks</em> OK yet which does not reproduce a coding sequence for the intended TCR.</p>
 <section id="gene-allele-default-behaviour">
-<h2>Gene/allele default behaviour<a class="headerlink" href="#gene-allele-default-behaviour" title="Permalink to this heading">¶</a></h2>
+<h2>Gene/allele default behaviour<a class="headerlink" href="#gene-allele-default-behaviour" title="Link to this heading">¶</a></h2>
 <p>We recommend to explicitly state the complete allele name, where possible. However if you request an allele for which there isn’t complete sequence data, the script will attempt to default to the prototypical allele (*01) of that gene, or a preferred default allele if the <code class="docutils literal notranslate"><span class="pre">-p</span></code> flag is set (see below). Similarly it will attempt to use the correct leader sequences (L-PART1+L-PART2) for the specified allele, but if it can’t find one it’ll default back to the prototype’s. In both cases, if it cannot find sequence for that allele then it will attempt to use an alternative allele for which data exists in the reference (see <a class="reference external" href="https://github.com/JamieHeather/stitchr/issues/25#issuecomment-1146626463">this comment for more details</a>). Note that IMGT-provided gene sequences which are ‘partial’ at either end of their sequence are discounted entirely, as full length sequences are needed. If the script is needed to stitch TCRs that make use of genes that are partial at their recombination-distal ends then you can modify the FASTA header for these entries in the installed Data directory.</p>
 <p>For human and mouse TCRs, the script will use the TRBC gene located in the same cluster as the J gene (i.e. TRBJ1-1 through TRBJ1-6 will get TRBC1, while TRBJ2-1 through TRBJ2-7 will get TRBC2). This can be overriden (see optional arguments). Unfortunately we are not experts in TCR loci architecture of all species, so we haven’t hard-wired any other constant region assumptions, so for all other species you’ll need to explicitly state which constant region you want used.</p>
 </section>
 <section id="translation-sequences">
-<h2>Translation sequences<a class="headerlink" href="#translation-sequences" title="Permalink to this heading">¶</a></h2>
+<h2>Translation sequences<a class="headerlink" href="#translation-sequences" title="Link to this heading">¶</a></h2>
 <p>By default <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> does not include stop codons at the end of the coding sequence; if desired, this must be specified using the 3’ flag (<code class="docutils literal notranslate"><span class="pre">-3p</span></code>), i.e. <code class="docutils literal notranslate"><span class="pre">-3p</span> <span class="pre">TAA</span></code>, <code class="docutils literal notranslate"><span class="pre">-3p</span> <span class="pre">TAG</span></code>, or <code class="docutils literal notranslate"><span class="pre">-3p</span> <span class="pre">TGA</span></code>. Similarly, no sequence is included before that of the IMGT-recorded L1 leader sequence. If desired, this can be added using the 5’ flag (<code class="docutils literal notranslate"><span class="pre">-5p</span></code>), e.g. to add the pre-start codon section of an optimal Kozak sequence: <code class="docutils literal notranslate"><span class="pre">-5p</span> <span class="pre">GCCGCCACC</span></code>. Note that translated sequence in the output is the <em>whole</em> stitched sequence, including any added 5’/3’ sequences: addition of 5’ sequences may cause the introduction of underscores (’_’) to appear in the translated output, representing incomplete codons that could not be translated. Also note that the translated sequence of an individual chain may differ from the corresponding section of a linked heterodimer for this reason, depending on the length/frame of the 5’ rearrangement.</p>
 </section>
 <section id="seamless-mode">
-<h2>Seamless mode<a class="headerlink" href="#seamless-mode" title="Permalink to this heading">¶</a></h2>
+<h2>Seamless mode<a class="headerlink" href="#seamless-mode" title="Link to this heading">¶</a></h2>
 <p>If users care about accurately replicating the exact nucleotide sequence of specific V(D)J rearrangements, and they have additional nucleotide sequences beyond the edges of the CDR3 junction, they can make use of the optional <code class="docutils literal notranslate"><span class="pre">-sl</span></code> ‘seamless’ flag to stitch together the complete recombined sequence as faithfully as possible.</p>
 <p>E.g. instead of these first two options:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>stitchr<span class="w"> </span>-v<span class="w"> </span>TRBV7-6<span class="w"> </span>-j<span class="w"> </span>TRBJ1-4<span class="w"> </span>-cdr3<span class="w"> </span>CASSSGQGLGEKLFF
@@ -100,7 +102,7 @@ stitchr<span class="w"> </span>-v<span class="w"> </span>TRBV7-6<span class="w">
 </ul>
 </section>
 <section id="other-optional-arguments">
-<h2>Other optional arguments<a class="headerlink" href="#other-optional-arguments" title="Permalink to this heading">¶</a></h2>
+<h2>Other optional arguments<a class="headerlink" href="#other-optional-arguments" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">-h</span></code> - see a help menu, containing all the command line options</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-c</span></code> - specify a particular constant region gene (in the case of TRBC) or allele</p></li>
@@ -118,7 +120,7 @@ stitchr<span class="w"> </span>-v<span class="w"> </span>TRBV7-6<span class="w">
 <li><p><code class="docutils literal notranslate"><span class="pre">-sw</span></code> - suppress warning text, which may be especially useful in conjunction with some of the alternative output modes (see the <a class="reference internal" href="#output-modes-label"><span class="std std-ref">Output modes</span></a> section)</p></li>
 </ul>
 <section id="output-modes">
-<span id="output-modes-label"></span><h3>Output modes<a class="headerlink" href="#output-modes" title="Permalink to this heading">¶</a></h3>
+<span id="output-modes-label"></span><h3>Output modes<a class="headerlink" href="#output-modes" title="Link to this heading">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">stitchr</span></code> can output the TCR sequences it generates in a number of different formats, which <a class="reference external" href="https://github.com/JamieHeather/stitchr/issues/22">may help integrate its output into certain pipelines</a>. These modes can be specified using the <code class="docutils literal notranslate"><span class="pre">-m</span> <span class="pre">/</span> <span class="pre">--mode</span></code> flag, using one of the following options:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">-m</span> <span class="pre">BOTH_FA</span></code></p>
@@ -150,7 +152,7 @@ stitchr<span class="w"> </span>-v<span class="w"> </span>TRBV7-6<span class="w">
 </ul>
 </section>
 <section id="providing-a-partial-amino-acid-sequence">
-<h3>Providing a partial amino acid sequence<a class="headerlink" href="#providing-a-partial-amino-acid-sequence" title="Permalink to this heading">¶</a></h3>
+<h3>Providing a partial amino acid sequence<a class="headerlink" href="#providing-a-partial-amino-acid-sequence" title="Link to this heading">¶</a></h3>
 <p>If you provide a partial amino acid sequence using the <code class="docutils literal notranslate"><span class="pre">-aa</span></code> flag, <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> will perform a rudimentary pairwise alignment, just to give a quick visual assessment of the quality of the sequence generation.</p>
 <p>As an example, let’s take the example of the well described A2-NLV restricted <a class="reference external" href="https://www.rcsb.org/structure/5d2n">C25 TCR from the 5D2N PDB structure</a>. We can take the amino acid sequence straight from the PDB FASTA file:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="mi">5</span><span class="n">D2N</span><span class="p">:</span><span class="n">E</span><span class="o">|</span><span class="n">PDBID</span><span class="o">|</span><span class="n">CHAIN</span><span class="o">|</span><span class="n">SEQUENCE</span>
@@ -238,7 +240,7 @@ VSALVLMAMVKRKDSRG
 </section>
 </section>
 <section id="a-note-on-cdr3-c-terminal-residues">
-<h2>A note on CDR3 C-terminal residues<a class="headerlink" href="#a-note-on-cdr3-c-terminal-residues" title="Permalink to this heading">¶</a></h2>
+<h2>A note on CDR3 C-terminal residues<a class="headerlink" href="#a-note-on-cdr3-c-terminal-residues" title="Link to this heading">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">stitchr</span></code> assumes that the J gene will not undergo deletion past the C-terminal residue of the CDR3 junction (which occurs approximately in the middle of the J). Thus the code looks for the appropriate residue at the end of the CDR3, which in the majority of cases will be a phenylalanine (F). However in some cases it might be something else, like a W (not uncommon in human TRAJ/mice genes) or even something more exotic like a C, L or H (which occur in certain mouse J genes). Note that most of these non-F/W residues are found in J genes with a predicted <a class="reference external" href="http://www.imgt.org/IMGTScientificChart/SequenceDescription/IMGTfunctionality.html">‘ORF’ IMGT status</a>, and thus might not contribute to functioning TCRs, but <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> will still let you generate a plausible sequence using them.</p>
 </section>
 </section>
@@ -279,6 +281,8 @@ VSALVLMAMVKRKDSRG
 <li class="toctree-l1"><a class="reference internal" href="thimble.html">Thimble</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guistitchr.html">GUI-stitchr</a></li>
 <li class="toctree-l1"><a class="reference internal" href="immunoglobulins.html">Stitching immunoglobulins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="importing.html">Importing <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> for use in other Python scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="warnings.html"><code class="docutils literal notranslate"><span class="pre">stitchr</span></code> warnings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="referencing.html">Citing <code class="docutils literal notranslate"><span class="pre">stitchr</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="referencing.html#licensing-information">Licensing information</a></li>
 </ul>
@@ -315,11 +319,11 @@ VSALVLMAMVKRKDSRG
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2023, Jamie Heather.
+      &#169;2023, Jamie Heather.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
       
       |
       <a href="_sources/usage.rst.txt"

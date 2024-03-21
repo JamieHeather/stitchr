@@ -12,11 +12,13 @@ Care must be taken to ensure that the correct TCR informaton is input, ensuring 
 * **You're using proper IMGT gene nomenclature**
 
     * Older/deprecated gene names will not work
+    * `If you find yourself with older or otherwise non-IMGT names, the tidytcell package can be used to convert them <https://github.com/yutanagano/tidytcells>`_ (for human or mouse TCR genes)
 
 * **You have the correct and full CDR3 junction sequence**
 
-    * `I.e. running inclusively from the conserved cysteine to the conserved phenylalanine (or rarely, tryptophan) residues <http://www.imgt.org/FAQ/#question39>`_
+    * `I.e. running inclusively from the conserved second cysteine to the conserved phenylalanine residues (or the equivalent residues at those conserved positions) <http://www.imgt.org/FAQ/#question39>`_
     * Either as amino acid or DNA sequences
+    * `If using amino acids and only the conserved positions are missing, the tidytcell package can again be used to convert them <https://github.com/yutanagano/tidytcells>`_ (although this may not work for TCRs using genes that have non-standard residues at these positions)
 
 * **You are using the right alleles for the TCR genes in question** if known
 
