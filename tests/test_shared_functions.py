@@ -1,7 +1,7 @@
 import os
 import pytest
 import subprocess
-from Stitchr import stitchrfunctions as fxn
+import Stitchr.stitchrfunctions as fxn
 
 def empty_file(file_name):
     with open(file_name, 'w') as out_file:
