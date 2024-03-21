@@ -8,7 +8,7 @@ Some of the warnings most commonly seen are explained below:
 
 * *"Note: while a C-terminal CDR3:J germline match has been found, it was only the string 'F'*" (or something similar)
 
-    * The way that ``stitchr`` figures out how far to trim the germline regions is to effectively take the ends of the CDR3 and ask 'how much of this could be encoded by the V and the J?'. It does that by taking the amino acid sequence of say the 3' end of the CDR3, and looking for that amino acid sequence in the translation of the J gene. If it doesn't find one, it trims off one of the N terminal residues and then looks again.
+    - The way that ``stitchr`` figures out how far to trim the germline regions is to effectively take the ends of the CDR3 and ask 'how much of this could be encoded by the V and the J?'. It does that by taking the amino acid sequence of say the 3' end of the CDR3, and looking for that amino acid sequence in the translation of the J gene. If it doesn't find one, it trims off one of the N terminal residues and then looks again.
 
     * As most J genes end their CDR3s with a conserved phenylalanine, 'F' is often the minimum amount that can be matched.
 
@@ -16,7 +16,7 @@ Some of the warnings most commonly seen are explained below:
 
     * However even if ``stitchr`` has detected the corrected conserved F residue, this position occurs relatively far into the J gene, past the point where most J genes would get deleted to during recombination - which is why ``stitchr`` flags this up as a potential problem.
 
-    * Usually this indicates the incorrect J allele being provided, so it's looking for the wrong amino acid sequence. E.g. a common example is seen in VDJdb data of TCRs using TRAJ24, as many of the \*01 allele calls are likely actually supposed to be \*02. As these two sites differ by the two residues immediately upstream of the conserved F (below) misannotation prevents a typical length J motif being found:
+    - Usually this indicates the incorrect J allele being provided, so it's looking for the wrong amino acid sequence. E.g. a common example is seen in VDJdb data of TCRs using TRAJ24, as many of the \*01 allele calls are likely actually supposed to be \*02. As these two sites differ by the two residues immediately upstream of the conserved F (below) misannotation prevents a typical length J motif being found:
 
 ::
 
