@@ -11,10 +11,10 @@ def empty_file(file_name):
 
 def test_downloaded_data_handling():
     # Need to have data downloaded to test various functions; arbitrarily use canine and mouse
-    # dl_cmd = 'stitchrdl -s dog'
-    # subprocess.call(dl_cmd, shell=True)
-    # dl_cmd = 'stitchrdl -s mouse'
-    # subprocess.call(dl_cmd, shell=True)
+    dl_cmd = 'stitchrdl -s dog'
+    subprocess.call(dl_cmd, shell=True)
+    dl_cmd = 'stitchrdl -s mouse'
+    subprocess.call(dl_cmd, shell=True)
     assert 'DOG' in fxn.find_species_covered()
     assert 'MOUSE' in fxn.find_species_covered()
 
