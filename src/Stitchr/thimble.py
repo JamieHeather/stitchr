@@ -18,7 +18,7 @@ import os
 import sys
 from time import time
 
-__version__ = '1.2.2'
+__version__ = '1.2.3'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -69,7 +69,8 @@ def args():
 
     parser.add_argument('--version', action='version', version=__version__, help="Print current thimble version.")
 
-    parser.add_argument('--cite', action='version', help="Print citation details.", version=fxn.citation)
+    parser.add_argument('--cite', action='version', help="Print citation details.",
+                        version=fxn.get_citation())
 
     return parser.parse_args()
 

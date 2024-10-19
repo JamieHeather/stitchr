@@ -4,8 +4,3 @@ requires = [
    "wheel"
 ]
 build-backend = "setuptools.build_meta"
-
-[project.urls]
-Homepage = "https://github.com/JamieHeather/stitchr"
-Documentation = "https://jamieheather.github.io/stitchr/"
-Repository = "https://github.com/JamieHeather/stitchr"

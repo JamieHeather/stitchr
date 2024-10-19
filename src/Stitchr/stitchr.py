@@ -15,7 +15,7 @@ import sys
 import warnings
 
 
-__version__ = '1.1.3'
+__version__ = '1.1.4'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -42,11 +42,12 @@ def args():
     parser.add_argument('-j', '--j', required=True, type=str, default='', help="J gene name. Required. "
                         "Specific allele not required, will default to prototypical (*01)")
 
-    parser.add_argument('-cdr3', '--cdr3', required=True, type=str, default='', help="CDR3 amino acid sequence. "
-                        "Required. Must include terminal residues (e.g. C/F)")
+    parser.add_argument('-cdr3', '--cdr3', required=True, type=str, default='',
+                        help="CDR3 amino acid sequence. Required. Must include terminal residues (e.g. C/F)")
 
-    parser.add_argument('-s', '--species', required=False, type=str, default='HUMAN', help="Species (common name). "
-                        "Optional: see data directory for all possible options. Default = HUMAN")
+    parser.add_argument('-s', '--species', required=False, type=str, default='HUMAN',
+                        help="Species (common name). Optional: see data directory for all possible options. "
+                             "Default = HUMAN")
 
     parser.add_argument('-c', '--c', required=False, type=str, default='', help="Constant gene. Optional. "
                         "Specific allele not required, will default to prototypical (*01). "
@@ -55,36 +56,39 @@ def args():
     parser.add_argument('-l', '--l', required=False, type=str, default='', help="Leader region. Optional. "
                         "Will default to match the appropriate V gene.")
 
-    parser.add_argument('-aa', '--aa', required=False, type=str, default='', help="Partial amino acid sequence, if "
-                        "known. Optional. Can be used to check stitching success.")
+    parser.add_argument('-aa', '--aa', required=False, type=str, default='',
+                        help="Partial amino acid sequence, if known. Optional. Can be used to check stitching success.")
 
-    parser.add_argument('-n', '--name', required=False, type=str, default='', help="Name for TCR sequence. Optional. "
-                        "Will be added to output FASTA header.")
+    parser.add_argument('-n', '--name', required=False, type=str, default='',
+                        help="Name for TCR sequence. Optional. Will be added to output FASTA header.")
 
     parser.add_argument('-sl', '--seamless', action='store_true', required=False, default=False,
                         help="Optional flag to integrate known nucleotide sequences seamlessly. \n NB: "
                         "nucleotide sequences covering the CDR3 junction with additional V gene context required.")
 
-    parser.add_argument('-5p', '--5_prime_seq', required=False, type=str, default='', help="Optional sequence to add "
-                        "to the 5' of the output sequence (e.g. a Kozak sequence).")
+    parser.add_argument('-5p', '--5_prime_seq', required=False, type=str, default='',
+                        help="Optional sequence to add to the 5' of the output sequence (e.g. a Kozak sequence).")
 
-    parser.add_argument('-3p', '--3_prime_seq', required=False, type=str, default='', help="Optional sequence to add "
-                        "to the 3' out the output sequence (e.g. a stop codon).")
+    parser.add_argument('-3p', '--3_prime_seq', required=False, type=str, default='',
+                        help="Optional sequence to add to the 3' out the output sequence (e.g. a stop codon).")
 
-    parser.add_argument('-xg', '--extra_genes', action='store_true', required=False, default=False, help="Optional flag"
-                        " to use additional (non-database/-natural) sequences in the 'additional-genes.fasta' file.")
+    parser.add_argument('-xg', '--extra_genes', action='store_true', required=False, default=False,
+                        help="Optional flag to use additional (non-database/-natural) sequences in the "
+                             "'additional-genes.fasta' file.")
 
-    parser.add_argument('-p', '--preferred_alleles_path', required=False, type=str, default='', help="Path to a file of"
-                        " preferred alleles to use when no allele specified (instead of *01). Optional.")
+    parser.add_argument('-p', '--preferred_alleles_path', required=False, type=str, default='',
+                        help="Path to a file of preferred alleles to use when no allele specified (instead of *01). "
+                             "Optional.")
 
-    parser.add_argument('-m', '--mode', required=False, type=str, default='both_fa', help="Standard out output mode. "
-                        "Options are 'BOTH_FA' (default), 'AA_FA', 'NT_FA', 'AA', 'NT'.")
+    parser.add_argument('-m', '--mode', required=False, type=str, default='both_fa',
+                        help="Standard out output mode. Options are 'BOTH_FA' (default), 'AA_FA', 'NT_FA', 'AA', 'NT'.")
 
-    parser.add_argument('-cu', '--codon_usage_path', required=False, type=str, default='', help="Path to a file of "
-                        "Kazusa-formatted codon usage frequencies. Optional.")
+    parser.add_argument('-cu', '--codon_usage_path', required=False, type=str, default='',
+                        help="Path to a file of Kazusa-formatted codon usage frequencies. Optional.")
 
-    parser.add_argument('-jt', '--j_warning_threshold', required=False, type=int, default=3, help="J gene substring "
-                        "length warning threshold. Default = 3. Decrease to get fewer notes on short J matches.")
+    parser.add_argument('-jt', '--j_warning_threshold', required=False, type=int, default=3,
+                        help="J gene substring length warning threshold. Default = 3. "
+                             "Decrease to get fewer notes on short J matches.")
 
     parser.add_argument('-sc', '--skip_c_checks', action='store_true', required=False, default=False,
                         help="Optional flag to skip usual constant region gene checks.")
@@ -92,12 +96,14 @@ def args():
     parser.add_argument('-sw', '--suppress_warnings', action='store_true', required=False, default=False,
                         help="Optional flag to suppress warnings.")
 
-    parser.add_argument('--version', action='version', version=__version__, help="Print current stitchr version.")
+    parser.add_argument('--version', action='version', version=__version__,
+                        help="Print current stitchr version.")
 
-    parser.add_argument('--cite', action='version', help="Print citation details.", version=fxn.citation)
+    parser.add_argument('--cite', action='version', help="Print citation details.",
+                        version=fxn.get_citation())
 
-    parser.add_argument('-dd', '--data_dir', action='version', help="Print installed stitchr data directory path.",
-                        version=fxn.data_dir)
+    parser.add_argument('-dd', '--data_dir', action='version', version=fxn.data_dir,
+                        help="Print installed stitchr data directory path.")
 
     return parser.parse_args()
 

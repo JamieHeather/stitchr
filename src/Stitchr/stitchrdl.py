@@ -22,7 +22,7 @@ except (ImportError, ModuleNotFoundError) as err:
     sys.exit()
 
 
-__version__ = '0.1.1'
+__version__ = '0.1.2'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -36,17 +36,18 @@ def args():
 
     # Help flag
     parser = argparse.ArgumentParser(
-        description="stitchrdl v" + str(__version__) + '\n' +
-                    ": Download data from IMGT/GENE-DB for use with stitchr. \n"
+        description="stitchrdl v" + str(__version__) + '\n' + ": Process input data for use with stitchr. \n"
                     "See https://github.com/JamieHeather/stitchr and https://doi.org/10.1093/nar/gkac190.")
 
     # Input and output options
-    parser.add_argument('-s', '--species', required=False, type=str, default='HUMAN', help="Species (common name). "
-                        "Optional: see data directory for all possible options. Default = HUMAN")
+    parser.add_argument('-s', '--species', required=False, type=str, default='HUMAN',
+                        help="Species (common name). Optional. Default = HUMAN")
 
-    parser.add_argument('--version', action='version', version=__version__, help="Print current stitchr version.")
+    parser.add_argument('--version', action='version', version=__version__,
+                        help="Print current stitchr version.")
 
-    parser.add_argument('--cite', action='version', help="Print citation details.", version=fxn.citation)
+    parser.add_argument('--cite', action='version', help="Print citation details.",
+                        version=fxn.get_citation())
 
     return parser.parse_args()
 

@@ -21,7 +21,7 @@ if sys.version_info < (3, 9):
 else:
     import importlib.resources as importlib_resources       # importlib.resources
 
-__version__ = '1.2.5'
+__version__ = '1.3.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -909,7 +909,34 @@ regions = {'l': 'LEADER',
            'c': 'CONSTANT'
            }
 
-citation = 'James M Heather, Matthew J Spindler, Marta Herrero Alonso, Yifang Ivana Shui, David G Millar, ' \
-           'David S Johnson, Mark Cobbold, Aaron N Hata, Stitchr: stitching coding TCR nucleotide sequences from ' \
-           'V/J/CDR3 information, Nucleic Acids Research, Volume 50, Issue 12, 8 July 2022, Page e68, ' \
-           'https://doi.org/10.1093/nar/gkac190'
+
+def get_citation():
+    """
+    print out paper and data details for proper citation and reproducibility purposes
+    """
+    import pandas as pd
+    from importlib.metadata import version
+
+    citation_str = ('Paper citation details:\nJames M Heather, Matthew J Spindler, Marta Herrero Alonso, Yifang Ivana '
+                    'Shui, David G Millar, David S Johnson, Mark Cobbold, & Aaron N Hata. Stitchr: stitching coding TCR'
+                    ' nucleotide sequences from V/J/CDR3 information, Nucleic Acids Research, Volume 50, Issue 12, 8 '
+                    'July 2022, Page e68, https://doi.org/10.1093/nar/gkac190\n\n')
+
+    citation_str += ('Stitchr module version:\t' + version('Stitchr') + '\n\n')
+
+    # Loop across all installed species data:
+    species_used = find_species_covered
+    if species_used:
+        for sp in species_used():
+            sp_dat = pd.read_csv(data_dir + '/' + sp + '/data-production-date.tsv', sep='\t', header=None, index_col=0)
+            citation_str += (sp + ' data details:\n\tIMGT/GENE-DB v:\t' + sp_dat.loc['imgt_genedb_release'][1] +
+                             '\n\tDownloaded on:\t' + sp_dat.loc['last_run'][1] +
+                             '\n\tUsing script:\t' + sp_dat.loc['script_used'][1] +
+                             ' (v ' + sp_dat.loc['version_used'][1] + ')\n')
+    else:
+        citation_str += '(No species data detected in the data directory.)\n'
+
+    # TODO if automated novel allele sequence inclusion added, factor in its record here
+
+    print(citation_str)
+    return '\n'
