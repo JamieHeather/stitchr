@@ -15,7 +15,7 @@ import sys
 import warnings
 
 
-__version__ = '1.1.4'
+__version__ = '1.1.5'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -99,8 +99,7 @@ def args():
     parser.add_argument('--version', action='version', version=__version__,
                         help="Print current stitchr version.")
 
-    parser.add_argument('--cite', action='version', help="Print citation details.",
-                        version=fxn.get_citation())
+    parser.add_argument('--cite', action=fxn.GetCitation, help="Print citation details.", nargs=0)
 
     parser.add_argument('-dd', '--data_dir', action='version', version=fxn.data_dir,
                         help="Print installed stitchr data directory path.")

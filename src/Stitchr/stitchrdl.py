@@ -22,7 +22,7 @@ except (ImportError, ModuleNotFoundError) as err:
     sys.exit()
 
 
-__version__ = '0.1.2'
+__version__ = '0.1.3'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -46,10 +46,11 @@ def args():
     parser.add_argument('--version', action='version', version=__version__,
                         help="Print current stitchr version.")
 
-    parser.add_argument('--cite', action='version', help="Print citation details.",
-                        version=fxn.get_citation())
+    parser.add_argument('--cite', action=fxn.GetCitation, help="Print citation details.", nargs=0)
 
     return parser.parse_args()
+
+
 
 
 def main():

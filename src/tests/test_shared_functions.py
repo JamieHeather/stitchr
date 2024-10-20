@@ -3,6 +3,7 @@ import sys
 import os
 import pytest
 import subprocess
+import collections as coll
 from Stitchr import stitchrfunctions as fxn
 
 
@@ -77,7 +78,6 @@ def test_get_imgt_data():
     assert preferred['LEADER']['TRAV15D-3'] == '02'
 
 
-
 aa = ['*', 'A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
 def test_translation_handling():
     codon_file = os.path.join(fxn.data_dir, 'kazusa', 'DOG.txt')
@@ -120,15 +120,31 @@ def test_linker_handling():
     assert linker_seq == 'GGCAGCGGCGCCACCAACTTCAGCCTGCTGAAGCAGGCCGGCGACGTGGAGGAGAACCCCGGCCCC'
 
 
+def test_junction_determination():
+    assert fxn.find_v_overlap('abcdefghijklmno', 'jklmnopqrst') == ('abcdefghi', 'jklmno')
+    assert fxn.find_j_overlap('abcdefghijklmno', 'jklmnopqrst') == 'pqrst'
+
+    test_j_motifs = fxn.get_j_motifs('DOG')
+    assert isinstance(test_j_motifs[0], dict)
+    assert isinstance(test_j_motifs[1], list)
+    assert list(set([x[3] for x in test_j_motifs[1]])) == ['J']
+    assert coll.Counter(test_j_motifs[0].values()).most_common(1)[0][0] == 'F'
+
+    test_c_motifs = fxn.get_c_motifs('DOG')
+    assert isinstance(test_c_motifs, dict)
+    assert list(test_c_motifs.keys()) == ['start', 'stop', 'exons']
+    assert test_c_motifs['start']['TRAC*01'] == 'VQDPDPSVYQ'
+    assert test_c_motifs['start']['TRBC1*01'] == 'DLQKVTPPTV'
+    assert len([x for x in test_c_motifs['stop'].values() if '*' in x]) == len(test_c_motifs['stop'])
+    assert test_c_motifs['exons']['TRAC*01'] == 'EX1+EX2+EX3+EX4UTR'
+    assert test_c_motifs['exons']['TRBC1*01'] == 'EX1+EX2+EX3+EX4'
+
 # TODO STILL
     # def get_additional_genes(imgt_data, imgt_functionality):
     # def tidy_c_term(c_term_nt, skip, c_region_motifs, c_gene):
     # def determine_v_interface(cdr3aa, n_term_nuc, n_term_amino):
     # def find_cdr3_c_term(cdr3_chunk, j_seq, strict):
     # def determine_j_interface(cdr3_cterm_aa, c_term_nuc, c_term_amino, gl_nt_j_len, j_warning_threshold):
-    # def get_j_motifs(species):
-    # def get_c_motifs(species):
-    # def find_v_overlap(v_germline, nt_cdr3):
-    # def find_j_overlap(nt_cdr3, j_germline):
+
 
     # def tweak_thimble_input(stitch_dict): # Todo move to a thimble test file?

@@ -18,7 +18,7 @@ import os
 import sys
 from time import time
 
-__version__ = '1.2.3'
+__version__ = '1.2.4'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -67,10 +67,10 @@ def args():
                         help="J gene substring length warning threshold. Default = 3. "
                              "Decrease to get fewer notes on short J matches. Optional.")
 
-    parser.add_argument('--version', action='version', version=__version__, help="Print current thimble version.")
+    parser.add_argument('--version', action='version', version=__version__,
+                        help="Print current thimble version.")
 
-    parser.add_argument('--cite', action='version', help="Print citation details.",
-                        version=fxn.get_citation())
+    parser.add_argument('--cite', action=fxn.GetCitation, help="Print citation details.", nargs=0)
 
     return parser.parse_args()
 

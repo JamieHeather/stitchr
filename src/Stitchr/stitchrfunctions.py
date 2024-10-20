@@ -6,6 +6,7 @@ stitchrfunctions.py
 Functions for stiTChR and its related scripts
 """
 
+import argparse
 import collections as coll
 import gzip
 import os
@@ -21,7 +22,7 @@ if sys.version_info < (3, 9):
 else:
     import importlib.resources as importlib_resources       # importlib.resources
 
-__version__ = '1.3.0'
+__version__ = '1.3.2'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -503,7 +504,7 @@ def tidy_c_term(c_term_nt, skip, c_region_motifs, c_gene):
 
 def determine_v_interface(cdr3aa, n_term_nuc, n_term_amino):
     """
-    Determine germline V contribution, and subtract from the the CDR3 (to leave just non-templated residues)
+    Determine germline V contribution, and subtract from the CDR3 (to leave just non-templated residues)
     :param cdr3aa: CDR3 region (protein sequence as provided)
     :param n_term_nuc: DNA encoding the germline N terminal portion (i.e. L1+2 + V gene), with no untranslated bp
     :param n_term_amino: translation of n_term_nuc
@@ -844,15 +845,14 @@ def find_v_overlap(v_germline, nt_cdr3):
     :param nt_cdr3: user provided nucleotide sequences covering (and potentially exceeding) the CDR3 junction
     :return: v_germline sequence running up to (but not including) where it overlaps with the nt_cdr3 sequence,
              and the overlapped sequence (to be subtracted from the CDR3 junction nt before checking for J overlap)
-    Note that this function allows for a very generous (supra-physiological) upper limit of 50 deletions from the V
     """
 
     longest_overlap = ''
     index_longest = 0
-    # Have to count backwards from the the end of the V; only need to go as far as the provided nt_cdr3 length (although
-    # some of that will contain J gene residues)
+    # Have to count backwards from the end of the V; only need to go as far as the provided nt_cdr3 length
+    # (although some of that will contain J gene residues)
     # Note that the positive check is against the outside chance someone provides an inconsistently short V gene
-    for i in [x for x in range(len(v_germline) - 1, len(v_germline) - len(nt_cdr3), -1) if x > 0]:
+    for i in [x for x in range(len(v_germline), len(v_germline) - len(nt_cdr3), -1) if x > 0]:
 
         tmp_fp = v_germline[:i]
         overlap = check_suffix_prefix(tmp_fp, nt_cdr3)
@@ -860,7 +860,7 @@ def find_v_overlap(v_germline, nt_cdr3):
             longest_overlap = overlap
             index_longest = i
 
-    return v_germline[:index_longest - len(longest_overlap)], longest_overlap
+    return v_germline[:index_longest - len(longest_overlap) ], longest_overlap
 
 
 def find_j_overlap(nt_cdr3, j_germline):
@@ -910,6 +910,12 @@ regions = {'l': 'LEADER',
            }
 
 
+class GetCitation(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        print(get_citation())
+        sys.exit(0)
+
+
 def get_citation():
     """
     print out paper and data details for proper citation and reproducibility purposes
@@ -925,18 +931,17 @@ def get_citation():
     citation_str += ('Stitchr module version:\t' + version('Stitchr') + '\n\n')
 
     # Loop across all installed species data:
-    species_used = find_species_covered
-    if species_used:
-        for sp in species_used():
+    try:
+        species_used = find_species_covered()
+        for sp in species_used:
             sp_dat = pd.read_csv(data_dir + '/' + sp + '/data-production-date.tsv', sep='\t', header=None, index_col=0)
             citation_str += (sp + ' data details:\n\tIMGT/GENE-DB v:\t' + sp_dat.loc['imgt_genedb_release'][1] +
                              '\n\tDownloaded on:\t' + sp_dat.loc['last_run'][1] +
                              '\n\tUsing script:\t' + sp_dat.loc['script_used'][1] +
                              ' (v ' + sp_dat.loc['version_used'][1] + ')\n')
-    else:
+    except Exception:
         citation_str += '(No species data detected in the data directory.)\n'
 
     # TODO if automated novel allele sequence inclusion added, factor in its record here
 
-    print(citation_str)
-    return '\n'
+    return citation_str
