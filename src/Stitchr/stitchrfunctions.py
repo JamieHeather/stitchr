@@ -22,11 +22,12 @@ if sys.version_info < (3, 9):
 else:
     import importlib.resources as importlib_resources       # importlib.resources
 
-__version__ = '1.3.2'
+__version__ = '1.3.3'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
-sys.tracebacklimit = 0  # comment when debugging
+#sys.tracebacklimit = 0  # comment when debugging
+# TODO
 
 data_files = importlib_resources.files("Data")
 additional_genes_file = str(data_files / 'additional-genes.fasta')
@@ -71,6 +72,23 @@ def read_fa(ff):
                 break
         else:
             raise IOError("Input file does not appear to be a FASTA file - please check and try again")
+
+
+def fasta_to_dict(path_to_file):
+    """
+    :param path_to_file: str of path to FASTA file
+    :return: a coll.defaultdict in the format {fasta_header: fasta_read, ...}
+    """
+
+    if not os.path.isfile(path_to_file):
+        raise IOError("Cannot locate provided FASTA file, " + path_to_file)
+
+    out_dict = coll.defaultdict()
+    with open(path_to_file, 'r') as in_file:
+        for header, seq, null in read_fa(in_file):
+            out_dict[header] = seq
+
+    return out_dict
 
 
 def fastafy(gene, seq_line):
