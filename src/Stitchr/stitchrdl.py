@@ -20,7 +20,7 @@ except (ImportError, ModuleNotFoundError) as err:
     sys.exit()
 
 
-__version__ = '0.2.0'
+__version__ = '0.3.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -46,6 +46,18 @@ def args():
 
     parser.add_argument('-fa', '--fasta', required=False, type=str, default='',
                         help="Provide a path to a FASTA file to add sequences to the additional-genes.fasta reference.")
+
+    parser.add_argument('-na', '--novel_alleles', required=False, action='store_true', default=False,
+                        help="Option to download collated published novel TCR alleles "
+                             "to the additional-genes.fasta reference.")
+
+    parser.add_argument('-ns', '--novel_studies_threshold', required=False, type=int, default=2,
+                        help="If using the -na/--novel_alleles tag, this optional field allows specifying the number of"
+                             "studies an allele must be found in to be included. Default = 2.")
+
+    parser.add_argument('-nd', '--novel_donors_threshold', required=False, type=int, default=3,
+                        help="If using the -na/--novel_alleles tag, this optional field allows specifying the number of"
+                             "donors (across all studies) an allele must be found in to be included. Default = 3.")
 
     parser.add_argument('--cite', action=fxn.GetCitation, help="Print citation details.", nargs=0)
 
@@ -117,7 +129,6 @@ def add_from_fasta(path_to_fasta):
 
     # Then go through the new file and add the reads in
     for new_entry in to_add_fa:
-        print(new_entry)
         # Check if entry meets the required criteria
         bits = new_entry.split('|')
         imgt_format, gene_allele, inferrable_type, stated_type = [False] * 4
@@ -154,23 +165,123 @@ def add_from_fasta(path_to_fasta):
             raise IOError("Failed to automatically read in entry for '" + new_entry +
                           "' - please try full formatting and try again. ")
 
-    # Over-write the additional-genes.fasta file in place
+    # Then archive the current version of the additional-genes file,
+    # to minimise the chance of losing sequences (and thus losing reproducibility)...
+    shutil.move(fxn.additional_genes_file,
+                os.path.join(fxn.data_dir, 'archived-' + fxn.today() + '-additional-genes.fasta'))
+
+    # ... before writing out the modified additional-genes.fasta file in its place
     with open(fxn.additional_genes_file, 'w') as out_file:
         for entry in current_fa:
             out_file.write(fxn.fastafy(entry, current_fa[entry]))
 
 
+def download_novel_alleles(study_threshold, donor_threshold):
+    """
+    :param study_threshold: int of # of studies a given allele must be found in to be retained
+    :param donor_threshold: int of # of donors a given allele must be found in to be retained, summed across all studies
+    This function grabs novel alleles from the repo where I collate them, and reads them into the additional-genes file
+    """
+
+    import pandas as pd
+    import requests
+
+    novel_repo_url = 'https://api.github.com/repos/JamieHeather/novel-tcr-alleles/contents/'
+    summary_prefix = 'novel-TCR-alleles-'
+
+    # Identify the current novel-tcr-allele file
+    response = requests.get(novel_repo_url, headers={})
+    novel_file_name = ''
+    if response.status_code == 200:
+        files = response.json()
+        matching_files = [x for x in files if x['name'].startswith(summary_prefix)]
+        if len(matching_files) == 1:
+            novel_file_name = matching_files[0]['name']
+            novel_file_url = matching_files[0]['download_url']
+
+    if not novel_file_name:
+        raise IOError("Unable to locate a suitable summary novel TCR allele file name in the GitHub repository. ")
+
+    # If found, download it
+    tsv_path = os.path.join(fxn.data_dir, novel_file_name)
+    response = requests.get(novel_file_url, headers={})
+
+    if response.status_code == 200:
+        with open(tsv_path, 'wb') as out_file:
+            out_file.write(response.content)
+    else:
+        raise IOError("Failed to download the novel TCR allele data. ")
+
+    # Then read in and whittle down to those entries that meet select criteria
+    novel = pd.read_csv(tsv_path, sep='\t')
+    novel_out_fasta = os.path.join(fxn.data_dir, novel_file_name.replace('.tsv', '.fasta'))
+    with open(novel_out_fasta, 'w') as out_file:
+        for row in novel.index:
+            row_bits = novel.loc[row]
+            if pd.isna(row_bits['Notes']):
+                notes = ''
+            else:
+                notes = str(row_bits['Notes'])
+            func = '?'
+
+            if 'Stop codon' in notes:
+                func = 'P'
+
+            # Disregard alleles found in fewer than the threshold # of studies
+            if row_bits['Number-Datasets-In'] < study_threshold:
+                continue
+            # Disregard alleles found in fewer than the threshold # of donors
+            elif row_bits['Number-Donors-In'] < donor_threshold:
+                continue
+            # If it's already added to IMGT, skip
+            elif isinstance(row_bits['IMGT-ID'], str):
+                continue
+            # Same for if it's a shorter version
+            elif 'Shorter version of IMGT' in notes:
+                continue
+
+            # Determine whether the allele has a valid name
+            allele_id = ''
+            if row_bits['Standard-ID'].startswith('TR'):
+                allele_id = row_bits['Standard-ID']
+            else:
+                # If not, borrow one of the names from the paper(s) where it was discovered
+                studies = [x for x in novel if '-Name' in x]
+                for study in studies:
+                    if not pd.isna(row_bits[study]):
+                        allele_id = row_bits[study] + '-' + study.replace('-Name', '')
+                        if allele_id[:2] != 'TR' or '*' not in allele_id:
+                            allele_id = row_bits['Gene'] + '*' + allele_id
+
+            if not allele_id:
+                raise IOError("Unable to determine a possible allele ID for sequence with data:\n" + str(row_bits))
+
+            else:
+                header = '|'.join([novel_file_name.replace('.tsv', ''), allele_id, 'Homo sapiens', func,
+                                   '', '', str(len(row_bits['Ungapped-Sequence'])) + ' nt',
+                                   '', '', '', '', '', '', '', notes, '~' + region_key[allele_id[3]]])
+                out_file.write(fxn.fastafy(header, row_bits['Ungapped-Sequence']))
+
+    # Having written out the selected novel alleles FASTA, add that to the additional-genes file
+    add_from_fasta(novel_out_fasta)
+    print("Successfully added novel alleles from " + novel_file_name.replace('.tsv', ''))
+
+
 def main():
 
     in_args = vars(args())
+    alt_text_suffix = " to the additional-genes.fasta file, in the Stitchr data directory. "
 
     if in_args['fasta']:
-        print("Reading in sequences from " + in_args['fasta'] + " to the additional-genes.fasta file, "
-                                                                "in the Stitchr data directory. ")
+        print("Reading in sequences from " + in_args['fasta'] + alt_text_suffix)
         add_from_fasta(in_args['fasta'])
 
-    else:
+    elif in_args['novel_alleles']:
+        print("Downloading published novel human TCR alleles from GitHub" + alt_text_suffix)
+        download_novel_alleles(in_args['novel_studies_threshold'], in_args['novel_donors_threshold'])
 
+    else:
+        # Default behaviour, download from IMGT/GENE-DB via IMGTgeneDL
         species = in_args['species'].upper()
 
         try:

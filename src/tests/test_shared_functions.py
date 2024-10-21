@@ -145,6 +145,6 @@ def test_junction_determination():
     # def determine_v_interface(cdr3aa, n_term_nuc, n_term_amino):
     # def find_cdr3_c_term(cdr3_chunk, j_seq, strict):
     # def determine_j_interface(cdr3_cterm_aa, c_term_nuc, c_term_amino, gl_nt_j_len, j_warning_threshold):
-
-
     # def tweak_thimble_input(stitch_dict): # Todo move to a thimble test file?
+
+    # Also need some overall stitching tests!
