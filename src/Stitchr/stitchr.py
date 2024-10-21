@@ -15,7 +15,7 @@ import sys
 import warnings
 
 
-__version__ = '1.1.5'
+__version__ = '1.1.6'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -218,7 +218,7 @@ def stitch(specific_args, tcr_info, functionality, partial_info, codon_dict, j_w
             done[r] = tcr_info[fxn.regions[r]][gene][allele]
             used_alleles[r] = gene + '*' + allele
 
-            func_err_base = "Warning: gene " + gene + '*' + allele + " has a IMGT-assigned functionality of \'" \
+            func_err_base = "Warning: gene " + gene + '*' + allele + " has an assigned functionality of \'" \
                             + functionality[gene][allele] + "\', "
 
             # Check functionality

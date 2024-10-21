@@ -26,8 +26,7 @@ __version__ = '1.3.3'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
-#sys.tracebacklimit = 0  # comment when debugging
-# TODO
+sys.tracebacklimit = 0  # comment when debugging
 
 data_files = importlib_resources.files("Data")
 additional_genes_file = str(data_files / 'additional-genes.fasta')
