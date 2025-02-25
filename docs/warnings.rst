@@ -2,7 +2,7 @@
 ``stitchr`` warnings
 ~~~~~~~~~~~~~~~~~~~~
 
-As stitchr runs it will often generate a number of warning strings which describe properties of the rearrangement in question. While some of these sound bad, they are often perfectly fine, usally reflecting either a minor annotation or data input error, or a rearrangement with some slightly-uncommon recombination parameters.
+As stitchr runs it will often generate a number of warning strings which describe properties of the rearrangement in question. While some of these sound bad, they are often perfectly fine, usually reflecting either a potential minor annotation or data input error, or a rearrangement with some slightly-uncommon recombination parameters.
 
 Some of the warnings most commonly seen are explained below:
 
@@ -35,11 +35,11 @@ Some of the warnings most commonly seen are explained below:
 
     * This is similar to the V gene equivalent of the first J gene problem above, in that it occurs when ``stitchr`` cannot find the expected 2nd-Cys motif that should form the beginning of the CDR3 function.
 
-    * This usually occurs as a failure of whatever VDJ annotation software was used. Almost invariably when I see this it's due to partial or truncated CDR3 sequences.
+    * This usually occurs as a failure of whatever VDJ annotation software was used, typically partial or truncated CDR3 sequences.
 
 
 * *Error: a [LEADER/VARIABLE/JOINING/CONSTANT] sequence region has not been found for gene in the IMGT data for this chain/species. Please check your TCR and species data.*
 
     * It's a requirement of ``stitchr`` that it has to have an entry for every part of every gene (leader/V/J/constant) that it's being asked to stitch. This error occurs when you've asked ``stitchr`` to use a gene that it doesn't have all of the necessary sequences for.
 
-    * This error most frequently occurs for leader regions (especially in non-human species), even when the corresponding V gene is included. In these circustances you can still get ``stitchr`` to produce something if you don't care about the 'true' sequence, by either entering a different V gene/allele name in the leader field. Alternatively, if you don't care about expressing the stitched sequence, you can add any arbitrary DNA sequence (e.g. '``ATG``', or even '``nnn``' will work).
+    * This error most frequently occurs for leader regions (especially in non-human species), even when the corresponding V gene is included. In these circumstances you can still get ``stitchr`` to produce something if you don't care about the 'true' sequence, by using a different V gene or allele's leader sequence, or by adding the missing sequence to the appropriate file in the data directory. Alternatively, if you don't care about expressing the stitched sequence, you can add any arbitrary DNA sequence (e.g. '``ATG``', or even '``nnn``' will work).

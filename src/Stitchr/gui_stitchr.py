@@ -17,7 +17,7 @@ import collections as coll
 import warnings
 
 
-__version__ = '1.3.2'
+__version__ = '1.4.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -469,6 +469,10 @@ def main():
             else:
                 seamless = False
 
+            # Fetch required motifs from the species folder in the data directory
+            j_res, low_conf_js = fxn.get_j_motifs(species)
+            c_res = fxn.get_c_motifs(species)
+
             # Then stitch each individual chain...
             for ref_chain in ['TR1', 'TR2']:
                 chain = convert_chains[receptor][ref_chain]
@@ -484,7 +488,7 @@ def main():
                         values = tidy_values(ref_chain, values)
 
                         try:
-                            tcr_dat, functionality, partial = fxn.get_imgt_data(chain, st.gene_types, species)
+                            tcr_dat, functionality, partial = fxn.get_ref_data(chain, st.gene_types, species)
 
                             # If additional genes provided, just add them to all possible gene segment types
                             if values['additional_genes'] != extra_gene_text + '\n':
@@ -512,7 +516,7 @@ def main():
                                 preferred = ''
 
                             tcr_bits = {'v': values[ref_chain + 'V'], 'j': values[ref_chain + 'J'],
-                                        'cdr3': values[ref_chain + '_CDR3'],
+                                        'cdr3': values[ref_chain + '_CDR3'], 'mode': 'TSV',
                                         'skip_c_checks': False, 'species': species, 'seamless': seamless,
                                         'name': values[ref_chain + '_name'].replace(' ', '_'),
                                         'l': values[ref_chain + '_leader'], 'c': values[ref_chain + 'C'],
@@ -526,16 +530,14 @@ def main():
                             tcr_bits = fxn.autofill_input(tcr_bits, chain)
 
                             # Run the stitching
-                            outputs[ref_chain + '_out_list'], \
-                            outputs[ref_chain + '_stitched'], \
-                            outputs[ref_chain + '_offset'] = st.stitch(tcr_bits, tcr_dat, functionality,
-                                                                       partial, codons, 3, preferred)
+                            outputs[ref_chain] = st.stitch(tcr_bits, tcr_dat, functionality, partial, codons, 
+                                                           3, preferred, c_res, j_res, low_conf_js)
 
-                            outputs[ref_chain + '_out_str'] = '|'.join(outputs[ref_chain + '_out_list'])
-                            outputs[ref_chain + '_fasta'] = fxn.fastafy('nt|' + outputs[ref_chain + '_out_str'],
-                                                                        outputs[ref_chain + '_stitched'])
+                            outputs[ref_chain]['out_str'] = '|'.join(outputs[ref_chain]['out_list'])
+                            outputs[ref_chain]['fasta'] = fxn.fastafy('nt|' + outputs[ref_chain]['out_str'],
+                                                                        outputs[ref_chain]['stitched_nt'])
 
-                            window[ref_chain + '_out'].update(outputs[ref_chain + '_fasta'])
+                            window[ref_chain + '_out'].update(outputs[ref_chain]['fasta'])
 
                         except Exception as message:
                             warning_msgs[ref_chain + '_out'] = str(message)
@@ -556,7 +558,7 @@ def main():
 
                     # Only link if both chains present
                     try:
-                        if 'TR1_out_str' in outputs and 'TR2_out_str' in outputs:
+                        if 'out_str' in outputs['TR1'] and 'out_str' in outputs['TR2']:
 
                             # Determine order
                             if values['link_order_choice'] == 'BA' or values['link_order_choice'] == 'DG':
@@ -577,13 +579,13 @@ def main():
 
                             outputs['linker_seq'] = fxn.get_linker_seq(outputs['linker'], linkers)
 
-                            outputs['linked'] = outputs['TR' + tr1 + '_stitched'] + \
+                            outputs['linked'] = outputs['TR' + tr1]['stitched_nt'] + \
                                                 outputs['linker_seq'] + \
-                                                outputs['TR' + tr2 + '_stitched']
+                                                outputs['TR' + tr2]['stitched_nt']
 
-                            outputs['linked_header'] = '_'.join([outputs['TR' + tr1 + '_out_str'],
+                            outputs['linked_header'] = '_'.join([outputs['TR' + tr1]['out_str'],
                                                                  outputs['linker'],
-                                                                 outputs['TR' + tr2 + '_out_str']])
+                                                                 outputs['TR' + tr2]['out_str']])
 
                             outputs['linked_fasta'] = fxn.fastafy(outputs['linked_header'], outputs['linked'])
 

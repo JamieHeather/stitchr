@@ -24,8 +24,7 @@ __version__ = '0.3.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
-#sys.tracebacklimit = 0  # comment when debugging
-# TODO
+sys.tracebacklimit = 0  # comment when debugging
 
 def args():
     """
@@ -132,13 +131,15 @@ def add_from_fasta(path_to_fasta):
         # Check if entry meets the required criteria
         bits = new_entry.split('|')
         imgt_format, gene_allele, inferrable_type, stated_type = [False] * 4
+        inferrable_type, stated_type = False, False
         if len(bits) == 16:
             imgt_format = True
             if gene_allele_check(bits[1]):
                 gene, allele = bits[1].split('*')
                 gene_allele = True
-                if gene[3] in ['V', 'J', 'C'] or bits[4][:2] in ['L-', 'V-', 'J-', 'EX', 'CH']:
-                    inferrable_type = True
+                if len(gene) > 3:
+                    if gene[3] in ['V', 'J', 'C'] or bits[4][:2] in ['L-', 'V-', 'J-', 'EX', 'CH']:
+                        inferrable_type = True
                 if bits[15] in ['~LEADER', '~VARIABLE', '~JOINING', '~CONSTANT']:
                     stated_type = True
         elif len(bits) > 1:

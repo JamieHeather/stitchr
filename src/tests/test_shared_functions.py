@@ -60,15 +60,15 @@ def test_get_chain():
 
 
 def test_get_imgt_data():
-    assert fxn.get_imgt_data('TRA', list(fxn.regions.values()), 'DOG')
+    assert fxn.get_ref_data('TRA', list(fxn.regions.values()), 'DOG')
 
     with pytest.raises(ValueError):
-        fxn.get_imgt_data('TEST', list(fxn.regions.values()), 'DOG')
+        fxn.get_ref_data('TEST', list(fxn.regions.values()), 'DOG')
 
     with pytest.raises(IOError):
-        fxn.get_imgt_data('TRA', list(fxn.regions.values()), 'UNICORN')
+        fxn.get_ref_data('TRA', list(fxn.regions.values()), 'UNICORN')
 
-    imgt_dat = fxn.get_imgt_data('TRA', list(fxn.regions.values()), 'MOUSE')
+    imgt_dat = fxn.get_ref_data('TRA', list(fxn.regions.values()), 'MOUSE')
     assert [isinstance(x, dict) for x in imgt_dat]
     assert list(imgt_dat[0].keys()) == ['LEADER', 'VARIABLE', 'JOINING', 'CONSTANT']
     assert list(imgt_dat[1].keys())[0].startswith('TR')

@@ -2,7 +2,7 @@
 
 ### Stitch together TCR coding nucleotide sequences from V/J/CDR3 information
 
-##### Jamie Heather | CCR @ MGH | 2024
+##### Jamie Heather | CCR @ MGH | 2025 
 
 [![tests](https://github.com/JamieHeather/stitchr/actions/workflows/tests.yml/badge.svg)](https://github.com/JamieHeather/stitchr/actions/workflows/tests.yml)
 [![PyPI - Version](https://img.shields.io/pypi/v/stitchr)](https://pypi.org/project/stitchr/)

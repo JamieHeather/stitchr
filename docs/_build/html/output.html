@@ -1,0 +1,285 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>stitchr output modes &mdash; stitchr  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=888ff710"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Stitching immunoglobulins" href="immunoglobulins.html" />
+    <link rel="prev" title="GUI-stitchr" href="guistitchr.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            stitchr
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using <code class="docutils literal notranslate"><span class="pre">stitchr</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="inputdata.html"><code class="docutils literal notranslate"><span class="pre">stitchr</span></code> input data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="thimble.html">Thimble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guistitchr.html">GUI-stitchr</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">stitchr</span></code> output modes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="immunoglobulins.html">Stitching immunoglobulins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="importing.html">Importing <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> for use in other Python scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="warnings.html"><code class="docutils literal notranslate"><span class="pre">stitchr</span></code> warnings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="referencing.html">Citing <code class="docutils literal notranslate"><span class="pre">stitchr</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="referencing.html#licensing-information">Licensing information</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">stitchr</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">stitchr</span></code> output modes</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/output.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="stitchr-output-modes">
+<span id="output-label"></span><h1><code class="docutils literal notranslate"><span class="pre">stitchr</span></code> output modes<a class="headerlink" href="#stitchr-output-modes" title="Link to this heading"></a></h1>
+<section id="stitchr-and-thimble-output-options">
+<h2><code class="docutils literal notranslate"><span class="pre">stitchr</span></code> and <code class="docutils literal notranslate"><span class="pre">thimble</span></code> output options<a class="headerlink" href="#stitchr-and-thimble-output-options" title="Link to this heading"></a></h2>
+<p>Ordinarily <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> outputs its stitched single sequences to the terminal’s stdout, while <code class="docutils literal notranslate"><span class="pre">thimble</span></code> writes the stitched single and/or paired sequences out to a single TSV file. However the package has some additional output modes that can be used, set via the <code class="docutils literal notranslate"><span class="pre">-m</span> <span class="pre">/</span> <span class="pre">--mode</span></code> flag, which aim to increase the utility and better establish the provenance of specific <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> runs.</p>
+<section id="json">
+<h3>JSON<a class="headerlink" href="#json" title="Link to this heading"></a></h3>
+<p>As the different <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> scripts run, they store information related to the different stages of producing the requested sequence in a nested dictionary. This can be saved out in the convenient and interoperable JSON format by using a <code class="docutils literal notranslate"><span class="pre">-m</span> <span class="pre">json</span></code> flag like so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stitchr</span> <span class="o">-</span><span class="n">v</span> <span class="n">TRBV7</span><span class="o">-</span><span class="mi">6</span><span class="o">*</span><span class="mi">01</span> <span class="o">-</span><span class="n">j</span> <span class="n">TRBJ1</span><span class="o">-</span><span class="mi">4</span><span class="o">*</span><span class="mi">01</span> <span class="o">-</span><span class="n">cdr3</span> <span class="n">CASSSGQGLGEKLFF</span> <span class="o">-</span><span class="n">n</span> <span class="n">exampleTCR</span> <span class="o">-</span><span class="n">m</span> <span class="n">json</span>
+</pre></div>
+</div>
+<p>This can be very helpful, both for a richer and more persistent record of a particular stitching request. The data within includes:</p>
+<ul>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">in</span></code> dict contains details of the rearrangement as provided to <code class="docutils literal notranslate"><span class="pre">stitchr</span></code></p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">used</span></code> dict contains details of the rearrangement that ended up being used in the rearrangement (which may differ based on e.g. either an ambiguous or unavailable allele having been requested)</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">seqs</span></code> dict contains the actual sequences of the individual sections of the rearrangement</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">metadata</span></code> dict contains details about both the germline gene sequence reference used in the process of stitching, as well as details of the <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> package at the time of execution</p></li>
+<li><p>It also contains a number of additional top-level fields (which mirror the <code class="docutils literal notranslate"><span class="pre">stitch()</span></code> function outputs prior to version 1.2.0), including:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">input_type</span></code>, detailing the CDR3 junction input nature</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">translation_offset</span></code>, being an integer in the range 0-2 to allow correct translation (only relevant if a user-supplied 5’ sequence has been included)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">out_list</span></code>, a list of the relevant TCR features used to stitch that rearrangement, which default <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> uses to compile a FASTA header</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stitched_nt</span></code>, a str detailing the nt sequence of the final rearranged receptor, which is presumed to be the field most relevant in downstream applications</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p>Note that if you do not provide a TCR name (via the <code class="docutils literal notranslate"><span class="pre">-n</span></code> flag) then <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> will autogenerate a filename based on the TCR details (e.g. ‘stitchr-TCR_TRAV20-01_TRAJ58-01_CAVQDLGTSGSRLTF.json’ for the example above).</p>
+<p>JSON files can similarly be produced for rearrangements stitched with the higher-throughput script <code class="docutils literal notranslate"><span class="pre">thimble</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">thimble</span> <span class="o">-</span><span class="ow">in</span> <span class="n">thimble_input_file</span><span class="o">.</span><span class="n">tsv</span> <span class="o">-</span><span class="n">o</span> <span class="n">output_name</span> <span class="o">-</span><span class="n">m</span> <span class="n">json</span>
+</pre></div>
+</div>
+<p>This would produce a folder in the current working direction called ‘output_name’, in which the usual TSV output file would be produced alongside individual JSON files for rearrangements produced from each line of the input thimble file. Note that each row should ideally be given its own unique name in the <code class="docutils literal notranslate"><span class="pre">TCR_name</span></code> column, to prevent clashes during the JSON output.</p>
+<p>These files contain similar data to the JSON files produced by <code class="docutils literal notranslate"><span class="pre">stitchr</span></code>, except with additional levels of nesting to account for rearrangements with each of the individual receptor chains (e.g. TRA/TRB or TRG/TDB), as well as one for details relating to linked sequences as appropriate.</p>
+</section>
+<section id="genbank">
+<h3>GenBank<a class="headerlink" href="#genbank" title="Link to this heading"></a></h3>
+<p>While the JSON format makes accessing the results of a given stitching call with downstream software more convenient, some applications benefit from sequence visualisation or interaction in third-party tools. For these reasons <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> and <code class="docutils literal notranslate"><span class="pre">thimble</span></code> can similarly instead output their products as GenBank (.gb) files, via the <code class="docutils literal notranslate"><span class="pre">-m</span> <span class="pre">gb</span></code> flag:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stitchr</span> <span class="o">-</span><span class="n">v</span> <span class="n">TRBV7</span><span class="o">-</span><span class="mi">6</span><span class="o">*</span><span class="mi">01</span> <span class="o">-</span><span class="n">j</span> <span class="n">TRBJ1</span><span class="o">-</span><span class="mi">4</span><span class="o">*</span><span class="mi">01</span> <span class="o">-</span><span class="n">cdr3</span> <span class="n">CASSSGQGLGEKLFF</span> <span class="o">-</span><span class="n">n</span> <span class="n">exampleTCR</span> <span class="o">-</span><span class="n">m</span> <span class="n">gb</span>
+<span class="n">thimble</span> <span class="o">-</span><span class="ow">in</span> <span class="n">thimble_input_file</span><span class="o">.</span><span class="n">tsv</span> <span class="o">-</span><span class="n">o</span> <span class="n">output_name</span> <span class="o">-</span><span class="n">m</span> <span class="n">gb</span>
+</pre></div>
+</div>
+<p>GenBank files produced in this manner can be opened in DNA editing/visualisation tools, such as <a class="reference external" href="https://jorgensen.biology.utah.edu/wayned/ape/">ApE</a> or <a class="reference external" href="https://www.snapgene.com/snapgene-viewer">SnapGene Viewer</a>, as shown in the following image. Note that the top image shows a single TRB rearrangement stitched with <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> opened in ApE, while the bottom shows a P2A-linked bicistronic paired alpha/beta chain construct opened in SnapGene Viewer:</p>
+<a class="reference internal image-reference" href="_images/genbank-examples.png"><img alt="two screenshots of stitched sequences output in annotated GenBank format, with topmost showing a single rearrangement visualised in ApE, and the bottom showing a bicistronic paired chain sequence visualised in SnapGene Viewer (with an inset screenshot of the details of said rearrangement)" class="align-center" src="_images/genbank-examples.png" style="width: 800px;" /></a>
+<p>Note that some metadata (including script run details, germline reference used, and any warnings generated) are also output into the DESCRIPTION field of the GenBank entry, allowing long term retention of vital metadata alongside stitched nucleotide sequences. Also note that when running <code class="docutils literal notranslate"><span class="pre">thimble</span></code> in GenBank mode it will make a new directory to store the output, with additional subdirectories within to contain the files for both individual and linked chain sequences.</p>
+<p>Also bear in mind that use of the JSON or GenBank modes will result in a decrease in speed relative to their regular outputs, as additional computational steps are required to produce these richer output formats.</p>
+</section>
+</section>
+<section id="stitchr-only">
+<h2><code class="docutils literal notranslate"><span class="pre">stitchr</span></code>-only<a class="headerlink" href="#stitchr-only" title="Link to this heading"></a></h2>
+<p>Some output modes relate only to the running of the original <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> script, used for generating single unpaired sequences in the command line, which <a class="reference external" href="https://github.com/JamieHeather/stitchr/issues/22">may help integrate its output into certain pipelines</a>. The relevant the <code class="docutils literal notranslate"><span class="pre">-m</span> <span class="pre">/</span> <span class="pre">--mode</span></code> flag options are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-m</span> <span class="pre">BOTH_FA</span></code></p>
+<ul>
+<li><p>Default option</p></li>
+<li><p>Outputs a horizontal line, followed by the full, formatted, descriptive FASTA sequence of the stitched TCR, both nucleotide and translated amino acid sequence</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-m</span> <span class="pre">NT_FA</span></code></p>
+<ul>
+<li><p>Outputs a horizontal line and the FASTA nucleotide sequence of the stitched TCR</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-m</span> <span class="pre">AA_FA</span></code></p>
+<ul>
+<li><p>Outputs a horizontal line and the FASTA translated amino acid sequence of the stitched TCR</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-m</span> <span class="pre">NT</span></code></p>
+<ul>
+<li><p>Outputs just the nucleotide sequence of the stitched TCR (no lines, no linebreaks, no FASTA header)</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-m</span> <span class="pre">AA</span></code></p>
+<ul>
+<li><p>Outputs just the translated amino acid sequence of the stitched TCR (no lines, no linebreaks, no FASTA header)</p></li>
+</ul>
+</li>
+</ul>
+<section id="providing-a-partial-amino-acid-sequence">
+<h3>Providing a partial amino acid sequence<a class="headerlink" href="#providing-a-partial-amino-acid-sequence" title="Link to this heading"></a></h3>
+<p>When using the <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> script, if you provide a partial amino acid sequence using the <code class="docutils literal notranslate"><span class="pre">-aa</span></code> flag, <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> will perform a rudimentary pairwise alignment, just to give a quick visual assessment of the quality of the sequence generation.</p>
+<p>As an example, let’s take the example of the well described A2-NLV restricted <a class="reference external" href="https://www.rcsb.org/structure/5d2n">C25 TCR from the 5D2N PDB structure</a>. We can take the amino acid sequence straight from the PDB FASTA file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="mi">5</span><span class="n">D2N</span><span class="p">:</span><span class="n">E</span><span class="o">|</span><span class="n">PDBID</span><span class="o">|</span><span class="n">CHAIN</span><span class="o">|</span><span class="n">SEQUENCE</span>
+<span class="n">MGAGVSQSPRYKVTKRGQDVALRCDPISGHVSLYWYRQALGQGPEFLTYFNYEAQQDKSGLPNDRFSAERPEGSISTLTI</span>
+<span class="n">QRTEQRDSAMYRCASSLAPGTTNEKLFFGSGTQLSVLEDLNKVFPPEVAVFEPSEAEISHTQKATLVCLATGFYPDHVEL</span>
+<span class="n">SWWVNGKEVHSGVCTDPQPLKEQPALNDSRYALSSRLRVSATFWQNPRNHFRCQVQFYGLSENDEWTQDRAKPVTQIVSA</span>
+<span class="n">EAWGRAD</span>
+</pre></div>
+</div>
+<p>We can then pull out the V, J, and CDR3 information. There’s lots of ways to do this, but the easiest manual way is to find the CDR3 and then search the immediately neighbouring sequences against V/J amino acid sequences (obtainable via IMGT/GENE-DB). This gives:</p>
+<p><code class="docutils literal notranslate"><span class="pre">TRBV7-6</span> <span class="pre">/</span> <span class="pre">TRBJ1-4</span> <span class="pre">/</span> <span class="pre">CASSLAPGTTNEKLFF</span></code></p>
+<p>Then we can run the code like this:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>stitchr<span class="w"> </span>-v<span class="w"> </span>TRBV7-6<span class="w"> </span>-j<span class="w"> </span>TRBJ1-4<span class="w"> </span>-cdr3<span class="w"> </span>CASSLAPGTTNEKLFF<span class="w"> </span>-n<span class="w"> </span>C25<span class="w"> </span>-aa<span class="w"> </span>MGAGVSQSPRYKVTKRGQDVALRCDPISGHVSLYWYRQALGQGPEFLTYFNYEAQQDKSGLPNDRFSAERPEGSISTLTIQRTEQRDSAMYRCASSLAPGTTNEKLFFGSGTQLSVLEDLNKVFPPEVAVFEPSEAEISHTQKATLVCLATGFYPDHVELSWWVNGKEVHSGVCTDPQPLKEQPALNDSRYALSSRLRVSATFWQNPRNHFRCQVQFYGLSENDEWTQDRAKPVTQIVSAEAWGRAD
+
+<span class="c1"># Produces the following output</span>
+
+&gt;nt-C25-TRBV7-6*01-TRBJ1-4*01-TRBC1*01-CASSLAPGTTNEKLFF-leader-TRBV7-6*01
+ATGGGCACCAGTCTCCTATGCTGGGTGGTCCTGGGTTTCCTAGGGACAGATCACACAGGTGCTGGAGTCTCCCAGTCTCCCAGGTACAAAGTCACAAAGAGGGGACAGGATGTAGCTCTCAGGTGTGATCCAATTTCGGGTCATGTATCCCTTTATTGGTACCGACAGGCCCTGGGGCAGGGCCCAGAGTTTCTGACTTACTTCAATTATGAAGCCCAACAAGACAAATCAGGGCTGCCCAATGATCGGTTCTCTGCAGAGAGGCCTGAGGGATCCATCTCCACTCTGACGATCCAGCGCACAGAGCAGCGGGACTCGGCCATGTATCGCTGTGCCAGCAGCCTGGCCCCCGGCACCACTAATGAAAAACTGTTTTTTGGCAGTGGAACCCAGCTCTCTGTCTTGGAGGACCTGAACAAGGTGTTCCCACCCGAGGTCGCTGTGTTTGAGCCATCAGAAGCAGAGATCTCCCACACCCAAAAGGCCACACTGGTGTGCCTGGCCACAGGCTTCTTCCCCGACCACGTGGAGCTGAGCTGGTGGGTGAATGGGAAGGAGGTGCACAGTGGGGTCAGCACGGACCCGCAGCCCCTCAAGGAGCAGCCCGCCCTCAATGACTCCAGATACTGCCTGAGCAGCCGCCTGAGGGTCTCGGCCACCTTCTGGCAGAACCCCCGCAACCACTTCCGCTGTCAAGTCCAGTTCTACGGGCTCTCGGAGAATGACGAGTGGACCCAGGATAGGGCCAAACCCGTCACCCAGATCGTCAGCGCCGAGGCCTGGGGTAGAGCAGACTGTGGCTTTACCTCGGTGTCCTACCAGCAAGGGGTCCTGTCTGCCACCATCCTCTATGAGATCCTGCTAGGGAAGGCCACCCTGTATGCTGTGCTGGTCAGCGCCCTTGTGTTGATGGCCATGGTCAAGAGAAAGGATTTC
+
+&gt;aa-C25-TRBV7-6*01-TRBJ1-4*01-TRBC1*01-CASSLAPGTTNEKLFF-leader-TRBV7-6*01
+MGTSLLCWVVLGFLGTDHTGAGVSQSPRYKVTKRGQDVALRCDPISGHVSLYWYRQALGQGPEFLTYFNYEAQQDKSGLPNDRFSAERPEGSISTLTIQRTEQRDSAMYRCASSLAPGTTNEKLFFGSGTQLSVLEDLNKVFPPEVAVFEPSEAEISHTQKATLVCLATGFFPDHVELSWWVNGKEVHSGVSTDPQPLKEQPALNDSRYCLSSRLRVSATFWQNPRNHFRCQVQFYGLSENDEWTQDRAKPVTQIVSAEAWGRADCGFTSVSYQQGVLSATILYEILLGKATLYAVLVSALVLMAMVKRKDF
+
+MG------------------AGVSQSPRYKVTKRGQDVALRCDPISGHVSLYWYRQALGQ
+<span class="o">||</span><span class="w">                  </span><span class="o">||||||||||||||||||||||||||||||||||||||||</span>
+MGTSLLCWVVLGFLGTDHTGAGVSQSPRYKVTKRGQDVALRCDPISGHVSLYWYRQALGQ
+
+GPEFLTYFNYEAQQDKSGLPNDRFSAERPEGSISTLTIQRTEQRDSAMYRCASSLAPGTT
+<span class="o">||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||</span>
+GPEFLTYFNYEAQQDKSGLPNDRFSAERPEGSISTLTIQRTEQRDSAMYRCASSLAPGTT
+
+NEKLFFGSGTQLSVLEDLNKVFPPEVAVFEPSEAEISHTQKATLVCLATGFY-PDHVELS
+<span class="o">||||||||||||||||||||||||||||||||||||||||||||||||||</span><span class="p">|</span><span class="w">  </span><span class="o">||||||</span><span class="p">|</span>
+NEKLFFGSGTQLSVLEDLNKVFPPEVAVFEPSEAEISHTQKATLVCLATGF-FPDHVELS
+
+WWVNGKEVHSGVC-TDPQPLKEQPALNDSRYA-LSSRLRVSATFWQNPRNHFRCQVQFYG
+<span class="o">||||||||||||</span><span class="w">  </span><span class="o">||||||||||||||||</span><span class="p">|</span><span class="w">  </span><span class="o">||||||||||||||||||||||||||</span><span class="p">|</span>
+WWVNGKEVHSGV-STDPQPLKEQPALNDSRY-CLSSRLRVSATFWQNPRNHFRCQVQFYG
+
+LSENDEWTQDRAKPVTQIVSAEAWGRAD--------------------------------
+<span class="o">||||||||||||||||||||||||||||</span>
+LSENDEWTQDRAKPVTQIVSAEAWGRADCGFTSVSYQQGVLSATILYEILLGKATLYAVL
+
+---------------
+
+VSALVLMAMVKRKDF
+</pre></div>
+</div>
+<p>We can see that there’s a few mismatches in the latter half of the stitched sequence, so perhaps this crystal actually used the other TRBC gene. We can swap that in:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>stitchr<span class="w"> </span>-v<span class="w"> </span>TRBV7-6<span class="w"> </span>-j<span class="w"> </span>TRBJ1-4<span class="w"> </span>-cdr3<span class="w"> </span>CASSLAPGTTNEKLFF<span class="w"> </span>-n<span class="w"> </span>C25<span class="w"> </span>-c<span class="w"> </span>TRBC2<span class="w"> </span>-aa<span class="w"> </span>MGAGVSQSPRYKVTKRGQDVALRCDPISGHVSLYWYRQALGQGPEFLTYFNYEAQQDKSGLPNDRFSAERPEGSISTLTIQRTEQRDSAMYRCASSLAPGTTNEKLFFGSGTQLSVLEDLNKVFPPEVAVFEPSEAEISHTQKATLVCLATGFYPDHVELSWWVNGKEVHSGVCTDPQPLKEQPALNDSRYALSSRLRVSATFWQNPRNHFRCQVQFYGLSENDEWTQDRAKPVTQIVSAEAWGRAD
+
+<span class="c1"># Produces:</span>
+
+&gt;nt-C25-TRBV7-6*01-TRBJ1-4*01-TRBC2*01-CASSLAPGTTNEKLFF-leader-TRBV7-6*01
+ATGGGCACCAGTCTCCTATGCTGGGTGGTCCTGGGTTTCCTAGGGACAGATCACACAGGTGCTGGAGTCTCCCAGTCTCCCAGGTACAAAGTCACAAAGAGGGGACAGGATGTAGCTCTCAGGTGTGATCCAATTTCGGGTCATGTATCCCTTTATTGGTACCGACAGGCCCTGGGGCAGGGCCCAGAGTTTCTGACTTACTTCAATTATGAAGCCCAACAAGACAAATCAGGGCTGCCCAATGATCGGTTCTCTGCAGAGAGGCCTGAGGGATCCATCTCCACTCTGACGATCCAGCGCACAGAGCAGCGGGACTCGGCCATGTATCGCTGTGCCAGCAGCCTGGCCCCCGGCACCACTAATGAAAAACTGTTTTTTGGCAGTGGAACCCAGCTCTCTGTCTTGGAGGACCTGAAAAACGTGTTCCCACCCGAGGTCGCTGTGTTTGAGCCATCAGAAGCAGAGATCTCCCACACCCAAAAGGCCACACTGGTGTGCCTGGCCACAGGCTTCTACCCCGACCACGTGGAGCTGAGCTGGTGGGTGAATGGGAAGGAGGTGCACAGTGGGGTCAGCACAGACCCGCAGCCCCTCAAGGAGCAGCCCGCCCTCAATGACTCCAGATACTGCCTGAGCAGCCGCCTGAGGGTCTCGGCCACCTTCTGGCAGAACCCCCGCAACCACTTCCGCTGTCAAGTCCAGTTCTACGGGCTCTCGGAGAATGACGAGTGGACCCAGGATAGGGCCAAACCTGTCACCCAGATCGTCAGCGCCGAGGCCTGGGGTAGAGCAGACTGTGGCTTCACCTCCGAGTCTTACCAGCAAGGGGTCCTGTCTGCCACCATCCTCTATGAGATCTTGCTAGGGAAGGCCACCTTGTATGCCGTGCTGGTCAGTGCCCTCGTGCTGATGGCCATGGTCAAGAGAAAGGATTCCAGAGGC
+
+&gt;aa-C25-TRBV7-6*01-TRBJ1-4*01-TRBC2*01-CASSLAPGTTNEKLFF-leader-TRBV7-6*01
+MGTSLLCWVVLGFLGTDHTGAGVSQSPRYKVTKRGQDVALRCDPISGHVSLYWYRQALGQGPEFLTYFNYEAQQDKSGLPNDRFSAERPEGSISTLTIQRTEQRDSAMYRCASSLAPGTTNEKLFFGSGTQLSVLEDLKNVFPPEVAVFEPSEAEISHTQKATLVCLATGFYPDHVELSWWVNGKEVHSGVSTDPQPLKEQPALNDSRYCLSSRLRVSATFWQNPRNHFRCQVQFYGLSENDEWTQDRAKPVTQIVSAEAWGRADCGFTSESYQQGVLSATILYEILLGKATLYAVLVSALVLMAMVKRKDSRG
+
+MG------------------AGVSQSPRYKVTKRGQDVALRCDPISGHVSLYWYRQALGQ
+<span class="o">||</span><span class="w">                  </span><span class="o">||||||||||||||||||||||||||||||||||||||||</span>
+MGTSLLCWVVLGFLGTDHTGAGVSQSPRYKVTKRGQDVALRCDPISGHVSLYWYRQALGQ
+
+GPEFLTYFNYEAQQDKSGLPNDRFSAERPEGSISTLTIQRTEQRDSAMYRCASSLAPGTT
+<span class="o">||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||</span>
+GPEFLTYFNYEAQQDKSGLPNDRFSAERPEGSISTLTIQRTEQRDSAMYRCASSLAPGTT
+
+NEKLFFGSGTQLSVLEDLNK-VFPPEVAVFEPSEAEISHTQKATLVCLATGFYPDHVELS
+<span class="o">||||||||||||||||||</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="o">||||||||||||||||||||||||||||||||||||||</span><span class="p">|</span>
+NEKLFFGSGTQLSVLEDL-KNVFPPEVAVFEPSEAEISHTQKATLVCLATGFYPDHVELS
+
+WWVNGKEVHSGVC-TDPQPLKEQPALNDSRYA-LSSRLRVSATFWQNPRNHFRCQVQFYG
+<span class="o">||||||||||||</span><span class="w">  </span><span class="o">||||||||||||||||</span><span class="p">|</span><span class="w">  </span><span class="o">||||||||||||||||||||||||||</span><span class="p">|</span>
+WWVNGKEVHSGV-STDPQPLKEQPALNDSRY-CLSSRLRVSATFWQNPRNHFRCQVQFYG
+
+LSENDEWTQDRAKPVTQIVSAEAWGRAD--------------------------------
+<span class="o">||||||||||||||||||||||||||||</span>
+LSENDEWTQDRAKPVTQIVSAEAWGRADCGFTSESYQQGVLSATILYEILLGKATLYAVL
+
+-----------------
+
+VSALVLMAMVKRKDSRG
+</pre></div>
+</div>
+<p>This produces even more mismatches! This is an instance where the constant region used in the crystal has been altered for expression/crystallization purposes.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="guistitchr.html" class="btn btn-neutral float-left" title="GUI-stitchr" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="immunoglobulins.html" class="btn btn-neutral float-right" title="Stitching immunoglobulins" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Jamie Heather.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

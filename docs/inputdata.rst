@@ -8,7 +8,7 @@
 Species covered
 ~~~~~~~~~~~~~~~
 
-``stitchr`` can stitch any TCR loci for which it has the necessary raw data, appropriately formatted in the ``Data`` directory (which can be located by running ``stitchr -dd`` or ``stitchr --data_dir``). IMGT currently contains enough TCR data for stitching (i.e. at least one leader, V gene, J gene, and constant region for a given loci) for the following species/loci:
+``stitchr`` can stitch any TCR loci for which it has the necessary raw data, appropriately formatted in the ``Data`` directory (which can be located by running ``stitchr -dd`` or ``stitchr --data_dir``). Currently ``stitchr`` relies on IMGT/GENE-DB for obtaining germline reference data, which  contains enough TCR data for stitching (i.e. at least one leader, V gene, J gene, and constant region for a given loci) for the following species/loci:
 
 .. csv-table:: stitchr species/loci table
     :header: "Common Name", "Genus species", "TRA", "TRB", "TRG", "TRD", "Kazusa species ID"
@@ -40,10 +40,10 @@ The species can be specified using the ``-s / --species`` command line flag when
 
 It must be noted that many of the less well studied species have poorer gene annotations and germline variation covered by IMGT, so TCRs produced using these datasets should be treated with more caution than say for humans. E.g. different mouse strains will have different alleles (and different numbers of gene family members), so accuracy of stitched TCRs will depend both on the quality of both germline gene information and TCR clonotyping.
 
-Generating new IMGT input files
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Generating new reference input files
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You may wish to update your raw TCR data files after an IMGT update, as sequences can be added (or even changed), or as more species become available. Assuming IMGT maintains its current noming conventions and webhosting scheme, these tasks can be undertaken automatically using the ``stitchrdl`` command, which is a wrapper for the `IMGTgeneDL script <https://github.com/JamieHeather/IMGTgeneDL>`_ (details in its own repo).
+You may wish to update your raw TCR data files after an IMGT update, as sequences can be added (or even changed), or as more species become available. Assuming IMGT maintains its current naming conventions and webhosting scheme, these tasks can be undertaken automatically using the ``stitchrdl`` command, which is a wrapper for the `IMGTgeneDL script <https://github.com/JamieHeather/IMGTgeneDL>`_ (details in its own repo).
 
 Users should note that when this is run, it creates a ``data-production-date.tsv`` file in the directory of that species, which contains the IMGT release number and date of downloaded sequences, which should be included in any published reporting of the TCR sequences used. We also recommend that you update the germline TCR data for ``stitchr`` at the same time you update the database used in whatever TCR gene annotation software you use, to ensure that there's no discrepancy in allele nomenclature between the two.
 
@@ -58,7 +58,7 @@ Inside that folder there should be various files:
 
 * ``data-production-date.tsv``
 
-    * Contains information about the IMGT and script versions used to generate this data
+    * Contains information about the germline reference and script versions used to generate this data
     * Technically not used by ``stitchr`` as it runs, but contains important information for recording or relaying the products of ``stitchr``
 
 * ``imgt-data.fasta``
@@ -99,11 +99,11 @@ If no species-specific codon usage file is found the script will default to usin
 Preferred allele files
 ^^^^^^^^^^^^^^^^^^^^^^
 
-``stitchr`` requires an exact allele to know which sequence to pull out of the database. By default, it always prioritises using the exact allele specified, but if the user just gives a gene identifier without an allele specified (e.g. TRAV1-1) then ``stitchr`` will use the prototypical '01' allele (e.g. TRAV1-1\*01), as this is the only allele which every IMGT-provided gene should theoretically have. It will similarly default to \*01 if explicitly given an allele which it can't find in the input data.
+``stitchr`` requires an exact allele to know which sequence to pull out of the database. By default, it always prioritises using the exact allele specified, but if the user just gives a gene identifier without an allele specified (e.g. TRAV1-1) then ``stitchr`` will use the prototypical '01' allele (e.g. TRAV1-1\*01), as this is the only allele which every IMGT-provided gene *should* theoretically have. It will similarly default to \*01 if explicitly given an allele which it can't find in the input data.
 
-There are occasions when this is not the biologically appropriate allele to choose. While users can of course specify the allele explicitly when providing the gene, they may alternatively wish to make use of the ``-p / --preferred_alleles_path`` command line option, which allows them to point to a tab-delimited file detailing specific alleles which should be used. Here users can specify four fields:
+There are occasions when this is not the biologically appropriate allele to choose (`and even some examples where a gene lacks an *01 allele <https://github.com/JamieHeather/stitchr/issues/25>`_). While users can of course specify the allele explicitly when providing the gene, they may alternatively wish to make use of the ``-p / --preferred_alleles_path`` command line option, which allows them to point to a tab-delimited file detailing specific alleles which should be used. Here users can specify four fields:
 
--  **Gene**: the IMGT gene name
+-  **Gene**: the IMGT-format gene name
 -  **Allele**: the preferred allele (i.e. the text after the '\*' in a complete name)
 -  **Region**: one of LEADER/VARIABLE/JOINING/CONSTANT, which tells ``stitchr`` explicitly what kind of sequence it is
 -  **Loci**: specify which locus or loci this preferred allele covers using three digit codes, comma-delimiting if >1 (e.g. “TRB” or “TRA,TRD”)
@@ -114,28 +114,70 @@ This feature is particularly of use when generating large numbers of stitched se
 A template and two example common mouse strain files are included in the ``templates/preferred-alleles/`` directory. These examples are for the common mouse strains C56/Bl6 and Balb/c, and were produced by using the subspecies/strain field of the IMGT headers. Note that even then users should take care, as some genes have multiple alleles associated with them, despite being from inbred mice – e.g. TRAV9D-2 has two alleles associated with it for Balb/c (01 and 03). I've tried to pick the ones that are more likely to be functional (F > ORF > P, e.g. choosing ``TRBV24*03`` over 02 for Balb/c, or ``TRAV9D-4*04`` over 02 for C57/BL6), or are from better inferred data (e.g. taking one with functionality 'F' over '(F)').
 
 Providing additional gene sequences
------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Sometimes you may wish to generate TCRs using additional gene sequences which won't be provided by IMGT (at least in the context of a given species). This can be used to introduce sequences from other loci/species, and modified or otherwise non-naturally occurring gene combinations.
 
-Genes to be included can be added to the Data/additional-genes.fasta file, and then when ``stitchr`` or ``thimble`` is run these sequences will be read in by use of the ``-xg`` flag. As constant region gene switching is a common modification used in TCR expression and engineering studies, human alpha/beta/gamma/delta and mouse alpha/beta constant regions have been preloaded into this file. Genes added to thisfasta must have a FASTA header in the format:
+Genes to be included can be added to the Data/additional-genes.fasta file, and then when ``stitchr`` or ``thimble`` is run these sequences will be read in by use of the ``-xg`` flag. As constant region gene switching is a common modification used in TCR expression and engineering studies, human alpha/beta/gamma/delta and mouse alpha/beta constant regions have been preloaded into this file. Genes added to this fasta must have a FASTA header in the format:
 
 ::
 
-   >accession/ID|gene*allele|species|functionality|sequence type
-   e.g.
-   >X02883|hTRAC*01|Homo sapiens|F|EX1+EX2+EX3+EX|anything else...
+    >[reference]|[gene]*[allele]|[species]|[functionality]||||||||||||~[region]
 
-Only the second and fifth fields are important for these additional genes, and all other fields can be left empty (with empty functionality calls being presumed functional). The second field contains gene name and allele information: the gene name can be any alphanumeric string (that doesn't contain an asterisk), while the allele should be a zero-padded two (or more) digit integer (e.g. '01'). Any case can be used in gene names, but bear in mind all will be made upper case when running. The fifth field corresponds to the relevant portion of a final TCR transcript, again drawing on IMGT nomenclature. There are four valid options: V-REGION, J-REGION, EX1+EX2+EX3+EX4 (constant region), or L-PART1+L-PART2 (leader sequence). Some things to remember when using custom sequences:
+- Only the second and last fields are important for these additional genes, and all other fields can be left empty.
+
+- The second field contains gene name and allele information: the gene name can be any alphanumeric string (that doesn't contain an asterisk), while the allele will usually be a zero-padded two (or more) digit integer (e.g. '01'), but can be anything. Any case can be used in gene names, but bear in mind all will be made upper case when running.
+
+- The last field is prefixed by a tilde, and describes what kind of gene region this is (LEADER/VARIABLE/JOINING/CONSTANT). This can usually be informed by the default fifth field of a standard IMGT header (V-REGION, J-REGION, EX1+EX2+EX3+EX4 (constant region), or L-PART1+L-PART2 (leader sequence)), but in practice that field alone wasn't sufficient for ``stitchr`` to always assign the genes correctly, hence the need for this additional field.
+
+- Note that the fourth field describing functionality (F, P, or ORF) can be left blank, with empty fields being presumed functional. This feature does not impact stitched results; it only determines whether or not certain warning flags are raised for a given rearrangement.
+
+The following can be used as template FASTA read headers:
+
+::
+
+    >[reference]|TR[ABGD]V[#]*YY|Homo sapiens|F||||||||||||~LEADER
+
+    >[reference]|TR[ABGD]V[#]*YY|Homo sapiens|F||||||||||||~VARIABLE
+
+    >[reference]|TR[ABGD]J[#]*YY|Homo sapiens|F||||||||||||~JOINING
+
+    >[reference]|TR[ABGD]C[#]*YY|Homo sapiens|F||||||||||||~CONSTANT
+
+While FASTA entries can be manually added to the ``additional-genes.fasta`` file (located via the ``stitchr -dd`` command), it is recommended to instead use ``stitchrdl`` which has the capacity to automatically read sequences into this file via it's ``-fa / --fasta`` flag:
+
+::
+
+    stitchrdl -fa sequences_to_add.fasta
+
+Not only will this likely be more convenient for the user, modifying the ``additional-genes`` file this way will automatically make a backup of the file first (located in the data directory, prefixed with 'archived-YYYY-MM-DD-'), permitting recreation of `stitchr` runs using historic additional sequences. When providing sequences in this manner, it is recommended to use the full templates above, however users may optionally instead provide only a 'gene*allele' identifier, which the script will use to try to infer gene region (with leaders being distinguished from variable regions based on length, being presumed to be < or >= 100 nt respectively).
+
+Some things to remember when using custom sequences:
 
 -  Functional leader sequences usually have lengths that are multiples of 3. They don't need to be, but if they're not the V gene will need to account for it to maintain the reading frame.
 -  The 3' nucleotide of the J gene is the first nucleotide of the first codon of the constant region.
 -  Constant regions in default settings are trimmed by the script to run up to the codon just before the first stop codon (as occur in EX4UTR exons of TRAC and TRDC). This is not required, and stop codons can be left in if desired, but care must be taken if the intention is to use ``thimble`` or ``gui-stitchr`` with these genes to make bicistronic expression constructs. It's recommended to leave stop codons off any constant regions added to additional-genes.fasta, and then provide them in ``thimble`` instead as needed.
 -  Most of the gene sequence and format checks cannot be applied, so extra care must be taken to ensure input genes are valid. For instance, using the ``-xg`` flag automatically sets the ``-sc`` flag, which skips the usual constant region frame check (as ``stitchr`` doesn't know what frame is intended, see below).
--  Extra genes added via the additional-genes.fasta file are supplemented to the working dictionaries in ``stitcher`` *after* IMGT gene sequences are read in; any extra genes with the same gene name/allele combination as one already in the IMGT dataset will    overwrite the default sequence. If you wish to use both in the same rearrangement or ``thimble`` run, use novel naming in the input FASTA file - e.g. the example constant regions added have 'm' and 'h' prefixes, denoting their human or mouse origin, but any chance to ensure unique names will work.
+-  Extra genes added via the additional-genes.fasta file are supplemented to the working dictionaries in ``stitcher`` *after* the reference gene sequences are read in; any extra genes with the same gene name/allele combination as one already in the dataset will overwrite the default sequence. If you wish to use both in the same rearrangement or ``thimble`` run, use novel naming in the input FASTA file - e.g. the example constant regions added have 'm' and 'h' prefixes, denoting their human or mouse origin, but any chance to ensure unique names will work.
+
+Using novel/inferred human TCR alleles
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Note: this section details an **experimental** feature of ``stitchr``, and is only recommended for advanced users.
+
+I maintain `a repo of putative novel human TCR alleles identified in the literature <https://github.com/JamieHeather/novel-tcr-alleles/>`_, mostly inferred from repertoire data but some from long-read genomic sequencing, most of which are not currently available in IMGT. If users wish to include these alleles in their ``stitchr`` references, they can be automatically read into the ``additional-genes.fasta`` file using the ``-na / --novel_alleles`` flag of ``stitchrdl``, for use with the ``-xg / --extra_genes`` flag of ``stitchr`` or ``thimble``.
+
+Note that these alleles are provided as-is, with no additional or standardised QC applied beyond what is present in the source publications. It is possible to gain confidence in these alleles through use of the ``-ns / --novel_studies_threshold`` and ``-nd / --novel_donors_threshold`` flags to provide values of the number of studies and donors each allele must have been observed in to be included in this scrape.
+
+An example of this process may therefore look like the following, in which novel alleles found in two or more studies in 5 or more cumulate donors would be added to the extra genes file:
+
+::
+
+    stitchrdl -na -ns 2 -nd 5
+
 
 Skipping constant region checks
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For the default loci covered, ``stitchr`` has a constant region frame-checking function that uses known correctly-translated sequences to infer the right frame (and where appropriate, placement of endogenous stop codons). If you wish to override these checks for some reason (most likely if you're manually creating your own non-standard or engineered constant region sequences) then you can get the ``-sc / --skip_c_checks`` flag in the command line. Under these circumstances, ``stitchr`` will instead determine the correct frame of the C terminal domain by finding the one with the longest stretch of amino acids before hitting a stop codon. Note that this is less reliable and slower than using the pre-computed motif files. This feature will also **only activate if the gene name of the relevant constant region is not found in the C-region-motifs.tsv file for that species**.
 

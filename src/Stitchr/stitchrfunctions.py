@@ -22,11 +22,11 @@ if sys.version_info < (3, 9):
 else:
     import importlib.resources as importlib_resources       # importlib.resources
 
-__version__ = '1.3.3'
+__version__ = '1.4.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
-sys.tracebacklimit = 0  # comment when debugging
+# sys.tracebacklimit = 0  # comment when debugging  # TODO fix
 
 data_files = importlib_resources.files("Data")
 additional_genes_file = str(data_files / 'additional-genes.fasta')
@@ -99,11 +99,14 @@ def fastafy(gene, seq_line):
     return ">" + gene + "\n" + textwrap.fill(seq_line, 60) + "\n"
 
 
-def today():
+def today(date_format=''):
     """
-    :return: Today's day, in ISO format
+    :return: Today's date, in one of two formats, defaulting to ISO
     """
-    return datetime.datetime.today().date().isoformat()
+    date_today = datetime.datetime.today().date().isoformat()
+    if date_format == 'ncbi':
+        date_today = datetime.datetime.strptime(date_today, '%Y-%m-%d').strftime('%d-%b-%Y').upper()
+    return date_today
 
 
 def nest():
@@ -218,7 +221,7 @@ def tidy_input(cmd_line_args):
             if 'path' in arg:
                 out_args[arg] = cmd_line_args[arg]
             else:
-                out_args[arg] = cmd_line_args[arg].upper()
+                out_args[arg] = cmd_line_args[arg].upper().replace(' ', '')
         else:
             out_args[arg] = cmd_line_args[arg]
 
@@ -276,7 +279,7 @@ def autofill_input(cmd_line_args, chain):
     return cmd_line_args
 
 
-def get_imgt_data(tcr_chain, gene_types, species):
+def get_ref_data(tcr_chain, gene_types, species):
     """
     :param tcr_chain: 3 digit str code, e.g. TRA or TRB
     :param gene_types: list of TYPES of genes to be expected in a final TCR mRNA, in their IMGT nomenclature
@@ -287,7 +290,7 @@ def get_imgt_data(tcr_chain, gene_types, species):
 
     # Run some basic sanity/input file checks
     if tcr_chain not in ['TRA', 'TRB', 'TRG', 'TRD', 'IGH', 'IGL', 'IGK']:
-        raise ValueError("Incorrect chain detected (" + tcr_chain + "), cannot get IMGT data. ")
+        raise ValueError("Incorrect chain detected (" + tcr_chain + "), cannot get reference data. ")
 
     in_file_path = os.path.join(data_dir, species, tcr_chain + '.fasta')
     if not os.path.isfile(in_file_path):
@@ -337,7 +340,7 @@ def strip_functionality(functionality_str):
 
 def get_additional_genes(imgt_data, imgt_functionality):
     """
-    :param imgt_data: the nested dict produced by get_imgt_data containing V/J/C sequence data
+    :param imgt_data: the nested dict produced by get_ref_data containing V/J/C sequence data
     :param imgt_functionality: the nested dict with imgt_stated functionality
     :return: the same dicts supplemented with any genes found in the 'additional genes.fasta' file
     """
@@ -378,8 +381,8 @@ def get_preferred_alleles(path_to_pa_file, gene_types, imgt_data, partiality, lo
     """
     :param path_to_pa_file: str path to file of preferred alleles
     :param gene_types: list of TYPES of genes to be expected in a final TCR mRNA, in their IMGT nomenclature
-    :param imgt_data: double nested dict of tcr gene sequences, from get_imgt_data()
-    :param partiality: double nested dict detailing partial genes, from get_imgt_data()
+    :param imgt_data: double nested dict of tcr gene sequences, from get_ref_data()
+    :param partiality: double nested dict detailing partial genes, from get_ref_data()
     :param locus: three character string detailing what locus is being stitched
     :return: a nested dict containing default alleles for the specified genes
     """
@@ -469,35 +472,21 @@ def tidy_c_term(c_term_nt, skip, c_region_motifs, c_gene):
     """
 
     translations = {}  # key = frame (0, 1, or 2)
-    best = -1
-    position = -1
+    positions = {}
+    stop_counts = {}
+    motif_counts = {}
 
-    # Try every frame, look for the frame that contains the appropriate sequence
-    for f in range(4):
+    if c_gene not in c_region_motifs['start']:
+        skip = True
 
+    # Try every frame, look for the frame that has the right properties (motif, lack of stops etc)
+    for f in range(3):
+        # TODO another possible thimble performance boost opportunity: store previous translations for a C within a run?
         translated = translate_nt(c_term_nt[f:])
         translations[f] = translated
+        positions[f] = find_stop(translated)
+        stop_counts[f] = len([x for x in translated if x == '*'])
 
-        # If C gene check skips is selected, OR if the constant region isn't listed in the C-region-motifs...
-        if skip or c_gene not in c_region_motifs['start']:
-            # Try to figure out the best translation frame, by picking the one with the longest pre-stop sequence
-            for frame in translations:
-                stop = find_stop(translations[frame])
-                if stop > position:
-                    best = frame
-                    position = stop
-
-            if f == 3:
-                if best == 2:
-                    warnings.warn("Note: expected reading frame " + str(best) + " used for translating C terminus. ")
-                else:
-                    warnings.warn("Warning: reading frame " + str(best) + " used for translating C terminus, "
-                                  "instead of the expected reading frame 2 - "
-                                  "double check your input/output sequences are correct. ")
-
-                return c_term_nt[best:], translations[best]
-
-        # ... otherwise if C gene check skips not selected, OR if the constant region is listed in the motifs
         if not skip or c_gene in c_region_motifs['start']:
             # Use the defined constant region motif
             if c_region_motifs['start'][c_gene] in translated:
@@ -514,9 +503,41 @@ def tidy_c_term(c_term_nt, skip, c_region_motifs, c_gene):
                                       "there should be one - this could indicate incorrect exon annotations, "
                                       "potentially resulting in an out of frame constant region. ")
 
-                break
+                return c_term_nt[f:], translated
 
-    return c_term_nt[f:], translated
+        else:
+            # Just look for ALL species-related C region translated motifs
+            motif_counts[f] = len([x for x in c_region_motifs['start'].values() if x in translated])
+
+    # If the code has made it to here, it hasn't made an unambiguous C terminus frame determination, and needs to choose
+    frames_with_c_motifs = [x for x in motif_counts if motif_counts[x] > 0]
+    stopless = [x for x in stop_counts if stop_counts[x] == 0]
+    early_stops = [x for x in range(3) if stop_counts[x] == 1 and positions[x] < 3]
+
+    # First prioritise a single frame that contains a known TCR constant region start motif
+    if len(frames_with_c_motifs) == 1:
+        f = frames_with_c_motifs[0]
+        warnings.warn("Note: a single reading frame for translating the C terminus with any relevant known C region "
+                      "motif was detected. ")
+
+    # Failing that, if there's only one frame without stop codons, choose that frame
+    elif len(stopless) == 1:
+        f = stopless[0]
+        warnings.warn("Note: no C region motifs were detected: selected the single reading frame for translating the C "
+                      "terminus with no stop codons. ")
+
+    # Some TCR J genes contain a 5' stop that can be removed during recombination, so prioritise those next
+    elif len(early_stops) == 1:
+        f = early_stops[0]
+        warnings.warn("Note: no C region motifs or stop-codon-less translation frames detected: the single frame with "
+                      "a 5' recombination-deletable stop codon was detected. ")
+
+    # Finally pick the frame that gives the longest sequence before a stop
+    else:
+        f = max(positions, key=positions.get)
+        warnings.warn("Note: no obvious C region frame detected: choosing the frame giving the longest ORF. ")
+
+    return c_term_nt[f:], translations[f]
 
 
 def determine_v_interface(cdr3aa, n_term_nuc, n_term_amino):
@@ -709,8 +730,7 @@ def get_j_motifs(species):
 def get_c_motifs(species):
     """
     :param species: upper case string of common species name, referring to a directory in DATA/
-    :return: dict of J genes which have a non-canonical (non-phenylalanine) CDR3 terminal residue, and a list of
-             J genes whose terminal residue is low confidence (i.e. unable to find a clear FGXG-like motif at all)
+    :return: dict of known C genes with  details which allow correct frame inference
 
     NB: Expects a file in the Data/[species]/ directory called 'C-region-motif.tsv'
     That file should contain a header, with columns consisting of: C gene/Exons/Start motif/Stop codon motif
@@ -828,20 +848,29 @@ def translate_nt(nt_seq):
     :param nt_seq: Nucleotide sequence to be translated
     :return: corresponding amino acid sequence
     """
-
+    nt_seq = nt_seq.upper()
     aa_seq = ''
-    for i in range(0, len(nt_seq), 3):
-        codon = nt_seq[i:i+3].upper()
-        if len(codon) == 3:
-            if 'N' in codon:
-                aa_seq += 'x'
-            else:
-                try:
-                    aa_seq += codons[codon]
-                except Exception:
-                    raise IOError("Cannot translate codon: " + codon + ". ")
+    len_seq = len(nt_seq)
+    for i in range(0, len_seq - (len_seq % 3), 3):
+        codon = nt_seq[i:i+3]
+        if 'N' in codon:
+            aa_seq += 'x'
+        else:
+            try:
+                aa_seq += codons[codon]
+            except Exception:
+                raise IOError("Cannot translate codon: " + codon + ". ")
 
     return aa_seq
+
+
+def pad_trans(nt_seq, pad_len):
+    """
+    :param nt_seq: str of nucleotide sequence to be translated
+    :param pad_len: int of translation offset (i.e. amount to pad)
+    :return: str of nt_seq translated into AA, after padding with pad_len * N
+    """
+    return translate_nt('N' * pad_len + nt_seq)
 
 
 def check_suffix_prefix(five_prime_seq, three_prime_seq):
@@ -899,8 +928,178 @@ def find_j_overlap(nt_cdr3, j_germline):
     return j_germline[index_longest + len(longest_overlap):]
 
 
-def main():
-    print("Please use the appropriate 'stitchr', 'thimble', 'gui_stitchr' or 'stitchrdl' command.")
+def pad_spaces(str_to_pad, len_to_pad):
+    """
+    :param str_to_pad: str to pad with spaces
+    :param len_to_pad: int of length of padding required
+    :return: str_to_pad prefixed with len_to_pad number of spaces (for format matching)
+    """
+    return str_to_pad + ' ' * (len_to_pad - len(str_to_pad))
+
+
+def output_genbank(sequence_name, full_sequence, description, topology, features, save_dir_path,
+                   species, numbering, plot_multi=True, division='SYN',
+                   accession='.', version='.', keywords='.', source='.',
+                   authors='.', title='Direct Submission', journal='.'):
+    """
+    Save an annotated GenBank (.gb) file for easy visualisation of DNA features (e.g. stitched TCRs)
+    :param sequence_name: str of sequence name, for saving
+    :param full_sequence: str of full DNA sequence
+    :param description: str of description to include in output file
+    :param topology: str of topology ('linear' or 'circular')
+    :param features: lists of tuples [(str, str, [list of str], [list of int]], detailing target output features in GB:
+        1) name, 2) type (if known), 3) DNA sequence(s) (allowing multi-part features), 4) index location(s) (optional)
+    :param save_dir_path: str of path to folder in which genbank files should be saved
+    :param species: str of species to go in 'organism' field
+    :param numbering: boolean, whether to incrementally number regions of the same type
+    :param plot_multi: boolean, whether to plot all instances of multi-mapping sequences given without indexes (def=0)
+    :param division: GenBank 'division', as per https://www.ncbi.nlm.nih.gov/genbank/samplerecord/#GenBankDivisionB
+    :param accession: optional str field (can be left as default '.')
+    :param version: optional str field (can be left as default '.')
+    :param keywords: optional str field (can be left as default '.')
+    :param source: optional str field (can be left as default '.')
+    :param authors: optional str field (can be left as default '.')
+    :param title: optional str field (can be left as default 'Direct submission')
+    :param journal: optional str field (can be left as default '.')
+    :return: [nothing] just saves the appropriate file
+    """
+    pad_len1 = 12
+    pad_len2 = 21
+
+    seq_len = str(len(full_sequence))
+    out_str = [pad_spaces('LOCUS', pad_len1) + sequence_name + '         ' + seq_len +
+               ' bp    DNA    ' + topology + '    ' + division + '    ' + today('ncbi'),
+               pad_spaces('DEFINITION', pad_len1) +
+               description,
+
+               pad_spaces('ACCESSION', pad_len1) + accession,
+               pad_spaces('VERSION', pad_len1) + version,
+               pad_spaces('KEYWORDS', pad_len1) + keywords,
+               pad_spaces('SOURCE', pad_len1) + source,
+               pad_spaces('  ORGANISM', pad_len1) + species,
+               pad_spaces('REFERENCE', pad_len1) + '1 (bases 1 to ' + seq_len + ')',
+               pad_spaces('  AUTHORS', pad_len1) + authors,
+               pad_spaces('  TITLE', pad_len1) + title,
+               pad_spaces('  JOURNAL', pad_len1) + journal,
+
+               pad_spaces('FEATURES', pad_len2) + 'Location/Qualifiers',
+               pad_spaces('     source', pad_len2) + '1..' + str(len(full_sequence)),
+               pad_spaces('', pad_len2) + '/organism="' + species + '"']
+
+    # Plot the specified input features
+    if features:
+        upper_seq = full_sequence.upper()
+        for feature in features:
+            index_count = 1  # Used to number features if numbering
+
+            # Determine feature type
+            if feature[1]:
+                f_type = feature[1]
+                if not f_type.endswith('_'):
+                    f_type += '_'
+            else:
+                f_type = 'misc_feature'
+
+            # Determine feature location
+            num_seqs = len(feature[2])
+            num_is = len(feature[3])
+            if (num_seqs > 0 and num_is > 0) and num_seqs != num_is:
+                raise IOError("Provided feature entry has an inappropriate number of index locations detected: "
+                              + str(feature))
+
+            for subfeatx in range(num_seqs):
+                found = False
+                f_name = feature[0].rstrip()
+                if numbering:
+                    f_name += ' #' + "{:02d}".format(index_count)
+
+                # If index information is provided, use it
+                if num_is > 0:
+                    index_seq = upper_seq[feature[3][subfeatx]:feature[3][subfeatx] + len(feature[2][subfeatx])]
+                    if index_seq == feature[2][subfeatx].upper():
+                        out_str.append(genbank_write_feature(f_name, feature[3][subfeatx],
+                                                                 len(feature[2][subfeatx]), f_type))
+                        found = True
+
+                # Otherwise look for sequence matches
+                if not found:
+                    hits = [x for x in find_all_substr(upper_seq, feature[2][subfeatx].upper())]
+                    if len(hits) == 1:
+                        out_str.append(genbank_write_feature(f_name, hits[0],
+                                                             len(feature[2][subfeatx]), f_type))
+                    elif plot_multi:
+                        for hit in hits:
+                            out_str.append(genbank_write_feature(f_name + ' (multiple matches)', hit,
+                                                                 len(feature[2][subfeatx]), f_type))
+
+                index_count += 1
+
+    out_str.append('ORIGIN')
+    out_str.append(ncbi_format_dna(full_sequence, pad_len1))
+    out_str.append('//')
+
+    with open(os.path.join(save_dir_path, sequence_name) + '.gb', 'w') as out_file:
+        out_file.write('\n'.join(out_str))
+
+
+def find_all_substr(substr, full_seq):
+    """
+    :param substr: str, substring to look for in ...
+    :param full_seq: str, longer string in which to look for instances of the provided substring
+    :yield: indexes of all matches
+    NB: case sensitive
+    """
+    match = full_seq.find(substr)
+    while match != -1:
+        yield match
+        match = full_seq.find(substr, match + 1)
+
+
+def genbank_write_feature(feat_name, feat_loc, feat_len, feat_type='misc_feature', space_len=21):
+    """
+    :param feat_name: str, complete name of DNA feature (including any numbering / qualifiers etc)
+    :param feat_loc: str, describing 1-indexed position range of the feature in format 'X..Y'
+    :param feat_len: int, length of the DNA feature
+    :param feat_type: str, type of DNA feature if known
+    :param space_len: int, length of spacer used to left indent feature text in GenBank file
+    :return: str of formatted GenBank entry for a given feature
+    """
+
+    feat_str = (pad_spaces('     ' + feat_type, space_len)
+                + str(feat_loc + 1) + '..' + str(feat_loc + feat_len) + '\n' +
+                pad_spaces('', space_len) + '/label="' + feat_name + '"'
+                )
+    return feat_str
+
+
+def ncbi_format_dna(in_str, pad_len):
+    """
+    :param in_str: str of DNA sequence
+    :param pad_len: int of padding required
+    :return: str of DNA sequence in NCBI format (indented/space-separated 10-mers)
+    """
+    dna_text = ''
+    dna_chunks = [in_str[x:x+10] for x in range(0, len(in_str), 10)]
+    line_chunks = [dna_chunks[x:x+6] for x in range(0, int(len(in_str)/6), 6)]
+    pos = 1
+    for line in line_chunks:
+        if line:
+            dna_text += ' '.join([num_pad(pos, pad_len)] + line) + '\n'
+            pos += 60
+        else:
+            break
+
+    return dna_text
+
+
+def num_pad(number, len_to_pad):
+    """
+    :param number: int describing a number to be converted to str and prefixed with spaces
+    :param len_to_pad: int of number of spaces to pad
+    :return: str of 'number' prefixed with len_to_pad number of spaces (for format matching)
+    """
+    str_num = str(number)
+    return ' ' * (len_to_pad - len(str_num)) + str_num
 
 
 codons = {'AAA': 'K', 'AAC': 'N', 'AAG': 'K', 'AAT': 'N',
@@ -926,6 +1125,7 @@ regions = {'l': 'LEADER',
            'c': 'CONSTANT'
            }
 
+spacer = ' ' * 12
 
 class GetCitation(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
@@ -933,32 +1133,123 @@ class GetCitation(argparse.Action):
         sys.exit(0)
 
 
+def get_package_version():
+    """
+    :return: str of the currently installed Stitchr module
+    """
+    from importlib.metadata import version
+    return version('Stitchr')
+
+
+def get_metadata_dict(species, script, script_version):
+    """
+    :param species: str, species name
+    :param script: str, name of script calling the function
+    :param script_version: str, the __version__ of said script
+    :return: nested dict of the reference and run information
+    """
+
+    meta_dict = {'reference': coll.defaultdict(str), 'stitchr': coll.defaultdict(str)}
+    sp_meta_file = data_dir + '/' + species + '/data-production-date.tsv'
+
+    # Get the germline reference details from the 'data-production-date' file
+    with open(sp_meta_file, 'r') as in_file:
+        for line in in_file:
+            bits = line.rstrip().split('\t')
+            if len(bits) != 2:
+                raise IOError("Incorrect number of fields in reference file line! Expecting two, got: " + str(bits))
+            meta_dict['reference'][bits[0]] = bits[1]
+
+    # Then populate the details relating to the running of the scripts themselves
+    meta_dict['stitchr']['date_run'] = today()
+    meta_dict['stitchr']['script'] = script
+    meta_dict['stitchr']['script_version'] = script_version
+    meta_dict['stitchr']['package_version'] = get_package_version()
+    meta_dict['stitchr']['command'] = ' '.join(sys.argv[:])
+
+    return meta_dict
+
+
+def get_metadata_text(species, script, script_version):
+    """
+    :param species: str, name of species
+    :param script: str, name of script calling the function
+    :param script_version: str, the __version__ of said script
+    :return: str of a text description of the data used to stitch this specific TCR
+    """
+
+    meta = get_metadata_dict(species, script, script_version)
+    return ("Sequence generated using " + script + " (v" + script_version + ", package version " +
+            get_package_version() + "), on " + meta['stitchr']['date_run'] + ", using the " + species +
+            " " + meta['reference']['reference'] + " reference (release " + meta['reference']['release'] +
+            ", downloaded on " + meta['reference']['last_run'] + "). ")
+
+
 def get_citation():
     """
     print out paper and data details for proper citation and reproducibility purposes
     """
-    import pandas as pd
-    from importlib.metadata import version
 
-    citation_str = ('Paper citation details:\nJames M Heather, Matthew J Spindler, Marta Herrero Alonso, Yifang Ivana '
-                    'Shui, David G Millar, David S Johnson, Mark Cobbold, & Aaron N Hata. Stitchr: stitching coding TCR'
-                    ' nucleotide sequences from V/J/CDR3 information, Nucleic Acids Research, Volume 50, Issue 12, 8 '
-                    'July 2022, Page e68, https://doi.org/10.1093/nar/gkac190\n\n')
+    citation_str = ('\nPaper citation details:\n\tJames M Heather, Matthew J Spindler, Marta Herrero Alonso, Yifang '
+                    'Ivana Shui, David G Millar, David S Johnson, Mark Cobbold, & Aaron N Hata. '
+                    'Stitchr: stitching coding TCR nucleotide sequences from V/J/CDR3 information, Nucleic Acids '
+                    'Research, Volume 50, Issue 12, 8 July 2022, Page e68, https://doi.org/10.1093/nar/gkac190\n\n')
 
-    citation_str += ('Stitchr module version:\t' + version('Stitchr') + '\n\n')
+    from . import stitchr as st
+    from . import thimble as th
+    from . import gui_stitchr as gui
+
+    citation_str += ('Version numbers:\n\twhole package:\t' + get_package_version() +
+                     '\n\tstitchr:\t' + st.__version__ +
+                     '\n\tthimble:\t' + th.__version__ +
+                     '\n\tgui_stitchr:\t' + gui.__version__ + '\n\n')
 
     # Loop across all installed species data:
     try:
         species_used = find_species_covered()
         for sp in species_used:
-            sp_dat = pd.read_csv(data_dir + '/' + sp + '/data-production-date.tsv', sep='\t', header=None, index_col=0)
-            citation_str += (sp + ' data details:\n\tIMGT/GENE-DB v:\t' + sp_dat.loc['imgt_genedb_release'][1] +
-                             '\n\tDownloaded on:\t' + sp_dat.loc['last_run'][1] +
-                             '\n\tUsing script:\t' + sp_dat.loc['script_used'][1] +
-                             ' (v ' + sp_dat.loc['version_used'][1] + ')\n')
+            sp_dat = get_metadata_dict(sp, 'stitchr', __version__)
+            citation_str += (sp + ' reference data details:\n\t' + sp_dat['reference']['reference'] + ' v:\t' +
+                             sp_dat['reference']['release'] +
+                             '\n\tDownloaded on:\t' + sp_dat['reference']['last_run'] +
+                             '\n\tUsing script:\t' + sp_dat['reference']['script_used'] +
+                             ' (v ' + sp_dat['reference']['version_used'] + ')\n')
     except Exception:
         citation_str += '(No species data detected in the data directory.)\n'
 
-    # TODO if automated novel allele sequence inclusion added, factor in its record here
+    # Check for novel allele additions
+    na_prefix = 'novel-TCR-alleles-'
+    novel_check =  [x for x in os.listdir(data_dir) if x.startswith(na_prefix)
+                    and x.endswith('.fasta')]
+    if novel_check:
+        novel_check.sort()
+        built_on, novel_v, genedb_v = (novel_check[-1].replace(na_prefix, '').replace('.tsv', '').
+                                       replace('GENEDB-', '').split('_'))
+        citation_str += ('Novel human TCR alleles (from https://github.com/JamieHeather/novel-tcr-alleles) detected:\n'
+                         '\tBuilt on:\t' + built_on +
+                         '\n\tNovel code v:\t' + novel_v +
+                         '\n\tIMGT/GENE-DB v:\t' + genedb_v + '\n')
 
     return citation_str
+
+
+def get_output_name(stitch_dict):
+    """
+    :param stitch_dict: dict produced from the output of running stitch(), which also contains the input arg dict
+    :return: str of a name for use in naming output files
+    """
+    # Preferentially use provided names
+    if stitch_dict['in']['name']:
+        name = stitch_dict['in']['name']
+    else:
+        name = ('stitchr-TCR_' +
+                stitch_dict['used']['v'].replace('*', '-') + '_' +
+                stitch_dict['used']['j'].replace('*', '-') + '_' +
+                stitch_dict['used']['cdr3'])
+    return name
+
+
+def main():
+    print("Please use the appropriate 'stitchr', 'thimble', 'gui_stitchr' or 'stitchrdl' command.")
+
+# TODO make text outputs referencing IMGT instead reference whatever germline set source was used
