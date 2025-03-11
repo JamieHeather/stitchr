@@ -22,7 +22,7 @@ if sys.version_info < (3, 9):
 else:
     import importlib.resources as importlib_resources       # importlib.resources
 
-__version__ = '1.4.0'
+__version__ = '1.4.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -1023,7 +1023,7 @@ def output_genbank(sequence_name, full_sequence, description, topology, features
 
                 # Otherwise look for sequence matches
                 if not found:
-                    hits = [x for x in find_all_substr(upper_seq, feature[2][subfeatx].upper())]
+                    hits = [x for x in find_all_substr(feature[2][subfeatx].upper(), upper_seq)]
                     if len(hits) == 1:
                         out_str.append(genbank_write_feature(f_name, hits[0],
                                                              len(feature[2][subfeatx]), f_type))
