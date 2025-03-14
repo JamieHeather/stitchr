@@ -15,7 +15,7 @@ import sys
 import warnings
 
 
-__version__ = '1.2.0'
+__version__ = '1.2.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 

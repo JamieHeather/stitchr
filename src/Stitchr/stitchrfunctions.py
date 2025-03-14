@@ -22,7 +22,7 @@ if sys.version_info < (3, 9):
 else:
     import importlib.resources as importlib_resources       # importlib.resources
 
-__version__ = '1.4.1'
+__version__ = '1.4.2'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -136,7 +136,7 @@ def get_chain(v, j):
         return 'TRA'
     elif v.startswith('TRG') and j.startswith('TRG'):
         return 'TRG'
-    elif v.startswith('TRD') and j.startswith('TRD'):
+    elif (v.startswith('TRA') or v.startswith('TRD')) and j.startswith('TRD'):
         return 'TRD'
 
     elif v.startswith('IGH') and j.startswith('IGH'):
