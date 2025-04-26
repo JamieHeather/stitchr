@@ -17,7 +17,6 @@ import collections as coll
 import warnings
 
 
-__version__ = '1.4.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -517,7 +516,8 @@ def main():
 
                             tcr_bits = {'v': values[ref_chain + 'V'], 'j': values[ref_chain + 'J'],
                                         'cdr3': values[ref_chain + '_CDR3'], 'mode': 'TSV',
-                                        'skip_c_checks': False, 'species': species, 'seamless': seamless,
+                                        'skip_c_checks': False, 'skip_n_checks': False, 'no_leader': False,
+                                        'species': species, 'seamless': seamless,
                                         'name': values[ref_chain + '_name'].replace(' ', '_'),
                                         'l': values[ref_chain + '_leader'], 'c': values[ref_chain + 'C'],
                                         '5_prime_seq': values[ref_chain + '_5_prime_seq'],

@@ -15,6 +15,8 @@ import sys
 import textwrap
 import datetime
 import warnings
+from . import __version__
+
 
 # Ensure correct importlib-resources function imported
 if sys.version_info < (3, 9):
@@ -22,11 +24,10 @@ if sys.version_info < (3, 9):
 else:
     import importlib.resources as importlib_resources       # importlib.resources
 
-__version__ = '1.4.2'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
-# sys.tracebacklimit = 0  # comment when debugging  # TODO fix
+sys.tracebacklimit = 0  # comment when debugging
 
 data_files = importlib_resources.files("Data")
 additional_genes_file = str(data_files / 'additional-genes.fasta')
@@ -540,15 +541,17 @@ def tidy_c_term(c_term_nt, skip, c_region_motifs, c_gene):
     return c_term_nt[f:], translations[f]
 
 
-def determine_v_interface(cdr3aa, n_term_nuc, n_term_amino):
+def determine_v_interface(cdr3aa, n_term_nuc, n_term_amino, allow_cys_deletion=False):
     """
     Determine germline V contribution, and subtract from the CDR3 (to leave just non-templated residues)
     :param cdr3aa: CDR3 region (protein sequence as provided)
     :param n_term_nuc: DNA encoding the germline N terminal portion (i.e. L1+2 + V gene), with no untranslated bp
     :param n_term_amino: translation of n_term_nuc
+    :param allow_cys_deletion: bool, whether to permit TCRs that lack a canonical CDR3-defining conserved 2nd Cys
     :return: appropriately trimmed n_term_nuc, plus the number of AA residues the CDR3's N term can be trimmed by
     """
 
+    n_term_nt_trimmed, cdr3_n_offset = '', ''
     for c in reversed(list(range(1, 5))):
         n_term_cdr3_chunk = cdr3aa[:c]
         for v in range(10):
@@ -558,6 +561,14 @@ def determine_v_interface(cdr3aa, n_term_nuc, n_term_amino):
                 n_term_nt_trimmed = n_term_nuc[:(aa_l * 3) - (v * 3)]
                 cdr3_n_offset = c
                 return n_term_nt_trimmed, cdr3_n_offset
+
+    # If the skip_n_checks flag is set, allow stitching of TCRs that lack N-terminal Cys residues in their junctions
+    if allow_cys_deletion:
+        last_c = n_term_amino.rfind('C')
+        if last_c != -1:
+            warnings.warn("Warning: no N terminal overlap found (i.e. not even the conserved second cysteine), "
+                          "but the '--skip_n_checks' flag has been selected; inserting CDR3 in place of that residue. ")
+            return n_term_nuc[:last_c*3], 0
 
     # Shouldn't be able to throw an error, as the presence of an N terminal cysteine should be established, but in case
     raise Exception("Unable to locate N terminus of CDR3 in V gene correctly. Please ensure sequence plausibility. ")
@@ -1137,15 +1148,13 @@ def get_package_version():
     """
     :return: str of the currently installed Stitchr module
     """
-    from importlib.metadata import version
-    return version('Stitchr')
+    return __version__
 
 
-def get_metadata_dict(species, script, script_version):
+def get_metadata_dict(species, script):
     """
     :param species: str, species name
     :param script: str, name of script calling the function
-    :param script_version: str, the __version__ of said script
     :return: nested dict of the reference and run information
     """
 
@@ -1163,7 +1172,6 @@ def get_metadata_dict(species, script, script_version):
     # Then populate the details relating to the running of the scripts themselves
     meta_dict['stitchr']['date_run'] = today()
     meta_dict['stitchr']['script'] = script
-    meta_dict['stitchr']['script_version'] = script_version
     meta_dict['stitchr']['package_version'] = get_package_version()
     meta_dict['stitchr']['command'] = ' '.join(sys.argv[:])
 
@@ -1178,8 +1186,8 @@ def get_metadata_text(species, script, script_version):
     :return: str of a text description of the data used to stitch this specific TCR
     """
 
-    meta = get_metadata_dict(species, script, script_version)
-    return ("Sequence generated using " + script + " (v" + script_version + ", package version " +
+    meta = get_metadata_dict(species, script)
+    return ("Sequence generated using " + script + ", from stitchr package version " +
             get_package_version() + "), on " + meta['stitchr']['date_run'] + ", using the " + species +
             " " + meta['reference']['reference'] + " reference (release " + meta['reference']['release'] +
             ", downloaded on " + meta['reference']['last_run'] + "). ")
@@ -1195,20 +1203,13 @@ def get_citation():
                     'Stitchr: stitching coding TCR nucleotide sequences from V/J/CDR3 information, Nucleic Acids '
                     'Research, Volume 50, Issue 12, 8 July 2022, Page e68, https://doi.org/10.1093/nar/gkac190\n\n')
 
-    from . import stitchr as st
-    from . import thimble as th
-    from . import gui_stitchr as gui
-
-    citation_str += ('Version numbers:\n\twhole package:\t' + get_package_version() +
-                     '\n\tstitchr:\t' + st.__version__ +
-                     '\n\tthimble:\t' + th.__version__ +
-                     '\n\tgui_stitchr:\t' + gui.__version__ + '\n\n')
+    citation_str += ('stitchr version:\t' + get_package_version() + '\n\n')
 
     # Loop across all installed species data:
     try:
         species_used = find_species_covered()
         for sp in species_used:
-            sp_dat = get_metadata_dict(sp, 'stitchr', __version__)
+            sp_dat = get_metadata_dict(sp, 'stitchr')
             citation_str += (sp + ' reference data details:\n\t' + sp_dat['reference']['reference'] + ' v:\t' +
                              sp_dat['reference']['release'] +
                              '\n\tDownloaded on:\t' + sp_dat['reference']['last_run'] +

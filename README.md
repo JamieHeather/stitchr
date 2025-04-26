@@ -11,4 +11,3 @@
 [![License](https://img.shields.io/github/license/JamieHeather/stitchr?label=license)](./LICENSE)
 
 [The documentation for stitchr can be accessed at this link: https://jamieheather.github.io/stitchr/](https://jamieheather.github.io/stitchr/)
-

@@ -33,8 +33,23 @@ The script takes the known V/J/CDR3 information, and uses that to pull out the r
 
 Out of the box, ``stitchr`` works on all common jawed vertebrate TCR loci (alpha/beta/gamma/delta), for all species for which there is currently data available in IMGT.
 
+What's new in v1.3.0
+====================
+
+(2025-04-25)
+
+A couple of minor case use capabilities have been added in this version.
+
+* A ``-nl / --no_leader`` flag has been added, so that TCRs can be generated without a leader region (as `had been requested in the Issues page <https://github.com/JamieHeather/stitchr/issues/45>`_). Note that this option should be avoided for construction TCR sequences for functional expression, as these regions encode the signal peptide and are thus required for proper polypeptide trafficking.
+
+* A ``-sn / --skip_n_checks`` flag has been added, allowing the production of `TCRs with CDR3 junctions which do not begin with the classical conserved second cysteine <https://github.com/JamieHeather/stitchr/issues/46>`_ when providing exact CDR3 junctions. Note that this option will only work for rearrangements which have deleted this CYS104 residue; in the absence of any N-terminal overlap (which previously was the Cys as a minimum), it now places the provided junction sequence with the first CDR3 residue in place of CYS104. (The only way to get ``stitchr`` to reliably produce rearrangements which have deleted beyond this position is to provide nucleotide sequence which extends further into the V region, in conjunction with the ``-sl / --seamless`` flag.)
+
+* In order to simplify tracking of different ``stitchr`` updates, script-specific versions have been removed and updates are tracked wholly through package-level versioning. This can be easily obtained by running the ``--version`` option in any of the command scripts, or ``--cite`` for a fuller description.
+
 What's new in v1.2.0
 ====================
+
+(2025-02-24)
 
 There are a number of minor tweaks and quality of life improvements in the update from version 1.1.3 to 1.2.0, with the major changes aiming to improve repeatability and user convenience, including:
 
@@ -60,3 +75,7 @@ Links
 * `stitchr on PyPI <https://pypi.org/project/stitchr/>`_
 
 * `stitchr publication (NAR 2022) <https://doi.org/10.1093/nar/gkac190>`_
+
+* Related tools:
+   * `autoDCR (for flexible TCR annotation) <https://github.com/JamieHeather/autoDCR>`_
+   * `hladl (for automatically downloading or inferring HLA gene/protein sequences) <https://github.com/JamieHeather/hladl>`_

@@ -10,12 +10,12 @@ Can be used for TCR vector design, and other purposes.
 """
 
 from . import stitchrfunctions as fxn
+from . import __version__
 import argparse
 import sys
 import warnings
 
 
-__version__ = '1.2.1'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -94,11 +94,17 @@ def args():
     parser.add_argument('-sc', '--skip_c_checks', action='store_true', required=False, default=False,
                         help="Optional flag to skip usual constant region gene checks.")
 
+    parser.add_argument('-sn', '--skip_n_checks', action='store_true', required=False, default=False,
+                        help="Optional flag to skip the usual CDR3 N terminal (conserved 2nd Cys) checks.")
+
+    parser.add_argument('-nl', '--no_leader', action='store_true', required=False, default=False,
+                        help="Optional flag to ignore leader sequences (signal peptides).")
+
     parser.add_argument('-sw', '--suppress_warnings', action='store_true', required=False, default=False,
                         help="Optional flag to suppress warnings.")
 
     parser.add_argument('--version', action='version', version=__version__,
-                        help="Print current stitchr version.")
+                        help="Print current stitchr package version.")
 
     parser.add_argument('--cite', action=fxn.GetCitation, help="Print citation details.", nargs=0)
 
@@ -129,6 +135,9 @@ def stitch(specific_args, tcr_info, functionality, partial_info, codon_dict, j_w
     stitch_dict = {'in': specific_args, 'used': {}, 'seqs': {}}
 
     for r in fxn.regions:
+
+        if r == 'l' and specific_args['no_leader']:
+            continue
 
         # First establish what the input gene and allele values are
         gene_allele_in = specific_args[r]
@@ -273,7 +282,10 @@ def stitch(specific_args, tcr_info, functionality, partial_info, codon_dict, j_w
         stitch_dict['in']['seamless'] = False
 
     # Get the germline encoded bits
-    n_term_nt_raw = stitch_dict['seqs']['l'] + stitch_dict['seqs']['v']
+    if specific_args['no_leader']:
+        n_term_nt_raw = stitch_dict['seqs']['v']
+    else:
+        n_term_nt_raw = stitch_dict['seqs']['l'] + stitch_dict['seqs']['v']
     c_term_nt_raw = stitch_dict['seqs']['j'] + stitch_dict['seqs']['c']
 
     # Run the appropriate form of non-templated integration
@@ -322,8 +334,8 @@ def stitch(specific_args, tcr_info, functionality, partial_info, codon_dict, j_w
         stitched_nt, stitched_trans = fxn.tidy_c_term(stitched_nt, False, c_motifs, stitch_dict['used']['c'])
 
         # Catch more 5' SNP errors: if there's a SNP in the edges of the contextual padding this can cause and indel,
-        # ... which means tidy_c_term will trim some nt from the 5' of the gene, which we can use to trigger an IOError
-        if not stitched_nt.startswith(stitch_dict['seqs']['l']):
+        # ... which means tidy_c_term will trim some nt from the 5' of the gene, which we can use to trigger an error
+        if not stitched_nt.startswith(n_term_nt_trimmed[:30]):
             raise ValueError("An indel has been detected during seamless stitching, which is usually caused by "
                              "polymorphisms in the padding sequence relative to the genes selected: please either "
                              "ensure selected alleles are correct or provide more context beyond any polymorphisms. ")
@@ -367,7 +379,9 @@ def stitch(specific_args, tcr_info, functionality, partial_info, codon_dict, j_w
         # Figure out where the AA CDR3 will slot in: look at the CDR3 edges & see how much overlap needs to be removed
         # Start with 4 residues chunks, move from end of V gene up to 10 residues in (very generous deletion allowance)
         n_term_nt_trimmed, cdr3_n_offset = fxn.determine_v_interface(stitch_dict['used']['cdr3'],
-                                                                     n_term_nt_inframe, n_term_aa)
+                                                                     n_term_nt_inframe, n_term_aa,
+                                                                     specific_args['skip_n_checks'])
+
         c_term_nt_trimmed, cdr3_c_end = fxn.determine_j_interface(stitch_dict['used']['cdr3'][cdr3_n_offset:],
                                                                   c_term_nt_inframe, c_term_aa,
                                                                   len(stitch_dict['seqs']['j']), j_warning_threshold)
@@ -384,7 +398,10 @@ def stitch(specific_args, tcr_info, functionality, partial_info, codon_dict, j_w
         stitch_dict['seqs']['non_templated'] = non_templated_nt
         stitch_dict['used']['non_templated'] = 'non_templated'
 
-    stitch_dict['seqs']['v'] = n_term_nt_trimmed[len(stitch_dict['seqs']['l']):]
+    if specific_args['no_leader']:
+        stitch_dict['seqs']['v'] = n_term_nt_trimmed
+    else:
+        stitch_dict['seqs']['v'] = n_term_nt_trimmed[len(stitch_dict['seqs']['l']):]
     stitch_dict['seqs']['c'] = stitch_dict['seqs']['c'][:stitch_dict['seqs']['c'].index(c_term_nt_trimmed[-20:]) + 20]
     stitch_dict['seqs']['j'] = c_term_nt_trimmed[:-len(stitch_dict['seqs']['c'])]
     # TODO potentially find a more elegant way to determine/retain the C start/end positions?
@@ -410,7 +427,9 @@ def stitch(specific_args, tcr_info, functionality, partial_info, codon_dict, j_w
         stitch_dict['seqs']['3_prime_seq'] = specific_args['3_prime_seq']
 
     stitch_dict['out_list'] = [specific_args['name'], stitch_dict['used']['v'], stitch_dict['used']['j'],
-                               stitch_dict['used']['c'], specific_args['cdr3'], stitch_dict['used']['l']]
+                               stitch_dict['used']['c'], specific_args['cdr3']]
+    if not specific_args['no_leader']:
+        stitch_dict['out_list'].append(stitch_dict['used']['l'])
     stitch_dict['stitched_nt'] = stitched_nt
 
     # If this is to be output to GenBank format, also determine the location of each substr,
@@ -533,7 +552,7 @@ def main():
 
     elif input_args['mode'] == 'JSON':
         import json
-        stitched['metadata'] = fxn.get_metadata_dict(input_args['species'], 'stitchr', __version__)
+        stitched['metadata'] = fxn.get_metadata_dict(input_args['species'], 'stitchr')
         stitched['Warnings/Errors'] = ''.join([str(stitch_warnings[x].message)
                                                                for x in range(len(stitch_warnings))])
 

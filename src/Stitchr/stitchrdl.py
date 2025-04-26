@@ -5,7 +5,9 @@ stitchrdl.py
 
 Download IMGT/GENE-DB data for stitching, for a given species
 """
+
 from . import stitchrfunctions as fxn
+from . import __version__
 import argparse
 import os
 import subprocess
@@ -20,7 +22,6 @@ except (ImportError, ModuleNotFoundError) as err:
     sys.exit()
 
 
-__version__ = '0.3.0'
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 

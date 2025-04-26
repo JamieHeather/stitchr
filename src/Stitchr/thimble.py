@@ -12,6 +12,7 @@ No fancy backronym or contrived silent capitals - it just helps you stitch faste
 
 from . import stitchrfunctions as fxn
 from . import stitchr as st
+from . import __version__
 import warnings
 import argparse
 import os
@@ -19,7 +20,7 @@ import sys
 import collections as coll
 from time import time
 
-__version__ = '1.3.0'
+
 __author__ = 'Jamie Heather'
 __email__ = 'jheather@mgh.harvard.edu'
 
@@ -32,8 +33,7 @@ def args():
     """
 
     # Help flag
-    parser = argparse.ArgumentParser(description="thimble v" + str(__version__) + '\n' +
-                                                 ": Run stiTChR on multiple and paired TCRs")
+    parser = argparse.ArgumentParser(description="thimble:\nRun stiTChR on multiple and paired TCRs")
 
     # Input and output options
     parser.add_argument('-in', '--in_file', required=True, type=str,
@@ -74,8 +74,17 @@ def args():
                         help="J gene substring length warning threshold. Default = 3. "
                              "Decrease to get fewer notes on short J matches. Optional.")
 
+    parser.add_argument('-sc', '--skip_c_checks', action='store_true', required=False, default=False,
+                        help="Optional flag to skip usual constant region gene checks.")
+
+    parser.add_argument('-sn', '--skip_n_checks', action='store_true', required=False, default=False,
+                        help="Optional flag to skip the usual CDR3 N terminal (conserved 2nd Cys) checks.")
+
+    parser.add_argument('-nl', '--no_leader', action='store_true', required=False, default=False,
+                        help="Optional flag to ignore leader sequences (not recommended for paired/linked sequences!).")
+
     parser.add_argument('--version', action='version', version=__version__,
-                        help="Print current thimble version.")
+                        help="Print current stitchr package version.")
 
     parser.add_argument('--cite', action=fxn.GetCitation, help="Print citation details.", nargs=0)
 
@@ -331,8 +340,6 @@ def main():
 
                 if entry_line_warnings:
                     tcr_lines[0]['Warnings/Errors'] = ''.join(entry_line_warnings)
-                    # out_data.append('\t'.join([tcr_lines[0][x] for x in out_headers[receptor]]))
-                    print(2, out_data)
                     continue
 
                 for sorted_row_bits in tcr_lines:
@@ -349,7 +356,10 @@ def main():
                             warnings.simplefilter("always")
 
                             # Generate the necessary fields for stitching
-                            tcr_bits = {'skip_c_checks': input_args['skip_c_checks'], 'species': species,
+                            tcr_bits = {'skip_c_checks': input_args['skip_c_checks'],
+                                        'skip_n_checks': input_args['skip_n_checks'],
+                                        'no_leader': input_args['no_leader'],
+                                        'species': species,
                                         'mode': input_args['mode']}
 
                             if 'seamless' in input_args:
@@ -378,6 +388,7 @@ def main():
                             else:
                                 tcr_bits = fxn.autofill_input(populate_blanks(tcr_bits, pre_stitch_list_fields), c)
                                 tcr_bits = fxn.tweak_thimble_input(tcr_bits)
+
                                 try:
                                     # Actually run the stitching of this chain
                                     thimble_dict[c] = st.stitch(tcr_bits, tcr_dat[c], tcr_functionality[c], partial,
@@ -496,7 +507,7 @@ def main():
 
                     # If requested, also output additional more detailed file types
                     if input_args['mode'] == 'JSON':
-                        thimble_dict['metadata'] = fxn.get_metadata_dict(input_args['species'], 'thimble', __version__)
+                        thimble_dict['metadata'] = fxn.get_metadata_dict(input_args['species'], 'thimble')
                         with open(os.path.join(input_args['out_folder'], thimble_dict['out']['TCR_name'])
                                   + '.json', 'w') as out_file:
                             json.dump(thimble_dict, out_file)

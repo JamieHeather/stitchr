@@ -38,7 +38,7 @@ For human and mouse TCRs, the script will use the TRBC gene located in the same 
 Translation sequences
 ---------------------
 
-By default ``stitchr`` does not include stop codons at the end of the coding sequence; if desired, this must be specified using the 3' flag (``-3p``), i.e. ``-3p TAA``, ``-3p TAG``, or ``-3p TGA``. Similarly, no sequence is included before that of the IMGT-recorded L1 leader sequence. If desired, this can be added using the 5' flag (``-5p``), e.g. to add the pre-start codon section of an optimal Kozak sequence: ``-5p GCCGCCACC``. Note that translated sequence in the output is the *whole* stitched sequence, including any added 5'/3' sequences: addition of 5' sequences may cause the introduction of underscores ('\_') to appear in the translated output, representing incomplete codons that could not be translated. Also note that the translated sequence of an individual chain may differ from the corresponding section of a linked heterodimer for this reason, depending on the length/frame of the 5' rearrangement.
+By default ``stitchr`` does not include stop codons at the end of the coding sequence; if desired, this must be specified using the 3' flag (``-3p``), i.e. ``-3p TAA``, ``-3p TAG``, or ``-3p TGA``. Similarly, no sequence is included before that of the IMGT-recorded L1 leader sequence. If desired, this can be added using the 5' flag (``-5p``), e.g. to add the pre-start codon section of an optimal Kozak sequence: ``-5p GCCGCCACC``. Note that translated sequence in the output is the *whole* stitched sequence, including any added 5'/3' sequences: addition of 5' sequences may cause the introduction of underscores (`\_') to appear in the translated output, representing incomplete codons that could not be translated. Also note that the translated sequence of an individual chain may differ from the corresponding section of a linked heterodimer for this reason, depending on the length/frame of the 5' rearrangement.
 
 Seamless mode
 -------------
@@ -84,6 +84,8 @@ Other optional arguments
 -  ``-m`` - define an output mode, to define which sequences get printed to the terminal
 -  ``-xg`` - toggle providing additional/custom genes to be stitched into TCR transcripts in the Data/additional-genes.fasta file
 -  ``-sc`` - toggle skipping the constant region gene check (for genes not present in the C-region-motifs.tsv file)
+-  ``-sn`` - `toggle skipping the CDR3 N terminal check, allowing for the stitching of TCR rearrangements that have deleted the junction-defining conserved second cysteine residue <https://github.com/JamieHeather/stitchr/issues/46>`_
+-  ``-nl`` - allow for produc
 -  ``-sw`` - suppress warning text, which may be especially useful in conjunction with some of the alternative output modes (see the :ref:`output-label` section)
 
 

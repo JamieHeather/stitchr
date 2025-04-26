@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Using stitchr &mdash; stitchr  documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
@@ -122,7 +122,7 @@
 </section>
 <section id="translation-sequences">
 <h2>Translation sequences<a class="headerlink" href="#translation-sequences" title="Link to this heading"></a></h2>
-<p>By default <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> does not include stop codons at the end of the coding sequence; if desired, this must be specified using the 3’ flag (<code class="docutils literal notranslate"><span class="pre">-3p</span></code>), i.e. <code class="docutils literal notranslate"><span class="pre">-3p</span> <span class="pre">TAA</span></code>, <code class="docutils literal notranslate"><span class="pre">-3p</span> <span class="pre">TAG</span></code>, or <code class="docutils literal notranslate"><span class="pre">-3p</span> <span class="pre">TGA</span></code>. Similarly, no sequence is included before that of the IMGT-recorded L1 leader sequence. If desired, this can be added using the 5’ flag (<code class="docutils literal notranslate"><span class="pre">-5p</span></code>), e.g. to add the pre-start codon section of an optimal Kozak sequence: <code class="docutils literal notranslate"><span class="pre">-5p</span> <span class="pre">GCCGCCACC</span></code>. Note that translated sequence in the output is the <em>whole</em> stitched sequence, including any added 5’/3’ sequences: addition of 5’ sequences may cause the introduction of underscores (’_’) to appear in the translated output, representing incomplete codons that could not be translated. Also note that the translated sequence of an individual chain may differ from the corresponding section of a linked heterodimer for this reason, depending on the length/frame of the 5’ rearrangement.</p>
+<p>By default <code class="docutils literal notranslate"><span class="pre">stitchr</span></code> does not include stop codons at the end of the coding sequence; if desired, this must be specified using the 3’ flag (<code class="docutils literal notranslate"><span class="pre">-3p</span></code>), i.e. <code class="docutils literal notranslate"><span class="pre">-3p</span> <span class="pre">TAA</span></code>, <code class="docutils literal notranslate"><span class="pre">-3p</span> <span class="pre">TAG</span></code>, or <code class="docutils literal notranslate"><span class="pre">-3p</span> <span class="pre">TGA</span></code>. Similarly, no sequence is included before that of the IMGT-recorded L1 leader sequence. If desired, this can be added using the 5’ flag (<code class="docutils literal notranslate"><span class="pre">-5p</span></code>), e.g. to add the pre-start codon section of an optimal Kozak sequence: <code class="docutils literal notranslate"><span class="pre">-5p</span> <span class="pre">GCCGCCACC</span></code>. Note that translated sequence in the output is the <em>whole</em> stitched sequence, including any added 5’/3’ sequences: addition of 5’ sequences may cause the introduction of underscores (<a href="#id1"><span class="problematic" id="id2">`</span></a>_’) to appear in the translated output, representing incomplete codons that could not be translated. Also note that the translated sequence of an individual chain may differ from the corresponding section of a linked heterodimer for this reason, depending on the length/frame of the 5’ rearrangement.</p>
 </section>
 <section id="seamless-mode">
 <h2>Seamless mode<a class="headerlink" href="#seamless-mode" title="Link to this heading"></a></h2>
@@ -166,6 +166,8 @@ stitchr<span class="w"> </span>-v<span class="w"> </span>TRBV7-6<span class="w">
 <li><p><code class="docutils literal notranslate"><span class="pre">-m</span></code> - define an output mode, to define which sequences get printed to the terminal</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-xg</span></code> - toggle providing additional/custom genes to be stitched into TCR transcripts in the Data/additional-genes.fasta file</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-sc</span></code> - toggle skipping the constant region gene check (for genes not present in the C-region-motifs.tsv file)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-sn</span></code> - <a class="reference external" href="https://github.com/JamieHeather/stitchr/issues/46">toggle skipping the CDR3 N terminal check, allowing for the stitching of TCR rearrangements that have deleted the junction-defining conserved second cysteine residue</a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-nl</span></code> - allow for produc</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-sw</span></code> - suppress warning text, which may be especially useful in conjunction with some of the alternative output modes (see the <a class="reference internal" href="output.html#output-label"><span class="std std-ref">stitchr output modes</span></a> section)</p></li>
 </ul>
 </section>
