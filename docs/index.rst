@@ -33,8 +33,8 @@ The script takes the known V/J/CDR3 information, and uses that to pull out the r
 
 Out of the box, ``stitchr`` works on all common jawed vertebrate TCR loci (alpha/beta/gamma/delta), for all species for which there is currently data available in IMGT.
 
-What's new in v1.3.0
-====================
+What's new in v1.3
+==================
 
 (2025-04-25)
 
@@ -46,8 +46,8 @@ A couple of minor case use capabilities have been added in this version.
 
 * In order to simplify tracking of different ``stitchr`` updates, script-specific versions have been removed and updates are tracked wholly through package-level versioning. This can be easily obtained by running the ``--version`` option in any of the command scripts, or ``--cite`` for a fuller description.
 
-What's new in v1.2.0
-====================
+What's new in v1.2
+==================
 
 (2025-02-24)
 

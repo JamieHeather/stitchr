@@ -347,7 +347,8 @@ def stitch(specific_args, tcr_info, functionality, partial_info, codon_dict, j_w
         if stitch_dict['input_type'] == 'nt':
 
             # Frame check (if not providing extra context for seamless integration)
-            if len(stitch_dict['used']['cdr3']) % 3 != 0 and not seamless:
+            if len(stitch_dict['in']['cdr3']) % 3 != 0 and not seamless:
+                # TODO this is the problem to fix
                 warnings.warn("Warning: length of CDR3 DNA sequence provided is not evenly divisible by 3 "
                               "and seamless stitching not selected: stitched TCR frame will likely be wrong. ")
 
