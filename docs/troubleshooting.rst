@@ -1,4 +1,18 @@
 
+Troubleshooting
+===============
+
+* If you encounter a problem or error with ``stitchr`` that isn't addressed in these docs, or if there was some functionality you'd like to be considered for future releases, please `open a new issue on the GitHub repo <https://github.com/JamieHeather/stitchr/issues>`_:
+
+    * Ideally, please first search the previous issues to see whether this problem has been encountered and/or addressed before.
+
+    * When summarising your issue, include the commands used (both working and not), the environment where you're running them, and details of the available references in your ``stitchr`` data directory.
+
+    * That reference information can easily be obtained by running ``stitchr --cite``, and then copying everything below the 'Paper citation details' citation.
+
+    * Alternatively, ``stitchr`` (or general TCR-related) `queries can be be emailed to me directly <https://jamieheather.github.io/contact/>`_
+
+
 ``stitchr`` warnings
 ~~~~~~~~~~~~~~~~~~~~
 
